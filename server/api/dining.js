@@ -1,8 +1,8 @@
-function getDiningCourts() {
-    var diningData = ["hilly", "earhart"];
-    return diningData;
-}
+const router = require("express").Router();
 
-module.exports = {
-    getDiningCourts
-};
+router.route("/").get((req, res) => { 
+  const dining = ["hilly", "earhart"];
+  res.json(dining);
+});
+
+module.exports = router;
