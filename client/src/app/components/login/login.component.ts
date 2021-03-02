@@ -59,7 +59,8 @@ async function login(user:String,pass:String) {
   let init = {
     method: "POST",
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ "username": user, "password": pass})
+    body: JSON.stringify({ "username": user, "password": pass}),
+    mode: 'no-cors' as RequestMode
   };
 
   // This line checks the server

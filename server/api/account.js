@@ -6,9 +6,12 @@ router.route("/").get((req, res) => {
     res.json(account);
 });
 
-router.get("/login", (req,res) => {
+router.post("/login", (req,res) => {
     console.log(req);
-    res.send('200: success');
+    response = {
+        status: "HTTP/1.1 200 OK"
+    }
+    res.end(response);
 });
 
 router.post("/register", (req,res) => {
