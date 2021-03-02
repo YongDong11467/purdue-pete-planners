@@ -10,6 +10,7 @@ const app = express(),
 app.use(bodyParser.json());
 app.use("/api/dining", diningRouter);
 
+
 app.get('/', (req,res) => {
     res.send('Default route');
 });
