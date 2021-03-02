@@ -1,0 +1,46 @@
+ <head>
+    <link rel="event-create" href="./event-create.component.css">
+</head>
+ <div class="card">
+    <h4 class="card-header">Event Creation</h4>
+    <div class="card-body">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="eventName">Event Name</label>
+                    <input type="text" formControlName="eventName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventName.errors }" />
+                    <div *ngIf="submitted && f.eventName.errors" class="invalid-feedback">
+                        <div *ngIf="f.eventName.errors.required">An Event Name is required</div>
+                    </div>
+              </div>
+            </div>
+              
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="eventDescription">Event Description</label>
+                    <textarea formControlName="eventDescription" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventDescription.errors }" rows = "5" cols = "30"></textarea>
+                    <div *ngIf="submitted && f.eventDescription.errors" class="invalid-feedback">
+                        <div *ngIf="f.eventDescription.errors.required">An Event Description is required</div>
+                    </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="eventDate">Event Date</label>
+                    <input type="date" formControlName="eventDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventDate.errors }" />
+                    <div *ngIf="submitted && f.eventDate.errors" class="invalid-feedback">
+                        <div *ngIf="f.eventDate.errors.required">An Event Date is required</div>
+                    </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+                <button [disabled]="loading" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
