@@ -1,5 +1,6 @@
 const express = require('express');
 const diningRouter = require("./api/dining");
+const accountRouter = require("./api/account");
 const account_manager = require("./account_manager");
 
 
@@ -11,9 +12,11 @@ const app = express(),
 async function initialize_app(){
     await account_manager.startDatabaseConnection();
 }
+
+initialize_app();
 app.use(bodyParser.json());
 app.use("/api/dining", diningRouter);
-
+app.use("/api/account", accountRouter);
 
 app.get('/', (req,res) => {
     res.send('Default route');
