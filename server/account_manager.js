@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient; // Framework to communicate with mongodb
 const Binary = require('mongodb').Binary;           // Framework to store binary data in mongodb
-const uri = ""                                      // TODO: ADD MONGO DB URI HERE
+const uri = "mongodb+srv://hyuen:cs407@cluster0.tw2mu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"    // Mongo DB uri
 const client = new MongoClient(uri, { useNewUrlParser: true });
 
 const router = require("express").Router();
@@ -16,7 +16,8 @@ var connection, db;
 const startDatabaseConnection = async function() {
 	try {
 		connection = await client.connect();
-		db = connection.db('Wizard-Duel-2');
+		db = connection.db('purdue_pete');
+        console.log('database conencted');
 	}catch(err){
 		console.log(err.stack);
 		return -1;
