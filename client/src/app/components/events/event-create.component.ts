@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { formatDate } from '@angular/common'
 
 @Component({
     selector: 'app-event-create',
@@ -9,6 +8,10 @@ import { formatDate } from '@angular/common'
 })
 export class EventCreateComponent implements OnInit {
 
+    name = '';
+    desc = '';
+    dTime = '';
+    repeat = ''; 
 form: FormGroup;
   loading = false;
   submitted = false;
@@ -21,7 +24,8 @@ form: FormGroup;
     this.form = this.formBuilder.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
-      eventDate: [new Date(), Validators.required]
+      eventDate: [null, Validators.required],
+      repeatChoice: [null, Validators.required]
     }); 
   }
 
@@ -29,7 +33,8 @@ form: FormGroup;
     this.form = this.formBuilder.group({
         eventName: ['', Validators.required],
         eventDescription: ['', Validators.required],
-        eventDate: [new Date(), Validators.required]
+        eventDate: [null, Validators.required],
+        repeatChoice: [null, Validators.required]
       }); 
   }
 
@@ -37,13 +42,20 @@ form: FormGroup;
 
   onSubmit() {
     this.submitted = true;
-
+    //alert('hey');
     // stop here if form is invalid
     if (this.form.invalid) {
         return;
     }
 
     this.loading = true;
-
 }
+
+onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, dTimeInput: HTMLInputElement, repeatInput: HTMLInputElement){
+        this.name = nameInput.value;
+        this.desc = descInput.value;
+        this.dTime = dTimeInput.value;
+        this.repeat = repeatInput.value;
+}
+
 }
