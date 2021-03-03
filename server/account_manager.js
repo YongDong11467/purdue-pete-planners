@@ -105,3 +105,16 @@ const accountEmailExists = async function(mail) {
 	return emailExists;
 }
 
+/**
+ * Gets all users with the given prefix
+ * 
+ * @param {String} prefix
+ */
+const searchUsers = async function(prefix){
+	let users = ["bob", "boby", "bom"]
+	return users
+}
+
+module.exports = {
+	searchUsers
+}

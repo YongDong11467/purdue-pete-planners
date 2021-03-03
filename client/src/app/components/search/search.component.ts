@@ -14,12 +14,18 @@ export class SearchComponent implements OnInit {
   }
 
   searchResponse = []
+  type = 'none'
+  tableargs = {data: this.searchResponse, type: this.type}
+  displaySearchResult = false
 
   getSearchValue(val: string) {
-    axios.get(`/api/account/searchUser`, { params: { prefix: val } })
+    axios.get(`/api/account/searchUsers`, { params: { prefix: val } })
     .then((res) => {
       console.log(res.data)
       this.searchResponse = res.data;
+      this.type = 'search'
+      this.displaySearchResult = true
+      this.tableargs = {data: this.searchResponse, type: this.type}
     });
   }
 

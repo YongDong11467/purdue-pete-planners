@@ -4,5 +4,6 @@
       <input matInput placeholder="Placeholder" #search>
     </mat-form-field>
     {{searchResponse}}
+    <app-table *ngIf="displaySearchResult" [data]='tableargs'></app-table>
 </form>
 <button (click)="getSearchValue(search.value)">Search!</button>
