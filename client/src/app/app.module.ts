@@ -14,7 +14,9 @@ import { SearchComponent } from './components/search/search.component';
 import { TableComponent } from './components/table/table.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { HomeComponent } from './components/home/home.component'
+import { HomeComponent } from './components/home/home.component';
+import { DiningComponent } from './components/dining/dining.component'
+import { EventComponent } from './components/event/event.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { HomeComponent } from './components/home/home.component'
     TableComponent,
     NavbarComponent,
     ProfileComponent,
-    HomeComponent
+    HomeComponent,
+    DiningComponent,
+    EventComponent
   ],
   imports: [
     BrowserModule,
