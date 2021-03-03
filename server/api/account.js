@@ -8,9 +8,7 @@ router.route("/").get((req, res) => {
 
 router.post("/login", (req,res) => {
     console.log(req);
-    response = {
-        status: "HTTP/1.1 200 OK"
-    }
+    response = "HTTP/1.1 200 OK";
     res.end(response);
 });
 
