@@ -112,8 +112,15 @@ const accountEmailExists = async function(mail) {
  */
 const searchUsers = async function(prefix){
 	let users = ["bob", "boby", "bom"]
+	var query = { user_name: { $regex: `/^${prefix}/` } };
+	dbo.collection("User").find(query).toArray(function(err, result) {
+		if (err) throw err;
+		console.log(result);
+	});
 	return users
 }
+
+// startDatabaseConnection()
 
 module.exports = {
 	searchUsers
