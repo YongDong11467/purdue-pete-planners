@@ -10,6 +10,12 @@
       <td mat-cell *matCellDef="let searchResult"> {{searchResult}} </td>
       <button></button>
     </ng-container>
+
+    <ng-container *ngIf="displayMealResult" matColumnDef="mealResult">
+      <th mat-header-cell *matHeaderCellDef> {{bld}} </th>
+      <td mat-cell *matCellDef="let mealResult"> {{mealResult.Name}} </td>
+      <button></button>
+    </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

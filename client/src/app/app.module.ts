@@ -9,6 +9,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { SearchComponent } from './components/search/search.component';
 import { TableComponent } from './components/table/table.component';
@@ -36,7 +37,8 @@ import { EventComponent } from './components/event/event.component';
     MatSliderModule,
     MatInputModule,
     MatTableModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
