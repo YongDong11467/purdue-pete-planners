@@ -7,7 +7,7 @@ router.route("/").get((req, res) => {
 });
 
 router.route("/searchUsers").get((req, res) => { 
-  manager.searchUsers(req.query).then(function (users) {
+  manager.searchUsers(req.query.prefix).then(function (users) {
     res.json(users);
   });
 });
