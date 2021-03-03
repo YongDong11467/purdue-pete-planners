@@ -8,8 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { SearchComponent } from './search/search.component';
-import { TableComponent } from './table/table.component';
+import { SearchComponent } from './components/search/search.component';
+import { TableComponent } from './components/table/table.component';
 
 @NgModule({
   declarations: [
