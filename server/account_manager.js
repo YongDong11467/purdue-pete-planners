@@ -105,3 +105,16 @@ const accountEmailExists = async function(mail) {
 	return emailExists;
 }
 
+/**
+ * Gets all user with the given prefex
+ * 
+ * @param {String} username 
+ */
+const getUsers = async function(username){
+	let users = ["tim", "timmy", "timmer"]
+	return users
+}
+
+module.exports ={
+	getUsers
+}
