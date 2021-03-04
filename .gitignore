@@ -8,9 +8,7 @@
 /bazel-out
 
 # dependencies
-/client/node_modules
-/server/node_modules
-/node_modules
+node_modules
 /client/src/app/assets
 
 # profiling files
