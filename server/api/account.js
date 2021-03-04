@@ -6,10 +6,16 @@ router.route("/").get((req, res) => {
   res.json(dining);
 });
 
-router.route("/searchUsers").get((req, res) => { 
-  manager.searchUsers(req.query.prefix).then(function (users) {
+router.route("/searchUsers").get((req, res) => {
+  manager.searchUsers(req.query.prefix).then(users => {
+    console.log("In search users")
+    console.log(users)
     res.json(users);
   });
 });
+
+// router.route("/DONOTGOHERE").get((req, res) => { 
+//   manager.populateDatabase()
+// });
 
 module.exports = router;

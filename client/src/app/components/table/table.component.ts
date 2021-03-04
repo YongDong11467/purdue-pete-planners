@@ -41,7 +41,7 @@ export class TableComponent implements OnInit {
   ngOnChanges() {
     if (this.data.type === 'search') {
       this.displaySearchResult = true;
-      this.displayedColumns = ['searchResult'];
+      this.displayedColumns = ['searchResult', 'sendfr'];
     } else if (this.data.type === 'friend') {
       this.displayFriendResult = true
       this.displayedColumns = ['friend'];
@@ -53,5 +53,8 @@ export class TableComponent implements OnInit {
     this.dataSource = this.data.data
   }   
 
+  clickedFriendRequest(username: any) {
+    console.log(username)
+  }
 
 }

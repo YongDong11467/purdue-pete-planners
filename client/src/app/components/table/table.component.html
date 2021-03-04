@@ -11,6 +11,13 @@
       <button></button>
     </ng-container>
 
+    <ng-container *ngIf="displaySearchResult" matColumnDef="sendfr">
+      <th mat-header-cell *matHeaderCellDef> Action </th>   
+      <td mat-cell *matCellDef="let searchResult"> 
+        <button mat-raised-button (click)="clickedFriendRequest(searchResult)" >Send Request</button> 
+      </td>
+    </ng-container>
+
     <ng-container *ngIf="displayMealResult" matColumnDef="mealResult">
       <th mat-header-cell *matHeaderCellDef> {{bld}} </th>
       <td mat-cell *matCellDef="let mealResult"> {{mealResult.Name}} </td>
