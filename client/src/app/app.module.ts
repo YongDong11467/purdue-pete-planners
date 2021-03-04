@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { EventCreateComponent } from './components/events/event-create.component'
+import { LoginComponent } from './components/login/login.component'
+import { RegisterComponent } from './components/register/register.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSliderModule } from '@angular/material/slider';
@@ -22,6 +27,9 @@ import { EventComponent } from './components/event/event.component';
 @NgModule({
   declarations: [
     AppComponent,
+    EventCreateComponent,
+    LoginComponent,
+    RegisterComponent,
     SearchComponent,
     TableComponent,
     NavbarComponent,
@@ -33,6 +41,8 @@ import { EventComponent } from './components/event/event.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
     BrowserAnimationsModule,
     MatSliderModule,
     MatInputModule,
