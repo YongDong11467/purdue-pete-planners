@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { EventCreateComponent } from './components/events/event-create.component'
+import { LoginComponent } from './components/login/login.component'
+import { RegisterComponent } from './components/register/register.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-<<<<<<< HEAD
-=======
 
 import { MatSliderModule } from '@angular/material/slider';
 import { MatInputModule } from '@angular/material/input';
@@ -20,11 +23,13 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { HomeComponent } from './components/home/home.component';
 import { DiningComponent } from './components/dining/dining.component'
 import { EventComponent } from './components/event/event.component';
->>>>>>> 8037b2a31659b3beccb1d4bd2e28ee54b474eaee
 
 @NgModule({
   declarations: [
     AppComponent,
+    EventCreateComponent,
+    LoginComponent,
+    RegisterComponent,
     SearchComponent,
     TableComponent,
     NavbarComponent,
@@ -36,16 +41,14 @@ import { EventComponent } from './components/event/event.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-<<<<<<< HEAD
-    BrowserAnimationsModule
-=======
+    FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatSliderModule,
     MatInputModule,
     MatTableModule,
     MatToolbarModule,
     MatTabsModule
->>>>>>> 8037b2a31659b3beccb1d4bd2e28ee54b474eaee
   ],
   providers: [],
   bootstrap: [AppComponent]
