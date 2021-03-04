@@ -120,8 +120,22 @@ const searchUsers = async function(prefix){
 	return users
 }
 
-// startDatabaseConnection()
+/**
+ * Update's the friendlist of the one recieving the friend request
+ * 
+ * @param {String} receiver
+ */
+const updateFriendRequest = async function(receiver){
+	//TODO: error checking on duplicate
+	var myquery = { user_name: receiver };
+	var newvalue = { $push: {friend_request: "Mickey@gmail.com"} };
+	dbo.collection("User").updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
+}
 
 module.exports = {
-	searchUsers
+	searchUsers,
+	startDatabaseConnection
 }
