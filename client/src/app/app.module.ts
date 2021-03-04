@@ -4,15 +4,48 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+<<<<<<< HEAD
+=======
+
+import { MatSliderModule } from '@angular/material/slider';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTabsModule } from '@angular/material/tabs';
+
+import { SearchComponent } from './components/search/search.component';
+import { TableComponent } from './components/table/table.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { HomeComponent } from './components/home/home.component';
+import { DiningComponent } from './components/dining/dining.component'
+import { EventComponent } from './components/event/event.component';
+>>>>>>> 8037b2a31659b3beccb1d4bd2e28ee54b474eaee
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SearchComponent,
+    TableComponent,
+    NavbarComponent,
+    ProfileComponent,
+    HomeComponent,
+    DiningComponent,
+    EventComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+<<<<<<< HEAD
     BrowserAnimationsModule
+=======
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatInputModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatTabsModule
+>>>>>>> 8037b2a31659b3beccb1d4bd2e28ee54b474eaee
   ],
   providers: [],
   bootstrap: [AppComponent]

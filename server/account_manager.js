@@ -106,15 +106,22 @@ const accountEmailExists = async function(mail) {
 }
 
 /**
- * Gets all user with the given prefex
+ * Gets all users with the given prefix
  * 
- * @param {String} username 
+ * @param {String} prefix
  */
-const getUsers = async function(username){
-	let users = ["tim", "timmy", "timmer"]
+const searchUsers = async function(prefix){
+	let users = ["bob", "boby", "bom"]
+	var query = { user_name: { $regex: `/^${prefix}/` } };
+	dbo.collection("User").find(query).toArray(function(err, result) {
+		if (err) throw err;
+		console.log(result);
+	});
 	return users
 }
 
-module.exports ={
-	getUsers
+// startDatabaseConnection()
+
+module.exports = {
+	searchUsers
 }
