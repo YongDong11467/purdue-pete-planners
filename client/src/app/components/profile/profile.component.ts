@@ -8,8 +8,10 @@ import { Component, OnInit } from '@angular/core';
 export class ProfileComponent implements OnInit {
 
   constructor() { }
+  tableargs = {data: [""], type: 'friend'}
 
   ngOnInit(): void {
+    this.tableargs = {data: ["sam", "billy" ], type: 'friend'}
   }
 
 }
