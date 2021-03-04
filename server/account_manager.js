@@ -130,8 +130,11 @@ const searchUsers = async function(prefix){
  */
 const updateFriendRequest = async function(receiver){
 	//TODO: error checking on duplicate
+	//TODO: get current user
+	curUser = "Mickey@gmail.com"
+	console.log(receiver)
 	var myquery = { user_name: receiver };
-	var newvalue = { $push: {friend_request: "Mickey@gmail.com"} };
+	var newvalue = { $push: {friend_request: curUser} };
 	db.collection("User").updateOne(myquery, newvalue, function(err, res) {
 	if (err) throw err;
 		console.log(err);
@@ -148,16 +151,17 @@ const populateDatabase = async function(){
 		{ user_name: "simp", password: "1234", email: "simp@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  }
 	];
 
-		db.collection("User").insertMany(users, function(err, res) {
-			if (err) {
-				console.log(err)
-			};
-		});
+	db.collection("User").insertMany(users, function(err, res) {
+		if (err) {
+			console.log(err)
+		};
+	});
 
 }
 
 module.exports = {
 	searchUsers,
 	startDatabaseConnection,
+	updateFriendRequest,
 	populateDatabase
 }

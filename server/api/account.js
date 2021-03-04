@@ -14,6 +14,13 @@ router.route("/searchUsers").get((req, res) => {
   });
 });
 
+router.route("/sendfr").post((req, res) => {
+  console.log(req.body.data)
+  return manager.updateFriendRequest(req.body.data)
+  .then(success => res.status(200).json(success))
+  .catch(err => res.status(400).json(err));
+});
+
 // router.route("/DONOTGOHERE").get((req, res) => { 
 //   manager.populateDatabase()
 // });

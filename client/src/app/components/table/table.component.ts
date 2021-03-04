@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import axios from 'axios'
 
 @Component({
   selector: 'app-table',
@@ -23,7 +24,7 @@ export class TableComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.type === 'search') {
       this.displaySearchResult = true;
-      this.displayedColumns = ['searchResult'];
+      this.displayedColumns = ['searchResult', 'sendfr'];
     } else if (this.data.type === 'friend') {
       this.displayFriendResult = true
       this.displayedColumns = ['friend'];
@@ -55,6 +56,7 @@ export class TableComponent implements OnInit {
 
   clickedFriendRequest(username: any) {
     console.log(username)
+    axios.post("/api/account/sendfr", { data: username })
   }
 
 }
