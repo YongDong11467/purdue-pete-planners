@@ -1,9 +1,5 @@
 const router = require("express").Router();
-<<<<<<< HEAD
-const account_manager = require("../account_manager");
-=======
 const manager = require('../account_manager')
->>>>>>> 56c704f9e860e0237860b0a8efef189ac2986133
 
 router.route("/").get((req, res) => { 
     const account = ["login", "register", "profile"]
