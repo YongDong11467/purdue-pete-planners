@@ -23,6 +23,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { HomeComponent } from './components/home/home.component';
 import { DiningComponent } from './components/dining/dining.component';
 import { EventComponent } from './components/event/event.component';
+import { ScheduleComponent } from './components/schedule/schedule.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from "@angular/material/icon";
@@ -40,7 +41,8 @@ import {MatIconModule} from "@angular/material/icon";
     ProfileComponent,
     HomeComponent,
     DiningComponent,
-    EventComponent
+    EventComponent,
+    ScheduleComponent
   ],
   imports: [
     BrowserModule,
