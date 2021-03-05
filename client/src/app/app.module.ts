@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CommonModule } from '@angular/common';
+
 import { EventCreateComponent } from './components/events/event-create.component'
 import { LoginComponent } from './components/login/login.component'
 import { RegisterComponent } from './components/register/register.component'
@@ -21,8 +23,13 @@ import { TableComponent } from './components/table/table.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { HomeComponent } from './components/home/home.component';
-import { DiningComponent } from './components/dining/dining.component'
+import { DiningComponent } from './components/dining/dining.component';
 import { EventComponent } from './components/event/event.component';
+import { ScheduleComponent } from './components/schedule/schedule.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from "@angular/material/icon";
+
 
 @NgModule({
   declarations: [
@@ -36,11 +43,15 @@ import { EventComponent } from './components/event/event.component';
     ProfileComponent,
     HomeComponent,
     DiningComponent,
-    EventComponent
+    EventComponent,
+    ScheduleComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -48,7 +59,10 @@ import { EventComponent } from './components/event/event.component';
     MatInputModule,
     MatTableModule,
     MatToolbarModule,
-    MatTabsModule
+    MatTabsModule,
+    MatCardModule,
+    MatListModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

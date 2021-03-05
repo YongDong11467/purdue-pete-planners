@@ -12,10 +12,11 @@ const app = express(),
 async function initialize_app(){
     await account_manager.startDatabaseConnection();
 }
+
+//initialize_app();
 app.use(bodyParser.json());
 app.use("/api/dining", diningRouter);
 app.use("/api/account", accountRouter);
-
 
 app.get('/', (req,res) => {
     res.send('Default route');
@@ -24,3 +25,6 @@ app.get('/', (req,res) => {
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);
 });
+
+initialize_app()
+
