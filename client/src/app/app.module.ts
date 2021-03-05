@@ -16,9 +16,22 @@ import { TableComponent } from './components/table/table.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { HomeComponent } from './components/home/home.component';
-import { DiningComponent } from './components/dining/dining.component'
+import { DiningComponent } from './components/dining/dining.component';
 import { EventComponent } from './components/event/event.component';
+import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
+import interactionPlugin from '@fullcalendar/interaction'; // a plugin
 import { ScheduleComponent } from './components/schedule/schedule.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatCardModule} from '@angular/material/card';
+import {MatListModule} from '@angular/material/list';
+/*import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';*/
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+  interactionPlugin
+]);
 
 @NgModule({
   declarations: [
@@ -40,7 +53,19 @@ import { ScheduleComponent } from './components/schedule/schedule.component';
     MatInputModule,
     MatTableModule,
     MatToolbarModule,
-    MatTabsModule
+    MatTabsModule,
+    MatIconModule,
+    MatCardModule,
+    MatListModule,
+    FullCalendarModule,
+    BrowserModule,
+    /*AppRoutingModule,
+    FullCalendarModule,
+
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    })*/
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+/*import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -11,8 +11,8 @@ export class EventCreateComponent implements OnInit {
     name = '';
     desc = '';
     dTime = '';
-    repeat = ''; 
-form: FormGroup;
+    repeat = '';
+  form: FormGroup;
   loading = false;
   submitted = false;
 
@@ -20,13 +20,13 @@ form: FormGroup;
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-  ) {     
+  ) {
     this.form = this.formBuilder.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
       eventDate: [null, Validators.required],
       repeatChoice: [null, Validators.required]
-    }); 
+    });
   }
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ form: FormGroup;
         eventDescription: ['', Validators.required],
         eventDate: [null, Validators.required],
         repeatChoice: [null, Validators.required]
-      }); 
+      });
   }
 
   get f() { return this.form.controls; }
@@ -57,5 +57,21 @@ onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, dTimeInp
         this.dTime = dTimeInput.value;
         this.repeat = repeatInput.value;
 }
+
+}*/
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-event',
+  templateUrl: './event.component.html',
+  styleUrls: ['./event.component.css']
+})
+export class EventComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
 
 }
