@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ProfileComponent } from './components/profile/profile.component';
 import { HomeComponent } from './components/home/home.component';
-import { DiningComponent } from './components/dining/dining.component'
+import { DiningComponent } from './components/dining/dining.component';
 import { EventComponent } from './components/event/event.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 
