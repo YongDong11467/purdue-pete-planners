@@ -1,19 +1,19 @@
 
+
+
 <mat-card class="main-left">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>User name</mat-card-title>
-      <mat-card-subtitle>email</mat-card-subtitle>
+      <mat-card-title class="user-data">purduepete</mat-card-title>
+      <mat-card-subtitle>pete@purdue.edu</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content class="user-data">
       <ul class="user-fw-status">
-        <li>
-          <h4>friends</h4>
-          <span>155</span>
-        </li>
-        <li>
-          <a href="http://localhost:4200/profile" title="">View Profile</a>
-        </li>
+        <div><a class="button" routerLink="/friends" title="" routerLinkActive="activebutton">Friends</a></div>
+        <div><span>155</span></div>
+        <div>
+          <a class="button" routerLink="/profile" title="" routerLinkActive="activebutton">View Profile</a>
+        </div>
       </ul>
     </mat-card-content>
     <!--<mat-card-actions>
@@ -28,7 +28,7 @@
   <mat-card-header>
 
     <mat-card-title>Your Due data</mat-card-title>
-    <mat-card-subtitle><a href="http://localhost:4200/schedule" title="">View Schedule</a></mat-card-subtitle>
+    <mat-card-subtitle><a class="button" routerLink="/schedule" title="" routerLinkActive="activebutton">View Schedule</a></mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <mat-list>
@@ -48,20 +48,19 @@
   <p>                              </p>
 
   <mat-card-header>
-    <mat-card-title>Your Groups</mat-card-title>
-    <mat-card-subtitle><a href="http://localhost:4200/schedule" title="">View Schedule</a></mat-card-subtitle>
+    <mat-card-title>Your Class</mat-card-title>
+    <mat-card-subtitle><a class="button" routerLink="/class" title="" routerLinkActive="activebutton">View Class</a></mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <mat-list>
       <mat-divider></mat-divider>
-      <mat-list-item>lab 2 CS354</mat-list-item>
-      <mat-list-item>due data: 3/2/2021</mat-list-item>
+      <mat-list-item>CS 354</mat-list-item>
       <mat-divider></mat-divider>
-      <mat-list-item>hw 4 CS 448</mat-list-item>
-      <mat-list-item>due data: 4/8/2021</mat-list-item>
+      <mat-list-item>CS 448</mat-list-item>
       <mat-divider></mat-divider>
-      <mat-list-item>project CS 407</mat-list-item>
-      <mat-list-item>due data: 12/3/2021</mat-list-item>
+      <mat-list-item>CS 407</mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>CS 471</mat-list-item>
     </mat-list>
   </mat-card-content>
   <!--<mat-card-actions>
@@ -73,18 +72,22 @@
 <mat-card class="main-right">
   <mat-card-header>
 
-    <mat-card-title>Your Event</mat-card-title>
-    <mat-card-subtitle><a href="http://localhost:4200/event" title="">View Schedule</a></mat-card-subtitle>
+    <mat-card-title>Upcoming Event</mat-card-title>
+    <!--<mat-card-subtitle><a class="button" routerLink="/events" title="" routerLinkActive="activebutton">
+    View Schedule</a></mat-card-subtitle>-->
+    <a class="button" href="https://boilerlink.purdue.edu/events" title="#">homepage link</a>
+
 
   </mat-card-header>
   <mat-card-content>
     <mat-list>
       <mat-divider></mat-divider>
-      <mat-list-item>Item 1</mat-list-item>
+      <mat-list-item>Tabling for Mental Health Action Week<a class="button" href="https://boilerlink.purdue.edu/event/6962296" title="#">: link</a></mat-list-item>
       <mat-divider></mat-divider>
-      <mat-list-item>Item 2</mat-list-item>
+      <mat-list-item>Perspective PhD Student Panel Q&A<a class="button" href="https://boilerlink.purdue.edu/event/6951706" title="#">: link</a></mat-list-item>
+
       <mat-divider></mat-divider>
-      <mat-list-item>Item 3</mat-list-item>
+      <mat-list-item>Fundraising Push Day<a class="button" href="https://boilerlink.purdue.edu/event/6934808" title="#">: link</a></mat-list-item>
     </mat-list>
   </mat-card-content>
   <!--<mat-card-actions>
