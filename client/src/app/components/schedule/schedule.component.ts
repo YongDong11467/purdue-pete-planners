@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Inject } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/angular'; // useful for typechecking
 
 @Component({
@@ -7,7 +8,11 @@ import { CalendarOptions } from '@fullcalendar/angular'; // useful for typecheck
   styleUrls: ['./schedule.component.css']
 })
 export class ScheduleComponent implements OnInit {
-  constructor() { }
+  // constructor(@Inject(CalendarOptions) private calendarOptions) {
+    
+  // }
+
+  constructor() {}
 
   /*viewDate: Date = new Date();*/
   calendarOptions: CalendarOptions = {
@@ -15,5 +20,8 @@ export class ScheduleComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.calendarOptions = {
+      initialView: 'dayGridMonth'
+    };
   }
 }
