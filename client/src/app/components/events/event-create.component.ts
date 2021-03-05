@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-event-create',
@@ -11,7 +11,10 @@ export class EventCreateComponent implements OnInit {
     name = '';
     desc = '';
     dTime = '';
-    repeat = ''; 
+    link = '';
+    repeat: number = 0;
+   
+
 form: FormGroup;
   loading = false;
   submitted = false;
@@ -24,8 +27,9 @@ form: FormGroup;
     this.form = this.formBuilder.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
+      link: [''],
       eventDate: [null, Validators.required],
-      repeatChoice: [null, Validators.required]
+      repeatChoice: [null]
     }); 
   }
 
@@ -33,8 +37,9 @@ form: FormGroup;
     this.form = this.formBuilder.group({
         eventName: ['', Validators.required],
         eventDescription: ['', Validators.required],
+        link: [''],
         eventDate: [null, Validators.required],
-        repeatChoice: [null, Validators.required]
+        repeatChoice: [null]
       }); 
   }
 
@@ -51,11 +56,17 @@ form: FormGroup;
     this.loading = true;
 }
 
-onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, dTimeInput: HTMLInputElement, repeatInput: HTMLInputElement){
+onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, linkInput: HTMLInputElement, dTimeInput: HTMLInputElement, repeatInput: number){
         this.name = nameInput.value;
         this.desc = descInput.value;
+        this.link = linkInput.value;
         this.dTime = dTimeInput.value;
-        this.repeat = repeatInput.value;
+        this.repeat = repeatInput;
+}
+
+repeatChoiceHandler(event: any){
+
+  this.repeat = event.target.value;
 }
 
 }
