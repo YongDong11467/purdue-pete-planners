@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -41,8 +42,29 @@ export class LoginComponent implements OnInit {
         return;
     }
 
+    let user = this.f.username.value;
+    let pass = this.f.password.value;
+
+    login(user,pass);
+    // Function to login asynchronously
+
     this.loading = true;
 
+  }
+
+  
 }
 
+async function login(user:String,pass:String) {
+  let init = {
+    method: "POST",
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ "username": user, "password": pass}),
+    mode: 'no-cors' as RequestMode
+  };
+
+  // This line checks the server
+  let apiResp = await fetch("http://localhost:3080/api/account/login", init);
+  let jsonData = await apiResp.json();
+  console.log(jsonData);
 }
