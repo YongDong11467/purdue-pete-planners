@@ -21,10 +21,23 @@ router.post("/register", (req,res) => {
     res.send('200: success')
 });
 
-router.route("/searchUsers").get((req, res) => { 
-  manager.searchUsers(req.query.prefix).then(function (users) {
+router.route("/searchUsers").get((req, res) => {
+  manager.searchUsers(req.query.prefix).then(users => {
+    console.log("In search users")
+    console.log(users)
     res.json(users);
   });
 });
+
+router.route("/sendfr").post((req, res) => {
+  console.log(req.body.data)
+  return manager.updateFriendRequest(req.body.data)
+  .then(success => res.status(200).json(success))
+  .catch(err => res.status(400).json(err));
+});
+
+// router.route("/DONOTGOHERE").get((req, res) => { 
+//   manager.populateDatabase()
+// });
 
 module.exports = router;

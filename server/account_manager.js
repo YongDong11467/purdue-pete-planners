@@ -121,13 +121,16 @@ const accountEmailExists = async function(mail) {
  * @param {String} prefix
  */
 const searchUsers = async function(prefix){
-	let users = ["bob", "boby", "bom"]
-	var query = { user_name: { $regex: `/^${prefix}/` } };
-	dbo.collection("User").find(query).toArray(function(err, result) {
-		if (err) throw err;
-		console.log(result);
+	return new Promise(function(resolve, reject) {
+		//TODO: error with regex try again later
+		// var query = { user_name: { $regex: `/^${prefix}/` } };
+		var query = { user_name: prefix };
+		db.collection("User").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			console.log(result);
+			resolve(result);
+		});
 	});
-	return users
 }
 
 module.exports = {
@@ -137,5 +140,48 @@ module.exports = {
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
 	searchUsers:searchUsers
+}
+
+/**
+ * Update's the friendlist of the one recieving the friend request
+ * 
+ * @param {String} receiver
+ */
+const updateFriendRequest = async function(receiver){
+	//TODO: error checking on duplicate
+	//TODO: get current user
+	curUser = "Mickey@gmail.com"
+	console.log(receiver)
+	var myquery = { user_name: receiver };
+	var newvalue = { $push: {friend_request: curUser} };
+	db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
+}
+
+// ONLY USE TO POPULATE EMPTY DATABASE FOR TESTING
+const populateDatabase = async function(){
+	console.log("POPUlating database")
+	var users = [ 
+		{ user_name: "bob", password: "1234", email: "bob@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[] }, 
+		{ user_name: "boby", password: "1234", email: "boby@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  },
+		{ user_name: "tom", password: "1234", email: "tom@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  },
+		{ user_name: "simp", password: "1234", email: "simp@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  }
+	];
+
+	db.collection("User").insertMany(users, function(err, res) {
+		if (err) {
+			console.log(err)
+		};
+	});
+
+}
+
+module.exports = {
+	searchUsers,
+	startDatabaseConnection,
+	updateFriendRequest,
+	populateDatabase
 }
 

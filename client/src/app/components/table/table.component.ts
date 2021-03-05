@@ -1,14 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-
-export interface FriendCell {
-  name: string;
-  pending: boolean;
-}
-
-const FRIEND_DATA: FriendCell[] = [
-  {name: 'Hydrogen', pending: false},
-  {name: 'Bobby', pending: false},
-];
+import axios from 'axios'
 
 @Component({
   selector: 'app-table',
@@ -25,24 +16,24 @@ export class TableComponent implements OnInit {
 
   displaySearchResult = false
   displayMealResult = false
-  displayFriendResult = true
-  displayedColumns: string[] = ['friend'];
-  dataSource = FRIEND_DATA;
+  displayFriendResult = false
+  displayedColumns: string[] = [''];
+  dataSource = [];
   bld = ''
 
   ngOnInit(): void {
     if (this.data.type === 'search') {
-      this.displayFriendResult = false
       this.displaySearchResult = true;
-      this.displayedColumns = ['searchResult'];
-      this.dataSource = this.data.data
+      this.displayedColumns = ['searchResult', 'sendfr'];
+    } else if (this.data.type === 'friend') {
+      this.displayFriendResult = true
+      this.displayedColumns = ['friend'];
     } else {
-      this.displayFriendResult = false
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
-      this.dataSource = this.data.data
       this.bld = this.data.type
     }
+    this.dataSource = this.data.data
     console.log(this.data)
   }
 
@@ -50,18 +41,22 @@ export class TableComponent implements OnInit {
 
   ngOnChanges() {
     if (this.data.type === 'search') {
-      this.displayFriendResult = false
       this.displaySearchResult = true;
-      this.displayedColumns = ['searchResult'];
-      this.dataSource = this.data.data
+      this.displayedColumns = ['searchResult', 'sendfr'];
+    } else if (this.data.type === 'friend') {
+      this.displayFriendResult = true
+      this.displayedColumns = ['friend'];
     } else {
-      this.displayFriendResult = false
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
-      this.dataSource = this.data.data
       this.bld = this.data.type
     }
+    this.dataSource = this.data.data
   }   
 
+  clickedFriendRequest(username: any) {
+    console.log(username)
+    axios.post("/api/account/sendfr", { data: username })
+  }
 
 }
