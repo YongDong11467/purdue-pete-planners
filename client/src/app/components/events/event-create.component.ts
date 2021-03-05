@@ -14,7 +14,6 @@ export class EventCreateComponent implements OnInit {
     link = '';
     repeat: number = 0;
    
-
 form: FormGroup;
   loading = false;
   submitted = false;
@@ -56,6 +55,7 @@ form: FormGroup;
     this.loading = true;
 }
 
+
 onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, linkInput: HTMLInputElement, dTimeInput: HTMLInputElement, repeatInput: number){
         this.name = nameInput.value;
         this.desc = descInput.value;
@@ -67,6 +67,7 @@ onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, linkInpu
 repeatChoiceHandler(event: any){
 
   this.repeat = event.target.value;
+
 }
 
 }
