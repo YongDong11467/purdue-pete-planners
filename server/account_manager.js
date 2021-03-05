@@ -45,14 +45,25 @@ const closeDatabaseConnection = async function() {
 /**
  * Creates a new user account and adds it to the database
  * 
- * @param {String} email 
+ * @param {String} username
+ * @param {String} email
+ * @param {String} major 
  * @param {String} pass 
  * @return {Int} returns success value. (-1 = account creation failed, 0 = account creation success)
  */
-const createAccount = async function(email, pass) {
+const createAccount = async function(username, email, major, pass) {
 	// create a JSON user object
 	const user = {
-
+		"user_name":username,
+		"password":pass,
+		"email":email,
+		"schedule":[],
+		"major":major,
+		"study_group":[],
+		"direct_message":[],
+		"friend":[],
+		"friend_request":[],
+		"book_room":[]
 	}
 
 	let emailExists;
@@ -62,8 +73,8 @@ const createAccount = async function(email, pass) {
 		
 		if(emailExists === -1){	return -1; }
 		if(!emailExists){
-			// this line depends on the mongodb implementation
-			// await db.collection('User Accounts').insertOne(user);
+			// add a new user to the database
+			 await db.collection('User').insertOne(user);
 		}
 	} catch (error) {
 		console.log(err.stack);
@@ -95,8 +106,7 @@ const accountEmailExists = async function(mail) {
 
 	try {
 		// this line depends on the mongodb: 
-		//emailExists = await db.collection('User Accounts').find({email: mail}).limit(1).count(true);
-
+		emailExists = await db.collection('User').find({email: mail}).limit(1).count(true);
 	} catch (err) {
 		console.log(err.stack);
 		return -1;
@@ -121,6 +131,15 @@ const searchUsers = async function(prefix){
 			resolve(result);
 		});
 	});
+}
+
+module.exports = {
+    startDatabaseConnection:startDatabaseConnection,
+    closeDatabaseConnection:closeDatabaseConnection,
+    createAccount:createAccount,
+	getUserInfo:getUserInfo,
+	accountEmailExists:accountEmailExists,
+	searchUsers:searchUsers
 }
 
 /**
@@ -165,3 +184,4 @@ module.exports = {
 	updateFriendRequest,
 	populateDatabase
 }
+
