@@ -7,7 +7,10 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { HomeComponent } from './components/home/home.component';
 import { DiningComponent } from './components/dining/dining.component';
 import { EventComponent } from './components/event/event.component';
+import { EventCreateComponent } from './components/events/event-create.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
+import { ClassComponent } from './components/class/class.component';
+import {FriendsComponent} from './components/friends/friends.component';
 
 
 const routes: Routes = [
@@ -18,7 +21,9 @@ const routes: Routes = [
   {path:'home', component:HomeComponent},
   {path:'dining', component:DiningComponent},
   {path:'event', component:EventComponent},
-  {path:'schedule', component:ScheduleComponent}
+  {path:'schedule', component:ScheduleComponent},
+  {path: 'class', component: ClassComponent},
+  {path: 'friends', component: FriendsComponent}
 ];
 
 @NgModule({

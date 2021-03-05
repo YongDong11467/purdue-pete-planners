@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
       address: [''],
       password: ['', [Validators.minLength(6), Validators.required, Validators.nullValidator]],
       confirmPassword: ['', [Validators.required, Validators.nullValidator]]
-    }, { 
+    }, {
       validator: ConfirmedValidator('password', 'confirmPassword')
     });
     this.tableargs = {data: ["sam", "billy" ], type: 'friend'}
@@ -42,13 +42,14 @@ export class ProfileComponent implements OnInit {
       address: [''],
       password: ['', [Validators.minLength(6), Validators.required, Validators.nullValidator]],
       confirmPassword: ['', [Validators.required, Validators.nullValidator]]
-    }, { 
+    }, {
       validator: ConfirmedValidator('password', 'confirmPassword')
     });
-  
   }
 
-  get f() { return this.form.controls; }
+  get f() {
+    return this.form.controls;
+  }
 
   onSubmit() {
     this.submitted = true;
@@ -56,19 +57,18 @@ export class ProfileComponent implements OnInit {
     // reset alerts on submit
     // stop here if form is invalid
     if (this.form.invalid) {
-        return;
+      return;
     }
     this.loading = true;
     alert('New values: \n\n' + JSON.stringify(this.form.value, null, 4));
-    
   }
 
-  resetform(){
+  resetform() {
     this.form.reset();
   }
 
   // need first ability to add users
-  deleteUser(){
+  deleteUser() {
     // admin.auth().deleteUser(uid)
     // .then(function() {
     //   console.log('Successfully deleted user');
@@ -77,5 +77,4 @@ export class ProfileComponent implements OnInit {
     //   console.log('Error deleting user:', error);
     // });
   }
-
 }
