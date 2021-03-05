@@ -12,6 +12,7 @@ export class ProfileComponent implements OnInit {
   form: FormGroup;
   loading = false;
   submitted = false;
+  tableargs = {data: [""], type: 'friend'}
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,7 +30,7 @@ export class ProfileComponent implements OnInit {
     }, {
       validator: ConfirmedValidator('password', 'confirmPassword')
     });
-
+    this.tableargs = {data: ["sam", "billy" ], type: 'friend'}
   }
 
   ngOnInit(): void {
@@ -75,7 +76,5 @@ export class ProfileComponent implements OnInit {
     // .catch(function(error) {
     //   console.log('Error deleting user:', error);
     // });
-
-
   }
 }

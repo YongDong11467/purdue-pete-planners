@@ -32,13 +32,10 @@ import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction'; // a plugin
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import {MatIconModule} from '@angular/material/icon';
-
 import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
 import {ClassComponent} from './components/class/class.component';
 import {FriendsComponent} from './components/friends/friends.component';
-/*import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';*/
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins

@@ -14,18 +14,16 @@ import {FriendsComponent} from './components/friends/friends.component';
 
 
 const routes: Routes = [
-
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
-  {path: 'profile', component: ProfileComponent},
-  {path: 'home', component: HomeComponent},
-  {path: 'dining', component: DiningComponent},
-  {path: 'events', component: EventCreateComponent},
-  {path: 'schedule', component: ScheduleComponent},
+  {path:'',redirectTo:'login', pathMatch: 'full' },
+  {path:'login', component:LoginComponent},
+  {path:'register', component:RegisterComponent},
+  {path:'profile', component:ProfileComponent},
+  {path:'home', component:HomeComponent},
+  {path:'dining', component:DiningComponent},
+  {path:'event', component:EventComponent},
+  {path:'schedule', component:ScheduleComponent},
   {path: 'class', component: ClassComponent},
   {path: 'friends', component: FriendsComponent}
-
-
 ];
 
 @NgModule({

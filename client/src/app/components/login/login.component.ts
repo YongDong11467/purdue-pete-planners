@@ -38,17 +38,18 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.form.invalid) {
-        return;
-    }
+    // if (this.form.invalid) {
+    //     return;
+    // }
 
     let user = this.f.username.value;
     let pass = this.f.password.value;
 
-    login(user,pass);
+    // login(user,pass);
     // Function to login asynchronously
 
     this.loading = true;
+    this.router.navigate(['/home']);
 
   }
 
