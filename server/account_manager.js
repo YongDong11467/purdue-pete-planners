@@ -182,6 +182,7 @@ module.exports = {
 	searchUsers,
 	startDatabaseConnection,
 	updateFriendRequest,
-	populateDatabase
+	populateDatabase,
+	getUserInfo
 }
 
