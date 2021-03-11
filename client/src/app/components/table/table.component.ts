@@ -17,6 +17,7 @@ export class TableComponent implements OnInit {
   displaySearchResult = false
   displayMealResult = false
   displayFriendResult = false
+  displayFriendRequest = false
   displayedColumns: string[] = [''];
   dataSource = [];
   bld = ''
@@ -46,6 +47,9 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'friend') {
       this.displayFriendResult = true
       this.displayedColumns = ['friend'];
+    } else if (this.data.type === 'friendrequest') {
+      this.displayFriendRequest = true
+      this.displayedColumns = ['friendrequest', 'accept', 'decline'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
@@ -57,6 +61,14 @@ export class TableComponent implements OnInit {
   clickedFriendRequest(username: any) {
     console.log(username)
     axios.post("/api/account/sendfr", { data: username })
+  }
+
+  clickedAccept(username: any) {
+    console.log(username)
+  }
+
+  clickedDecline(username: any) {
+    console.log(username)
   }
 
 }
