@@ -133,13 +133,36 @@ const searchUsers = async function(prefix){
 	});
 }
 
+/*
+ * Summary. Function that gets the hashed password of an account
+ *
+ * @param {String} usrname 	The username of the account which the password is being extracted
+ *
+ * @return {int} 	Returns a value depending on invalid information (-1 = Cannot connect to database, 1 = Invalid Username) 
+ * @return {String} Returns a string of the password
+ */
+const getAccountPassword = async function(usrname) {
+	let userExists, pass;
+	try {
+		console.log("in get account password: " + usrname);
+
+	} catch (err) {
+		console.log(err.stack);
+		return -1;
+	}
+
+	if (!userExists) {return 1;}
+	else {return 1} 
+}
+
 module.exports = {
     startDatabaseConnection:startDatabaseConnection,
     closeDatabaseConnection:closeDatabaseConnection,
     createAccount:createAccount,
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
-	searchUsers:searchUsers
+	searchUsers:searchUsers,
+	getAccountPassword:getAccountPassword
 }
 
 /**
@@ -183,6 +206,8 @@ module.exports = {
 	startDatabaseConnection,
 	updateFriendRequest,
 	populateDatabase,
-	getUserInfo
+	getUserInfo,
+	getAccountPassword,
+	createAccount
 }
 

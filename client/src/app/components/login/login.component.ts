@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import axios from 'axios';
 import { HttpClientModule } from '@angular/common/http'
 import { first } from 'rxjs/operators';
 
@@ -45,11 +46,21 @@ export class LoginComponent implements OnInit {
     let user = this.f.username.value;
     let pass = this.f.password.value;
 
-    // login(user,pass);
-    // Function to login asynchronously
+    console.log(user + " " + pass);
 
-    this.loading = true;
-    this.router.navigate(['/home']);
+    axios.post('/api/account/login', {
+      "username" : user,
+      "password" : pass
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    //this.loading = true;
+    //this.router.navigate(['/home']);
 
   }
 

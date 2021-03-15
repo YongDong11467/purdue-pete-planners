@@ -6,15 +6,26 @@ router.route("/").get((req, res) => {
     res.json(account);
 });
 
-router.post("/login", (req,res) => {
-    console.log(req);
-    response = "HTTP/1.1 200 OK";
-    res.end(response);
+/**
+ * validates user credentials and allows login
+ */
+router.route("/login").post((req,res) => {
+    console.log(req.body);
+    let pass = manager.getAccountPassword(req.body.username);
+    if(pass != req.body.password){
+        //TODO: Add encryption for passwords
+        //Passwords don't match. Deny entry
+        return res.status(400).json(err);
+    }else{
+        return res.status(200).json(success);
+    }
 });
 
-router.post("/register", (req,res) => {
-
-    res.send('200: success')
+router.route("/register").post((req,res) => {
+    console.log(req.body.uname);
+    return manager.createAccount(req.body.uname, 'cs', req.body.email, req.body.pass)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
 });
 
 router.route("/searchUsers").get((req, res) => {
