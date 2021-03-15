@@ -54,13 +54,12 @@ export class LoginComponent implements OnInit {
     })
     .then((response) => {
       console.log(response);
+      this.loading = true;
+      this.router.navigate(['/home']);
     })
     .catch((error) => {
       console.log(error);
     });
-
-    //this.loading = true;
-    //this.router.navigate(['/home']);
 
   }
 

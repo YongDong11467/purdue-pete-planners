@@ -9,18 +9,22 @@ router.route("/").get((req, res) => {
 /**
  * validates user credentials and allows login
  */
-router.route("/login").post((req,res) => {
+router.route("/login").post(async (req,res) => {
     console.log(req.body);
-    let pass = manager.getAccountPassword(req.body.username);
-    if(pass != req.body.password){
+    let pass = await manager.getAccountPassword(req.body.username);
+    console.log("returned from account manager: " + pass.password);
+    if(pass.password != req.body.password){
         //TODO: Add encryption for passwords
         //Passwords don't match. Deny entry
-        return res.status(400).json(err);
+        return res.status(400).json("error");
     }else{
-        return res.status(200).json(success);
+        return res.status(200).json("success");
     }
 });
 
+/**
+ * API endpoint to register a new user
+ */
 router.route("/register").post((req,res) => {
     console.log(req.body.uname);
     return manager.createAccount(req.body.uname, 'cs', req.body.email, req.body.pass)
@@ -28,6 +32,9 @@ router.route("/register").post((req,res) => {
     .catch(err => res.status(400).json(err));
 });
 
+/**
+ * 
+ */
 router.route("/searchUsers").get((req, res) => {
   manager.searchUsers(req.query.prefix).then(users => {
     console.log("In search users")
@@ -36,6 +43,9 @@ router.route("/searchUsers").get((req, res) => {
   });
 });
 
+/**
+ * 
+ */
 router.route("/sendfr").post((req, res) => {
   console.log(req.body.data)
   return manager.updateFriendRequest(req.body.data)

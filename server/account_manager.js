@@ -145,24 +145,20 @@ const getAccountPassword = async function(usrname) {
 	let userExists, pass;
 	try {
 		console.log("in get account password: " + usrname);
+		userExists = await userAccountExists(usrname);
+		if(userExists === -1){return -1;}
 
+		if(userExists) {
+			pass = await db.collection('User').findOne({user_name: usrname}, {projection: {password: true, _id: false}});
+			console.log(pass);
+		}
 	} catch (err) {
 		console.log(err.stack);
 		return -1;
 	}
 
 	if (!userExists) {return 1;}
-	else {return 1} 
-}
-
-module.exports = {
-    startDatabaseConnection:startDatabaseConnection,
-    closeDatabaseConnection:closeDatabaseConnection,
-    createAccount:createAccount,
-	getUserInfo:getUserInfo,
-	accountEmailExists:accountEmailExists,
-	searchUsers:searchUsers,
-	getAccountPassword:getAccountPassword
+	else {return pass}; 
 }
 
 /**
@@ -201,6 +197,27 @@ const populateDatabase = async function(){
 
 }
 
+/*
+ * Summary. Function that checks if username exists in database
+ *
+ * @param {String} usrname The email of the account which the password is being extracted
+ *
+ * @return {int} Returns a value depending on if username exists (-1 = Cannot connect to database, 0 = Does not Exist, 1 = Exists) 
+ */
+const userAccountExists = async function(usrname) {
+	let userExists;
+
+	try {
+		userExists = await db.collection('User').find({user_name: usrname}).limit(1).count(true);
+
+	} catch (err) {
+		console.log(err.stack);
+		return -1;
+	}
+
+	return userExists;
+}
+
 module.exports = {
 	searchUsers,
 	startDatabaseConnection,
@@ -208,6 +225,7 @@ module.exports = {
 	populateDatabase,
 	getUserInfo,
 	getAccountPassword,
-	createAccount
+	createAccount,
+	userAccountExists
 }
 
