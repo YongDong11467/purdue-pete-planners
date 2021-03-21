@@ -12,6 +12,7 @@ export class GensearchComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  filter = '1';
   searchResponse : string[] = [];
   type = 'none'
   tableargs = {data: this.searchResponse, type: this.type}
@@ -19,5 +20,12 @@ export class GensearchComponent implements OnInit {
 
   getSearchValue(val: string) {
     console.log(val)
+    if (this.filter == '1') {
+      
+    } else if (this.filter == '2') {
+
+    } else if (this.filter == '3') {
+      console.log("Searching for users with class tag")
+    }
   }
 }
