@@ -32,6 +32,16 @@ router.route("/sendfr").post((req, res) => {
   .catch(err => res.status(400).json(err));
 });
 
+router.route("/updateUserInfo").post((req, res) => {
+  console.log(req.body.data)
+  console.log(req.body)
+  if (req.body.type == "acceptfr" || req.body.type == "declinefr") {
+    return manager.handleAcceptReject(req.body)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
+  }
+});
+
 // router.route("/DONOTGOHERE").get((req, res) => { 
 //   manager.populateDatabase()
 // });
