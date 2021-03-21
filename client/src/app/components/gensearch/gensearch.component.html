@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+<div class="container" style="width:800px; margin:0 auto;">
+    <h1 class="gensearchtitle">General Search</h1>
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+        <mat-label>Search For classtag, buildings, courses...</mat-label>
+        <input matInput placeholder="Placeholder" #search>
+        </mat-form-field>
+        <app-table *ngIf="displaySearchResult" [data]='tableargs'></app-table>
+    </form>
+    <mat-radio-group aria-label="Select an option">
+        <mat-radio-button value="1">Buildings</mat-radio-button>
+        <mat-radio-button value="2">Courses</mat-radio-button>
+        <mat-radio-button value="3">Class Tags</mat-radio-button>
+    </mat-radio-group>
+</div>

@@ -36,6 +36,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
 import {ClassComponent} from './components/class/class.component';
 import {FriendsComponent} from './components/friends/friends.component';
+import { GensearchComponent } from './components/gensearch/gensearch.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -58,7 +60,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     LoginComponent,
     RegisterComponent,
     ClassComponent,
-    FriendsComponent
+    FriendsComponent,
+    GensearchComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +80,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatIconModule,
     MatCardModule,
     MatListModule,
-    FullCalendarModule
+    FullCalendarModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

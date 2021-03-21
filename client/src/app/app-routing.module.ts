@@ -10,7 +10,8 @@ import { EventComponent } from './components/event/event.component';
 import { EventCreateComponent } from './components/events/event-create.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { ClassComponent } from './components/class/class.component';
-import {FriendsComponent} from './components/friends/friends.component';
+import { FriendsComponent } from './components/friends/friends.component';
+import { GensearchComponent } from './components/gensearch/gensearch.component';
 
 
 const routes: Routes = [
@@ -23,7 +24,8 @@ const routes: Routes = [
   {path:'event', component:EventComponent},
   {path:'schedule', component:ScheduleComponent},
   {path: 'class', component: ClassComponent},
-  {path: 'friends', component: FriendsComponent}
+  {path: 'friends', component: FriendsComponent},
+  {path: 'gensearch', component: GensearchComponent}
 ];
 
 @NgModule({
