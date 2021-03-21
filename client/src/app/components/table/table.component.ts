@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import axios from 'axios'
 
 @Component({
@@ -8,6 +8,7 @@ import axios from 'axios'
 })
 export class TableComponent implements OnInit {
   @Input() data:any;
+  @Output() toFriendPage = new EventEmitter();
 
   constructor() {
     this.data = {}
@@ -56,7 +57,7 @@ export class TableComponent implements OnInit {
       this.bld = this.data.type
     }
     this.dataSource = this.data.data
-  }   
+  }
 
   clickedFriendRequest(username: any) {
     console.log(username)
@@ -64,10 +65,16 @@ export class TableComponent implements OnInit {
   }
 
   clickedAccept(username: any) {
+    //get current user
+    axios.post("/api/account/updateUserInfo", { data: username, type:"acceptfr" }).then(res => 
+    this.toFriendPage.emit(username))
     console.log(username)
   }
 
   clickedDecline(username: any) {
+    //get current user
+    axios.post("/api/account/updateUserInfo", { data: username, type:"declinefr" }).then(res => 
+      this.toFriendPage.emit(username))
     console.log(username)
   }
 
