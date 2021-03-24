@@ -84,6 +84,20 @@ const createAccount = async function(username, email, major, pass) {
 	return 0;
 }
 
+const createEvent = async function(name, description, time, link, location, repeat) {
+
+	const event = {
+		"name":name,
+		"description":description,
+		"Time":time,
+		"link":link,
+		"location":location,
+		"repeat":repeat
+	}
+
+	await db.collection('Event').insertOne(event);
+}
+
 /**
  * Gets all information about a user for the profile page
  * 

@@ -12,6 +12,7 @@ export class EventCreateComponent implements OnInit {
   desc = '';
   dTime = '';
   link = '';
+  location = '';
   repeat: number = 0;
 
   form: FormGroup;
@@ -27,6 +28,7 @@ export class EventCreateComponent implements OnInit {
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
       link: [''],
+      location: ['', Validators.required],
       eventDate: [null, Validators.required],
       repeatChoice: [null]
     });
@@ -37,6 +39,7 @@ export class EventCreateComponent implements OnInit {
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
       link: [''],
+      location: ['', Validators.required],
       eventDate: [null, Validators.required],
       repeatChoice: [null]
     });
@@ -57,10 +60,11 @@ export class EventCreateComponent implements OnInit {
   }
 
 
-  onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, linkInput: HTMLInputElement, dTimeInput: HTMLInputElement, repeatInput: number){
+  onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, linkInput: HTMLInputElement, locInput: HTMLInputElement, dTimeInput: HTMLInputElement, repeatInput: number){
     this.name = nameInput.value;
     this.desc = descInput.value;
     this.link = linkInput.value;
+    this.location = locInput.value;
     this.dTime = dTimeInput.value;
     this.repeat = repeatInput;
   }
