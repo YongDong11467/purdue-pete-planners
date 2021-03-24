@@ -218,6 +218,28 @@ const userAccountExists = async function(usrname) {
 	return userExists;
 }
 
+/**
+ * Summary. Function that retrives chat rooms for a player
+ * 
+ * @param {String} username The username of the account in question
+ * 
+ * @return A list of conversations
+ */
+const getUserChats = async function(usrname) {
+	let chatList;
+
+	if(userAccountExists(usrname) === 1){
+		try{
+			chatList = await db.collection('User').findOne({user_name:usrname}, {projection:{direct_message: true, id: false}});
+			console.log(chatList)
+		} catch(err){
+			console.log(err.stack);
+			return -1;
+		}
+	}
+
+}
+
 module.exports = {
 	searchUsers,
 	startDatabaseConnection,
@@ -226,6 +248,7 @@ module.exports = {
 	getUserInfo,
 	getAccountPassword,
 	createAccount,
-	userAccountExists
+	userAccountExists,
+	getUserChats
 }
 

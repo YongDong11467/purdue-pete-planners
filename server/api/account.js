@@ -27,7 +27,7 @@ router.route("/login").post(async (req,res) => {
  */
 router.route("/register").post((req,res) => {
     console.log(req.body.uname);
-    return manager.createAccount(req.body.uname, 'cs', req.body.email, req.body.pass)
+    return manager.createAccount(req.body.uname,  req.body.email, 'cs', req.body.pass)
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
 });
