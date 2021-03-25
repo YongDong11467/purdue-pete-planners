@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
-import { createEventInstance } from '@fullcalendar/common';
+//import {searchUsers} from 'server/account_manager.js';
 
-declare function createEvent(name:string, description:string, time:string, link:string, location:string, repeat:number): any;
-
+//declare function createEvent(name:string, description:string, time:string, link:string, location:string, repeat:number): any;
+//const thing = require('./server/account_manager.js');
 @Component({
   selector: 'app-event-create',
   templateUrl: './event-create.component.html',
@@ -72,7 +72,7 @@ export class EventCreateComponent implements OnInit {
     this.dTime = dTimeInput.value;
     this.repeat = repeatInput;
 
-    createEvent(this.name, this.desc, this.dTime, this.link, this.location, this.repeat);
+    //thing.createEvent(this.name, this.desc, this.dTime, this.link, this.location, this.repeat);
   }
 
   repeatChoiceHandler(event: any){
