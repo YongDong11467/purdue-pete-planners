@@ -19,15 +19,20 @@ router.post("/register", (req,res) => {
 
 router.route("/searchUsers").get((req, res) => {
   manager.searchUsers(req.query.prefix).then(users => {
-    console.log("In search users")
+    console.log(users)
+    res.json(users);
+  });
+});
+
+router.route("/searchUsersCT").get((req, res) => {
+  manager.searchUsersCT(req.query.classtag).then(users => {
     console.log(users)
     res.json(users);
   });
 });
 
 router.route("/sendfr").post((req, res) => {
-  console.log(req.body.data)
-  return manager.updateFriendRequest(req.body.data)
+  return manager.updateFriendRequest(req.body.curUser, req.body.data)
   .then(success => res.status(200).json(success))
   .catch(err => res.status(400).json(err));
 });

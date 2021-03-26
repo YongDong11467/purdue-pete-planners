@@ -133,6 +133,22 @@ const searchUsers = async function(prefix){
 	});
 }
 
+/**
+ * Gets all users with the given class tag
+ * 
+ * @param {String} classtag
+ */
+ const searchUsersCT = async function(classtag){
+	return new Promise(function(resolve, reject) {
+		var query = { user_name: classtag };
+		db.collection("User").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			console.log(result);
+			resolve(result);
+		});
+	});
+}
+
 module.exports = {
     startDatabaseConnection:startDatabaseConnection,
     closeDatabaseConnection:closeDatabaseConnection,
@@ -147,10 +163,9 @@ module.exports = {
  * 
  * @param {String} receiver
  */
-const updateFriendRequest = async function(receiver){
+const updateFriendRequest = async function(curuser, receiver){
 	//TODO: error checking on duplicate
-	//TODO: get current user
-	curUser = "testuser"
+	curUser = curuser
 	console.log(receiver)
 	var myquery = { user_name: receiver };
 	var newvalue = { $push: {friend_request: curUser} };
@@ -161,8 +176,7 @@ const updateFriendRequest = async function(receiver){
 }
 
 const handleAcceptReject = async function(data){
-	//TODO: get current user
-	curUser = "simp"
+	curUser = data.curUser
 	console.log(data)
 	var myquery = { user_name: curUser };
 	var remove = { $pull: {friend_request: data.data} };
@@ -205,6 +219,7 @@ module.exports = {
 	updateFriendRequest,
 	populateDatabase,
 	getUserInfo,
-	handleAcceptReject
+	handleAcceptReject,
+	searchUsersCT
 }
 

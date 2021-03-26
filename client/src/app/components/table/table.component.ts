@@ -15,6 +15,7 @@ export class TableComponent implements OnInit {
   displayFriendRequest = false
   displayedColumns: string[] = [''];
   dataSource = new MatTableDataSource();
+  curUser = JSON.parse(sessionStorage.curUser || '{}');
   bld = ''
 
   @Input() data:any;
@@ -43,8 +44,6 @@ export class TableComponent implements OnInit {
     console.log(this.data)
   }
 
-  //TODO: cleanup
-
   ngOnChanges() {
     if (this.data.type === 'search') {
       this.displaySearchResult = true;
@@ -66,19 +65,17 @@ export class TableComponent implements OnInit {
 
   clickedFriendRequest(username: any) {
     console.log(username)
-    axios.post("/api/account/sendfr", { data: username })
+    axios.post("/api/account/sendfr", { curUser: this.curUser.user_name, data: username })
   }
 
   clickedAccept(username: any) {
-    //get current user
-    axios.post("/api/account/updateUserInfo", { data: username, type:"acceptfr" }).then(res => 
+    axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, data: username, type:"acceptfr" }).then(res => 
     this.toFriendPage.emit(username))
     console.log(username)
   }
 
   clickedDecline(username: any) {
-    //get current user
-    axios.post("/api/account/updateUserInfo", { data: username, type:"declinefr" }).then(res => 
+    axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, data: username, type:"declinefr" }).then(res => 
       this.toFriendPage.emit(username))
     console.log(username)
   }
