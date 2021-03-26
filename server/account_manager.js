@@ -153,7 +153,8 @@ module.exports = {
     createAccount:createAccount,
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
-	searchUsers:searchUsers
+	searchUsers:searchUsers,
+	createEvent:createEvent
 }
 
 /**
@@ -197,6 +198,7 @@ module.exports = {
 	startDatabaseConnection,
 	updateFriendRequest,
 	populateDatabase,
-	getUserInfo
+	getUserInfo,
+	createEvent
 }
 
