@@ -150,7 +150,7 @@ module.exports = {
 const updateFriendRequest = async function(receiver){
 	//TODO: error checking on duplicate
 	//TODO: get current user
-	curUser = "Mickey@gmail.com"
+	curUser = "testuser"
 	console.log(receiver)
 	var myquery = { user_name: receiver };
 	var newvalue = { $push: {friend_request: curUser} };
@@ -158,6 +158,27 @@ const updateFriendRequest = async function(receiver){
 	if (err) throw err;
 		console.log(err);
 	});
+}
+
+const handleAcceptReject = async function(data){
+	//TODO: get current user
+	curUser = "simp"
+	console.log(data)
+	var myquery = { user_name: curUser };
+	var remove = { $pull: {friend_request: data.data} };
+
+	db.collection("User").findOneAndUpdate(myquery, remove, function(err, res) {
+		if (err) throw err;
+			console.log(err);
+	});
+
+	if (data.type == "acceptfr") {
+		var newvalue = { $push: {friend: data.data} };
+		db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+		if (err) throw err;
+			console.log(err);
+		});
+	}
 }
 
 // ONLY USE TO POPULATE EMPTY DATABASE FOR TESTING
@@ -183,6 +204,7 @@ module.exports = {
 	startDatabaseConnection,
 	updateFriendRequest,
 	populateDatabase,
-	getUserInfo
+	getUserInfo,
+	handleAcceptReject
 }
 

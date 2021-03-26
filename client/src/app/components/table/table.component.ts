@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import axios from 'axios'
 
 @Component({
@@ -7,20 +9,22 @@ import axios from 'axios'
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
-  @Input() data:any;
-
-  constructor() {
-    this.data = {}
-    this.bld = ''
-  }
-
   displaySearchResult = false
   displayMealResult = false
   displayFriendResult = false
   displayFriendRequest = false
   displayedColumns: string[] = [''];
-  dataSource = [];
+  dataSource = new MatTableDataSource();
   bld = ''
+
+  @Input() data:any;
+  @Output() toFriendPage = new EventEmitter();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor() {
+    this.data = {}
+    this.bld = ''
+  }
 
   ngOnInit(): void {
     if (this.data.type === 'search') {
@@ -34,7 +38,8 @@ export class TableComponent implements OnInit {
       this.displayedColumns = ['mealResult'];
       this.bld = this.data.type
     }
-    this.dataSource = this.data.data
+    this.dataSource = new MatTableDataSource(this.data.data);
+    this.dataSource.paginator = this.paginator
     console.log(this.data)
   }
 
@@ -55,8 +60,9 @@ export class TableComponent implements OnInit {
       this.displayedColumns = ['mealResult'];
       this.bld = this.data.type
     }
-    this.dataSource = this.data.data
-  }   
+    this.dataSource = new MatTableDataSource(this.data.data);
+    this.dataSource.paginator = this.paginator
+  }
 
   clickedFriendRequest(username: any) {
     console.log(username)
@@ -64,10 +70,16 @@ export class TableComponent implements OnInit {
   }
 
   clickedAccept(username: any) {
+    //get current user
+    axios.post("/api/account/updateUserInfo", { data: username, type:"acceptfr" }).then(res => 
+    this.toFriendPage.emit(username))
     console.log(username)
   }
 
   clickedDecline(username: any) {
+    //get current user
+    axios.post("/api/account/updateUserInfo", { data: username, type:"declinefr" }).then(res => 
+      this.toFriendPage.emit(username))
     console.log(username)
   }
 

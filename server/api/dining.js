@@ -23,14 +23,20 @@ router.route("/").get((req, res) => {
 });
 
 router.route("/locations").get((req, res) => {
-  //TODO: get rw date
-  return axios.get(diningUrl + `locations/${req.query.location}/03-03-2021`)
+  var curdate = new Date();
+  let date = (`0${curdate.getDate()}`).slice(-2);
+  let month = (`0${curdate.getMonth() + 1}`).slice(-2);
+  let year = curdate.getFullYear();
+  let dateDisplay = `${month}-${date}-${year}`;
+  // console.log(dateDisplay)
+  //03-03-2021
+  return axios.get(diningUrl + `locations/${req.query.location}/${dateDisplay}`)
     .then((response) => {
       if (!response.data) {
         return reject('No data was returned');
       }
 
-      console.log(response.data)
+      // console.log(response.data)
       res.json(response.data);
       return response.data;
     })

@@ -36,4 +36,9 @@ export class FriendsComponent implements OnInit {
       console.log(this.tableargs)
     });
   }
+
+  refresh() {
+    console.log("refreshing")
+    this.initPage(this.user)
+  }
 }
