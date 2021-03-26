@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import axios from 'axios'
 
 @Component({
   selector: 'app-gensearch',
@@ -26,6 +27,24 @@ export class GensearchComponent implements OnInit {
 
     } else if (this.filter == '3') {
       console.log("Searching for users with class tag")
+      axios.get(`/api/account/searchUsersCT`, { params: { classtag: val } })
+      .then((res) => {
+        console.log(res.data[0])
+        if (typeof res.data[0] === 'undefined'){
+          this.searchResponse = ["No matching user"]
+        } else {
+          // for (d in res.data[0]) {
+          //   this.searchResponse.push(d.user_name)
+          // }
+  
+          //TODO: Get all users not just the first one
+          this.searchResponse = [res.data[0].user_name]
+          // this.searchResponse = res.data[0];
+        }
+        this.type = 'search'
+        this.displaySearchResult = true
+        this.tableargs = {data: this.searchResponse, type: this.type}
+      });
     }
   }
 }

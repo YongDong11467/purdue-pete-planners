@@ -4,8 +4,8 @@
 <mat-card class="main-left">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title class="user-data">purduepete</mat-card-title>
-      <mat-card-subtitle>pete@purdue.edu</mat-card-subtitle>
+      <mat-card-title class="user-data">{{curUser?.user_name}}</mat-card-title>
+      <mat-card-subtitle>{{curUser?.email}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content class="user-data">
       <ul class="user-fw-status">
