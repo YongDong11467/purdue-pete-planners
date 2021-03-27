@@ -11,6 +11,12 @@ const app = express(),
 
 async function initialize_app(){
     await account_manager.startDatabaseConnection();
+
+    // The following lines are meant for testing, and should not be uncommented
+    /* 
+    await account_manager.getUserChats("goodwi13");
+    await account_manager.createChatRoom(["goodwi13", "simp"]);
+    */
 }
 
 //initialize_app();
@@ -27,4 +33,3 @@ app.listen(port, () => {
 });
 
 initialize_app()
-

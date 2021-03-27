@@ -4,6 +4,7 @@ const uri = "mongodb+srv://hyuen:cs407@cluster0.tw2mu.mongodb.net/myFirstDatabas
 const client = new MongoClient(uri, { useNewUrlParser: true });
 
 const router = require("express").Router();
+const _ = require('underscore');
 
 // Global vars for Mongo DB connection
 var connection, db;
@@ -60,7 +61,7 @@ const createAccount = async function(username, email, major, pass) {
 		"schedule":[],
 		"major":major,
 		"study_group":[],
-		"direct_message":[],
+		"chats":[],
 		"friend":[],
 		"friend_request":[],
 		"book_room":[]
@@ -183,7 +184,7 @@ const updateFriendRequest = async function(receiver){
 const populateDatabase = async function(){
 	console.log("POPUlating database")
 	var users = [ 
-		{ user_name: "bob", password: "1234", email: "bob@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[] }, 
+		{ user_name: "bob", password: "1234", email: "bob@gmail.com", schedule:[], major: "cs", study_group: [], chats: [], friend: [], friend_request: [], book_room:[] }, 
 		{ user_name: "boby", password: "1234", email: "boby@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  },
 		{ user_name: "tom", password: "1234", email: "tom@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  },
 		{ user_name: "simp", password: "1234", email: "simp@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  }
@@ -209,7 +210,6 @@ const userAccountExists = async function(usrname) {
 
 	try {
 		userExists = await db.collection('User').find({user_name: usrname}).limit(1).count(true);
-
 	} catch (err) {
 		console.log(err.stack);
 		return -1;
@@ -219,7 +219,7 @@ const userAccountExists = async function(usrname) {
 }
 
 /**
- * Summary. Function that retrives chat rooms for a player
+ * Summary. Function that retrives chat rooms for a user
  * 
  * @param {String} username The username of the account in question
  * 
@@ -228,9 +228,9 @@ const userAccountExists = async function(usrname) {
 const getUserChats = async function(usrname) {
 	let chatList;
 
-	if(userAccountExists(usrname) === 1){
+	if(userAccountExists(usrname)){
 		try{
-			chatList = await db.collection('User').findOne({user_name:usrname}, {projection:{direct_message: true, id: false}});
+			chatList = await db.collection('User').findOne({user_name:usrname}, {projection:{direct_message: true, _id: false}});
 			console.log(chatList)
 		} catch(err){
 			console.log(err.stack);
@@ -238,6 +238,70 @@ const getUserChats = async function(usrname) {
 		}
 	}
 
+	return chatList;
+
+}
+
+/**
+ * Summary. Function to create a new chat room
+ * 
+ * @param {Array} users The list of users to be added to the chat
+ * 
+ * @return The id of the new chat document. -1 for failure, 0 for already exists
+ */
+const createChatRoom = async function(users) {
+	var new_chat;
+	if(users < 2){
+		console.log("cannot make chat with one person");
+		return -1;
+	}
+
+	const room = {
+		"Members": users,
+		"History":[]
+	};
+	
+	// check database for chat room with same participatnts.
+	let chats;
+	chats = await db.collection("chat_room").find({},{projection: {Members:true, _id:false}}).toArray();
+	console.log(chats);
+
+	var i;
+	for(i = 0; i< chats.length; i++){
+		chats[i].Members = chats[i].Members.sort();
+		users = users.sort();
+		if(_.difference(chats[i].Members, users).length == 0){
+			console.log("chat already exists");
+			return 0;
+		}
+	}
+
+	new_chat = await db.collection("chat_room").insertOne(room);
+
+	console.log(new_chat.insertedId);
+
+	for(i = 0; i<users.length; i++){
+		addChatToUser(users[i], new_chat.insertedId);
+	}
+
+	return new_chat.insertedId;
+
+}
+
+/**
+ * Sumarry. Function to add chat room to user document
+ * 
+ * @param {String} user The user to add the chat to
+ * 
+ * @param {ObjectId} id The id of the new chat
+ * 
+ * @return An integer value (1 = success, 0 = failure, -1 = error)
+ */
+const addChatToUser = async function(user, id){
+	let retval;
+
+	retval = await db.collection('User').updateOne({user_name:user}, {$push: {direct_message: id}});
+	console.log(retval);
 }
 
 module.exports = {
@@ -249,6 +313,8 @@ module.exports = {
 	getAccountPassword,
 	createAccount,
 	userAccountExists,
-	getUserChats
+	getUserChats,
+	createChatRoom,
+	addChatToUser
 }
 
