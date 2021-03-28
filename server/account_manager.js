@@ -147,6 +147,22 @@ const searchUsers = async function(prefix){
 	});
 }
 
+/**
+ * Gets all users with the given class tag
+ * 
+ * @param {String} classtag
+ */
+ const searchUsersCT = async function(classtag){
+	return new Promise(function(resolve, reject) {
+		var query = { user_name: classtag };
+		db.collection("User").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			console.log(result);
+			resolve(result);
+		});
+	});
+}
+
 module.exports = {
     startDatabaseConnection:startDatabaseConnection,
     closeDatabaseConnection:closeDatabaseConnection,
@@ -162,10 +178,9 @@ module.exports = {
  * 
  * @param {String} receiver
  */
-const updateFriendRequest = async function(receiver){
+const updateFriendRequest = async function(curuser, receiver){
 	//TODO: error checking on duplicate
-	//TODO: get current user
-	curUser = "Mickey@gmail.com"
+	curUser = curuser
 	console.log(receiver)
 	var myquery = { user_name: receiver };
 	var newvalue = { $push: {friend_request: curUser} };
@@ -173,6 +188,26 @@ const updateFriendRequest = async function(receiver){
 	if (err) throw err;
 		console.log(err);
 	});
+}
+
+const handleAcceptReject = async function(data){
+	curUser = data.curUser
+	console.log(data)
+	var myquery = { user_name: curUser };
+	var remove = { $pull: {friend_request: data.data} };
+
+	db.collection("User").findOneAndUpdate(myquery, remove, function(err, res) {
+		if (err) throw err;
+			console.log(err);
+	});
+
+	if (data.type == "acceptfr") {
+		var newvalue = { $push: {friend: data.data} };
+		db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+		if (err) throw err;
+			console.log(err);
+		});
+	}
 }
 
 // ONLY USE TO POPULATE EMPTY DATABASE FOR TESTING
@@ -199,6 +234,8 @@ module.exports = {
 	updateFriendRequest,
 	populateDatabase,
 	getUserInfo,
+	handleAcceptReject,
+	searchUsersCT,
 	createEvent
 }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
+import { ComplexOuterSubscriber } from 'rxjs/internal/innerSubscribe';
 
 @Component({
   selector: 'app-frinds',
@@ -11,8 +12,8 @@ export class FriendsComponent implements OnInit {
   friendRequestArgs = {data: [""], type: 'friendrequest'}
   friendResponse : string[] = [];
   friendRequestResponse : string[] = [];
-  //TODO: Replace simp with current user in constructor
-  user = 'simp'
+  curUser = JSON.parse(sessionStorage.getItem('curUser') || '{}');
+  user = this.curUser.user_name
 
   constructor() {
     this.initPage(this.user)
@@ -25,7 +26,7 @@ export class FriendsComponent implements OnInit {
     axios.get(`/api/account/searchUsers`, { params: { prefix: val } })
     .then((res: any) => {
       console.log(res.data[0])
-      if (typeof res.data[0] === 'undefined'){
+      if (typeof res.data[0] === 'undefined') {
         this.friendResponse = ["No Friends"]
       } else {
         this.friendResponse = res.data[0].friend
@@ -35,5 +36,10 @@ export class FriendsComponent implements OnInit {
       this.friendRequestArgs = {data: this.friendRequestResponse, type: 'friendrequest'}
       console.log(this.tableargs)
     });
+  }
+
+  refresh() {
+    console.log("refreshing")
+    this.initPage(this.user)
   }
 }

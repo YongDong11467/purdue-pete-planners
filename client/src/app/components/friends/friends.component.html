@@ -69,7 +69,7 @@
     </mat-list>
   </mat-card-content>
 
-<app-table [data]='tableargs'></app-table>
-<app-table [data]='friendRequestArgs'></app-table>
+<app-table [data]='tableargs' (toFriendPage)='refresh()'></app-table>
+<app-table [data]='friendRequestArgs' (toFriendPage)='refresh()'></app-table>
 
 
