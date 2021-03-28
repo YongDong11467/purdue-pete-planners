@@ -36,6 +36,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
 import {ClassComponent} from './components/class/class.component';
 import {FriendsComponent} from './components/friends/friends.component';
+import { MessagingComponent } from './components/messaging/messaging.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -58,7 +59,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     LoginComponent,
     RegisterComponent,
     ClassComponent,
-    FriendsComponent
+    FriendsComponent,
+    MessagingComponent
   ],
   imports: [
     BrowserModule,

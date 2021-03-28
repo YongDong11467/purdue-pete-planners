@@ -230,7 +230,7 @@ const getUserChats = async function(usrname) {
 
 	if(userAccountExists(usrname)){
 		try{
-			chatList = await db.collection('User').findOne({user_name:usrname}, {projection:{direct_message: true, _id: false}});
+			chatList = await db.collection('User').findOne({user_name:usrname}, {projection:{chats: true, _id: false}});
 			console.log(chatList)
 		} catch(err){
 			console.log(err.stack);
@@ -240,6 +240,34 @@ const getUserChats = async function(usrname) {
 
 	return chatList;
 
+}
+
+/**
+ * Summary. Function that retrieve chat room message history for a given chat
+ * 
+ * @param {*} chat The id of the chat in question
+ * 
+ * @return An array of messages and their senders
+ */
+const getChatHistory = async function(chat) {
+	let history;
+	let chatExists
+
+	try{
+		chatExists = await db.collection("chat_room").find({_id: chat});
+		if(!chatExists){
+			console.log("chat does not exist");
+			return -1;
+		}
+
+		history = await db.collection("chat_room").findOne({_id: chat}, {projection: {History: true, _id: false}});
+		console.log(history);
+	} catch(err){
+		console.log(err.stack);
+		return -1;
+	}
+	
+	return history;
 }
 
 /**
@@ -263,7 +291,7 @@ const createChatRoom = async function(users) {
 	
 	// check database for chat room with same participatnts.
 	let chats;
-	chats = await db.collection("chat_room").find({},{projection: {Members:true, _id:false}}).toArray();
+	chats = await db.collection("chat_room").find({},{projection: {Members:true, _id:true}}).toArray();
 	console.log(chats);
 
 	var i;
@@ -272,7 +300,7 @@ const createChatRoom = async function(users) {
 		users = users.sort();
 		if(_.difference(chats[i].Members, users).length == 0){
 			console.log("chat already exists");
-			return 0;
+			return chats[i]._id;
 		}
 	}
 
@@ -315,6 +343,7 @@ module.exports = {
 	userAccountExists,
 	getUserChats,
 	createChatRoom,
-	addChatToUser
+	addChatToUser,
+	getChatHistory
 }
 

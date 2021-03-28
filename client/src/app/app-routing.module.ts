@@ -11,6 +11,7 @@ import { EventCreateComponent } from './components/events/event-create.component
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { ClassComponent } from './components/class/class.component';
 import {FriendsComponent} from './components/friends/friends.component';
+import { MessagingComponent } from './components/messaging/messaging.component';
 
 
 const routes: Routes = [
@@ -23,7 +24,8 @@ const routes: Routes = [
   {path:'event', component:EventComponent},
   {path:'schedule', component:ScheduleComponent},
   {path: 'class', component: ClassComponent},
-  {path: 'friends', component: FriendsComponent}
+  {path: 'friends', component: FriendsComponent},
+  {path: 'messaging', component: MessagingComponent}
 ];
 
 @NgModule({
