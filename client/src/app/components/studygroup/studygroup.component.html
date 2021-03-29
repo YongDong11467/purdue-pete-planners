@@ -1,0 +1,14 @@
+<app-navbar></app-navbar>
+<mat-tab-group (selectedTabChange)="onTabClick($event)">
+  <mat-tab label="CS 354"></mat-tab>
+  <mat-tab label="CS 407"></mat-tab>
+  <mat-tab label="CS 448"></mat-tab>
+  <mat-tab label="this is prove of change"></mat-tab>
+</mat-tab-group>
+
+<app-table [data]='tableargs1'>First Study Group</app-table>
+<app-table [data]='tableargs2'>Second Study Group</app-table>
+<app-table [data]='tableargs3'>Third Study Group</app-table>
+<app-table [data]='tableargs4'>Forth Study Group</app-table>
+
+
