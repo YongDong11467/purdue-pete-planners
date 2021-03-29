@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const manager = require('../account_manager')
 
-router.route("/").get((req, res) => { 
+router.route("/").get((req, res) => {
     const account = ["login", "register", "profile"]
     res.json(account);
 });
@@ -47,7 +47,14 @@ router.route("/updateUserInfo").post((req, res) => {
   }
 });
 
-// router.route("/DONOTGOHERE").get((req, res) => { 
+router.route("/searchStudyGroup").get((req, res) => {
+  manager.searchStudyGroup(req.query.prefix).then(users => {
+    console.log(users)
+    res.json(users);
+  });
+});
+
+// router.route("/DONOTGOHERE").get((req, res) => {
 //   manager.populateDatabase()
 // });
 
