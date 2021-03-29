@@ -16,7 +16,7 @@ export class FriendsComponent implements OnInit {
   user = this.curUser.user_name
 
   constructor() {
-    this.initPage(this.user)
+    this.initPage(this.user);
   }
 
   ngOnInit(): void {
