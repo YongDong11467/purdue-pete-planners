@@ -192,6 +192,12 @@ const handleAcceptReject = async function(data){
 		if (err) throw err;
 			console.log(err);
 		});
+		myquery = { user_name: data.data };
+		newvalue = { $push: {friend: curUser} };
+		db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+		if (err) throw err;
+			console.log(err);
+		});
 	}
 }
 
