@@ -4,7 +4,7 @@ const uri = "mongodb+srv://hyuen:cs407@cluster0.tw2mu.mongodb.net/myFirstDatabas
 const client = new MongoClient(uri, { useNewUrlParser: true });
 
 const router = require("express").Router();
-const _ = require('underscore');
+const _ = require("underscore");
 
 // Global vars for Mongo DB connection
 var connection, db;
@@ -160,6 +160,9 @@ const getAccountPassword = async function(usrname) {
 
 	if (!userExists) {return 1;}
 	else {return pass}; 
+
+}
+
 /**
  * Gets all users with the given class tag
  *
@@ -405,4 +408,3 @@ module.exports = {
 	handleAcceptReject,
 	searchUsersCT
 }
-
