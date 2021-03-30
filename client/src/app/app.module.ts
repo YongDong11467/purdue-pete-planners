@@ -37,6 +37,11 @@ import {MatListModule} from '@angular/material/list';
 import {ClassComponent} from './components/class/class.component';
 import {FriendsComponent} from './components/friends/friends.component';
 import { MessagingComponent } from './components/messaging/messaging.component';
+import { GensearchComponent } from './components/gensearch/gensearch.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatButtonModule } from '@angular/material/button';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { StudygroupComponent } from './components/studygroup/studygroup.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -60,7 +65,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RegisterComponent,
     ClassComponent,
     FriendsComponent,
-    MessagingComponent
+    MessagingComponent,
+    GensearchComponent,
+    StudygroupComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +86,10 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatIconModule,
     MatCardModule,
     MatListModule,
-    FullCalendarModule
+    FullCalendarModule,
+    MatRadioModule,
+    MatButtonModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
