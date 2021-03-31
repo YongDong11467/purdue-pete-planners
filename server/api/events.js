@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const manager = require('../account_manager')
 
-router.route("../").get((req, res) => { 
+router.route("/").get((req, res) => { 
     const event = ["events"]
     res.json(event);
 });
@@ -18,3 +18,6 @@ router.route("/createEvent").post((req, res) => {
       res.send(events);
     });
   });
+
+  module.exports = router;
+  

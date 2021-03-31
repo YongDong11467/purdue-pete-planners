@@ -61,7 +61,7 @@ export class EventCreateComponent implements OnInit {
       return;
     }
     
-    axios.post("/api/account/events", { params: { name:this.name, description:this.desc, link:this.link, location:this.location, Time:this.dTime, repeat:this.repeat}})
+    axios.post("/purdue-pete-planners/server/api/events", { params: { name:this.name, description:this.desc, link:this.link, location:this.location, Time:this.dTime, repeat:this.repeat}})
     .then((res: any) => {
       console.log(res.data[0])
     });
