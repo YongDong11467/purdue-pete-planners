@@ -40,6 +40,7 @@ import { GensearchComponent } from './components/gensearch/gensearch.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { StudygroupComponent } from './components/studygroup/studygroup.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -63,7 +64,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RegisterComponent,
     ClassComponent,
     FriendsComponent,
-    GensearchComponent
+    GensearchComponent,
+    StudygroupComponent
   ],
   imports: [
     BrowserModule,
