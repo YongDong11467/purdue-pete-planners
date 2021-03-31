@@ -1,14 +1,14 @@
-const express = require('express');
 const diningRouter = require("./api/dining");
 const accountRouter = require("./api/account");
 const messageRouter = require("./api/messaging");
 const account_manager = require("./account_manager");
+const cors = require("cors");
 
-
-const app = express(),
-      bodyParser = require("body-parser");
-      port = 3080;
-
+const app = require('express')();
+const http = require('http').createServer(app);
+const io = require("socket.io")(http);
+bodyParser = require("body-parser");
+port = 3080;
 
 async function initialize_app(){
     await account_manager.startDatabaseConnection();
@@ -32,8 +32,23 @@ app.get('/', (req,res) => {
     res.send('Default route');
 });
 
-app.listen(port, () => {
-    console.log(`Server listening on the port::${port}`);
+io.on('connection', (socket) => {
+    console.log('a user connected via socket.io');
+
+    socket.on('message', (message) => {});
+
+    socket.on('disconect', () => {
+        console.log('a user disconnected via socket.io');
+    });
 });
 
-initialize_app()
+http.listen(port, () => {
+    try{
+        initialize_app();
+        console.log(`Server listening on the port::${port}`);
+    }catch(err){
+        console.error(err);
+    }
+});
+
+

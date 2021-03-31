@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { SearchComponent } from './components/search/search.component';
 import { TableComponent } from './components/table/table.component';
@@ -86,6 +87,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatIconModule,
     MatCardModule,
     MatListModule,
+    MatGridListModule,
     FullCalendarModule,
     MatRadioModule,
     MatButtonModule,

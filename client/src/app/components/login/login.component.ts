@@ -54,8 +54,7 @@ export class LoginComponent implements OnInit {
     })
     .then((response) => {
       console.log(response);
-      this.loading = true;
-      this.router.navigate(['/home']);
+      
       axios.get(`/api/account/searchUsers`, { params: { prefix: user } })
       .then((res) => {
         console.log(res.data[0])
@@ -64,8 +63,10 @@ export class LoginComponent implements OnInit {
         } else {
           sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
         }
-  
       });
+
+      this.loading = true;
+      this.router.navigate(['/home']);
     })
     .catch((error) => {
       console.log(error);

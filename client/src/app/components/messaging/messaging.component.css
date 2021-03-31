@@ -1,0 +1,21 @@
+.grid-container{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-auto-rows: 100px;
+}
+
+.message-editor{
+    width: 100%;
+    float: right;
+
+}
+
+.chat-selector{
+    width: 100%;
+    float: left;
+    margin-top: 5px;
+}
+
+.editor-full-width{
+    width: 100%;
+}
