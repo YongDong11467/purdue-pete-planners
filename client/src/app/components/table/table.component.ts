@@ -13,7 +13,9 @@ export class TableComponent implements OnInit {
   displayMealResult = false
   displayFriendResult = false
   displayFriendRequest = false
-  displayStudyGroupRequest = false
+  displayMemberRequest = false
+  displayChatRoomRequest = false
+  displayStudyRoomRequest = false
   displayedColumns: string[] = [''];
   dataSource = new MatTableDataSource();
   curUser = JSON.parse(sessionStorage.curUser || '{}');
@@ -35,9 +37,15 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'friend') {
       this.displayFriendResult = true
       this.displayedColumns = ['friend'];
-    } else if (this.data.type === 'studygroup') {
-      this.displayStudyGroupRequest = true
-      this.displayedColumns = ['studygroup'];
+    } else if (this.data.type === 'member') {
+      this.displayMemberRequest = true
+      this.displayedColumns = ['member'];
+    } else if (this.data.type === 'chat_room') {
+      this.displayChatRoomRequest = true
+      this.displayedColumns = ['chat_room'];
+    } else if (this.data.type === 'study_room') {
+      this.displayStudyRoomRequest = true
+      this.displayedColumns = ['study_room'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
@@ -58,9 +66,15 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'friendrequest') {
       this.displayFriendRequest = true
       this.displayedColumns = ['friendrequest', 'accept', 'decline'];
-    } else if (this.data.type === 'studygroup') {
-      this.displayStudyGroupRequest = true
-      this.displayedColumns = ['studygroup'];
+    } else if (this.data.type === 'member') {
+      this.displayMemberRequest = true
+      this.displayedColumns = ['member'];
+    } else if (this.data.type === 'chat_room') {
+      this.displayChatRoomRequest = true
+      this.displayedColumns = ['chat_room'];
+    } else if (this.data.type === 'study_room') {
+      this.displayStudyRoomRequest = true
+      this.displayedColumns = ['study_room'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];

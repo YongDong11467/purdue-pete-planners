@@ -1,20 +1,21 @@
 <app-navbar></app-navbar>
 <mat-tab-group (selectedTabChange)="onTabClick($event)">
-  <mat-tab label="CS 354"></mat-tab>
+  <mat-tab label="CS 381"></mat-tab>
   <mat-tab label="CS 407"></mat-tab>
-  <mat-tab label="CS 448"></mat-tab>
+  <mat-tab label="CS 373"></mat-tab>
+  <mat-tab label="CS 471"></mat-tab>
   <mat-tab label="prove of change"></mat-tab>
 </mat-tab-group>
 
-<app-table [data]='tableargs1'>First Study Group</app-table>
-<app-table [data]='tableargs2'>Second Study Group</app-table>
-<app-table [data]='tableargs4' (toFriendPage)='refresh()'>Forth Study Group</app-table>
-<app-table [data]='tablechatroom' (toFriendPage)='refresh()'>Forth Study Group</app-table>
-<app-table [data]='tablestudyroom' (toFriendPage)='refresh()'>Forth Study Group</app-table>
-
-<app-table [data]='tableargs' (toFriendPage)='refresh()'></app-table>
+<app-table [data]='tableargs1' (toFriendPage)='refresh()'>First Study Group</app-table>
+<app-table [data]='tableargs2' (toFriendPage)='refresh()'>Second Study Group</app-table>
 <app-table [data]='tableargs3' (toFriendPage)='refresh()'></app-table>
+<mat-card-title class="user-data">{{this.tablemeetingtime}}</mat-card-title>
 
+
+<button id="join" type="button" (click)="clickedjoin(this.user)">
+  Join
+</button>
 
 
 

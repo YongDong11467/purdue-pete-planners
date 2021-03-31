@@ -44,9 +44,21 @@
       </td>
     </ng-container>
 
-    <ng-container *ngIf="displayStudyGroupRequest" matColumnDef="studygroup">
-      <th mat-header-cell *matHeaderCellDef> Study Group </th>
-      <td mat-cell *matCellDef="let studygroup"> {{studygroup}} </td>
+    <ng-container *ngIf="displayMemberRequest" matColumnDef="member">
+      <th mat-header-cell *matHeaderCellDef> Member </th>
+      <td mat-cell *matCellDef="let member"> {{member}} </td>
+      <button></button>
+    </ng-container>
+
+    <ng-container *ngIf="displayChatRoomRequest" matColumnDef="chat_room">
+      <th mat-header-cell *matHeaderCellDef> Chat Room </th>
+      <td mat-cell *matCellDef="let chat_room"> {{chat_room}} </td>
+      <button></button>
+    </ng-container>
+
+    <ng-container *ngIf="displayStudyRoomRequest" matColumnDef="study_room">
+      <th mat-header-cell *matHeaderCellDef> Study Room </th>
+      <td mat-cell *matCellDef="let study_room"> {{study_room}} </td>
       <button></button>
     </ng-container>
     <!-- <ng-container *ngIf="displayIncFR" matColumnDef="frResult">
