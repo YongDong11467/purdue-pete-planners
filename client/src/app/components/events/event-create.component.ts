@@ -53,15 +53,19 @@ export class EventCreateComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   onSubmit() {
-    this.submitted = true;
+    this.loading = true;
+    
     // alert('hey');
     // stop here if form is invalid
     if (this.form.invalid) {
       return;
     }
-
-    this.loading = true;
     
+    axios.post("/api/account/events", { params: { name:this.name, description:this.desc, link:this.link, location:this.location, Time:this.dTime, repeat:this.repeat}})
+    .then((res: any) => {
+      console.log(res.data[0])
+    });
+    this.submitted = true;
   }
 
 
@@ -75,6 +79,8 @@ export class EventCreateComponent implements OnInit {
 
     //thing.createEvent(this.name, this.desc, this.dTime, this.link, this.location, this.repeat);
 
+    
+    
   }
 
   repeatChoiceHandler(event: any){
