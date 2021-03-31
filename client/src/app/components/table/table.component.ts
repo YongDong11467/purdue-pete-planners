@@ -13,6 +13,7 @@ export class TableComponent implements OnInit {
   displayMealResult = false
   displayFriendResult = false
   displayFriendRequest = false
+  displayStudyGroupRequest = false
   displayedColumns: string[] = [''];
   dataSource = new MatTableDataSource();
   curUser = JSON.parse(sessionStorage.curUser || '{}');
@@ -34,6 +35,9 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'friend') {
       this.displayFriendResult = true
       this.displayedColumns = ['friend'];
+    } else if (this.data.type === 'studygroup') {
+      this.displayStudyGroupRequest = true
+      this.displayedColumns = ['studygroup'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
@@ -54,6 +58,9 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'friendrequest') {
       this.displayFriendRequest = true
       this.displayedColumns = ['friendrequest', 'accept', 'decline'];
+    } else if (this.data.type === 'studygroup') {
+      this.displayStudyGroupRequest = true
+      this.displayedColumns = ['studygroup'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
@@ -69,13 +76,13 @@ export class TableComponent implements OnInit {
   }
 
   clickedAccept(username: any) {
-    axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, data: username, type:"acceptfr" }).then(res => 
+    axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, data: username, type:"acceptfr" }).then(res =>
     this.toFriendPage.emit(username))
     console.log(username)
   }
 
   clickedDecline(username: any) {
-    axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, data: username, type:"declinefr" }).then(res => 
+    axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, data: username, type:"declinefr" }).then(res =>
       this.toFriendPage.emit(username))
     console.log(username)
   }

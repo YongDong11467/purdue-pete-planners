@@ -182,10 +182,23 @@ const updateFriendRequest = async function(curuser, receiver){
  */
 const searchStudyGroup = async function(prefix){
   return new Promise(function(resolve, reject) {
-    //TODO: error with regex try again later
-    // var query = { Course_name: { $regex: `/^${prefix}/` } };
     var query = { Course_name: prefix };
     db.collection("Study_group").find(query).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * Gets all study groups
+ *
+ * @param {String} prefix
+ */
+const searchAllStudyGroup = async function(){
+  return new Promise(function(resolve, reject) {
+    db.collection("Study_group").find().toArray(function(err, result) {
       if (err) throw err;
       console.log(result);
       resolve(result);
@@ -238,6 +251,8 @@ module.exports = {
 	populateDatabase,
 	getUserInfo,
 	handleAcceptReject,
-	searchUsersCT
+	searchUsersCT,
+  searchStudyGroup,
+  searchAllStudyGroup
 }
 

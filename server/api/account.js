@@ -54,6 +54,13 @@ router.route("/searchStudyGroup").get((req, res) => {
   });
 });
 
+router.route("/searchAllStudyGroup").get((req, res) => {
+  manager.searchAllStudyGroup().then(users => {
+    console.log(users)
+    res.json(users);
+  });
+});
+
 // router.route("/DONOTGOHERE").get((req, res) => {
 //   manager.populateDatabase()
 // });
