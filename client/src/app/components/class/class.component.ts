@@ -16,7 +16,7 @@ export class ClassComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   tableargs1 = {data: [], type: 'List of Classes'};
-  tabs = ['First', 'Second', 'Third'];
+  tabs = ['cs407', 'cs408', 'cs422'];
   
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
