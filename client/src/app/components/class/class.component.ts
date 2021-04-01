@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import axios from 'axios';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-class',
   templateUrl: './class.component.html',
-  styleUrls: ['./class.component.css']
+  styleUrls: ['./class.component.css'],
+  // encapsulation: ViewEncapsulation.None
 })
 export class ClassComponent implements OnInit {
   closeResult = '';
@@ -13,26 +15,12 @@ export class ClassComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   tableargs1 = {data: [], type: 'List of Classes'};
-  
-  tableClassName: string[] = [];
-  tableClassTag: string[] = [];
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
 
-  
-
   ngOnInit(): void {
-    /*axios.get(`/api/dining/locations`, { params: { location: 'Hillenbrand' } })
-      .then((res) => {
-        console.log(res.data);
-        this.diningData = res.data.Meals;
-        this.tableargs1 = {data: res.data.Meals[0].Stations[0].Items, type: 'Breakfast'};
-        this.tableargs2 = {data: res.data.Meals[1].Stations[0].Items, type: 'Lunch'};
-        this.tableargs3 = {data: res.data.Meals[2].Stations[0].Items, type: 'Dinner'};
-      });*/
       this.curUser = JSON.parse(sessionStorage.curUser || '{}');
-
   }
 
   searchResponse : string[] = [];
@@ -75,6 +63,7 @@ export class ClassComponent implements OnInit {
       } else {
         this.searchResponse = [res.data[0].class_tag]
         this.name = [res.data[0].name]
+        console.log(this.name)
       }
       this.type = 'searchTagResult'
       this.displayTagResult = true

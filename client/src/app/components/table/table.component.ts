@@ -38,7 +38,12 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'searchTagResult') {
       this.displayTagResult = true
       this.displayedColumns = ['searchTagResult'];
-    } else {
+    } 
+    // else if (this.data.type === 'searchTagNameResult') {
+    //   this.displayTagResult = true
+    //   this.displayedColumns = ['searchTagNameResult'];
+    // } 
+    else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
       this.bld = this.data.type
@@ -60,7 +65,9 @@ export class TableComponent implements OnInit {
       this.displayedColumns = ['friendrequest', 'accept', 'decline'];
     } else if (this.data.type === 'searchTagResult') {
       this.displayTagResult = true
-      this.displayedColumns = ['searchTagResult'];
+      this.displayedColumns = ['searchTagResult'
+      // , 'searchTagNameResult'
+    ];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];

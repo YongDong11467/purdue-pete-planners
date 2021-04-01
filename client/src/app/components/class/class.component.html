@@ -6,9 +6,9 @@
   <mat-tab label="CS 471"></mat-tab>
   <mat-tab disabled>
     <ng-template mat-tab-label>
-        <button mat-icon-button (click)="open(content)">
-            <mat-icon>add_circle</mat-icon>
-        </button>
+      <button mat-icon-button (click)="open(content)" placement="right" ngbTooltip="Add new class">
+          <mat-icon>add_circle</mat-icon>
+      </button>
     </ng-template>
 </mat-tab>
 </mat-tab-group>
@@ -18,14 +18,14 @@
 <app-table [data]='tableargs3'></app-table> -->
 
 
-<form class="example-form">
+<!-- <form class="example-form">
   <mat-form-field class="example-full-width">
     <mat-label>Search For Class Tags</mat-label>
     <input matInput placeholder="cs444" #search>
   </mat-form-field>
   <button (click)="getUserClasses(search.value)">Search!</button>
   <app-table *ngIf="displayTagResult" [data]='tableargs'></app-table>
-</form>
+</form> -->
 
 <ng-template #content let-modal>
   <div class="modal-header">
@@ -51,6 +51,7 @@
                 </mat-form-field>
                 <button type="submit" (click)="getUserClasses(search.value)">Search!<i class="fa fa-search"></i></button>
                 <app-table *ngIf="displayTagResult" [data]='tableargs'></app-table>
+                <app-table *ngIf="displayTagResult" [data]='tableargs2'></app-table>
               </form>
           </div>
       </form>
