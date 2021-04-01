@@ -37,7 +37,7 @@ export class TableComponent implements OnInit {
       this.displayedColumns = ['friend'];
     } else if (this.data.type === 'searchTagResult') {
       this.displayTagResult = true
-      this.displayedColumns = ['searchTagResult', 'searchClassTag'];
+      this.displayedColumns = ['searchTagResult'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
@@ -60,7 +60,7 @@ export class TableComponent implements OnInit {
       this.displayedColumns = ['friendrequest', 'accept', 'decline'];
     } else if (this.data.type === 'searchTagResult') {
       this.displayTagResult = true
-      this.displayedColumns = ['searchTagResult', 'searchClassTag'];
+      this.displayedColumns = ['searchTagResult'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];

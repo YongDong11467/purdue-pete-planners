@@ -31,6 +31,13 @@ router.route("/searchUsersCT").get((req, res) => {
   });
 });
 
+router.route("/searchClassTag").get((req, res) => {
+  manager.searchClassTag(req.query.prefix).then(users => {
+    console.log(users)
+    res.json(users);
+  });
+});
+
 router.route("/sendfr").post((req, res) => {
   return manager.updateFriendRequest(req.body.curUser, req.body.data)
   .then(success => res.status(200).json(success))
@@ -49,13 +56,6 @@ router.route("/updateUserInfo").post((req, res) => {
 
 router.route("/searchStudyGroup").get((req, res) => {
   manager.searchStudyGroup(req.query.prefix).then(users => {
-    console.log(users)
-    res.json(users);
-  });
-});
-
-router.route("/searchClassTag").get((req, res) => {
-  manager.searchClassTag(req.query.prefix).then(users => {
     console.log(users)
     res.json(users);
   });

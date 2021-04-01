@@ -155,8 +155,7 @@ module.exports = {
     createAccount:createAccount,
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
-	searchUsers:searchUsers,
-	searchClassTag:searchClassTag
+	searchUsers:searchUsers
 }
 
 /**
