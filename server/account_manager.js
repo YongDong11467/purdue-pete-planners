@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient; // Framework to communicate with mongodb
 const Binary = require('mongodb').Binary;           // Framework to store binary data in mongodb
 const uri = "mongodb+srv://hyuen:cs407@cluster0.tw2mu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"    // Mongo DB uri
-const client = new MongoClient(uri, { useNewUrlParser: true });
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const router = require("express").Router();
 

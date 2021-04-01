@@ -13,8 +13,6 @@ export class ClassComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   tableargs1 = {data: [], type: 'List of Classes'};
-  tableargs2 = {data: [], type: 'group 2'};
-  tableargs3 = {data: [], type: 'group 3'};
   
   tableClassName: string[] = [];
   tableClassTag: string[] = [];
@@ -38,8 +36,10 @@ export class ClassComponent implements OnInit {
   }
 
   searchResponse : string[] = [];
+  name : string[] = [];
   type = 'none'
   tableargs = {data: this.searchResponse, type: this.type}
+  tableargs2 = {data: this.name, type: 'name'}
   displayTagResult = false
 
   // getSearchValue(val: string) {
@@ -70,13 +70,16 @@ export class ClassComponent implements OnInit {
       console.log(res.data[0])
       if (typeof res.data[0] === 'undefined'){
         this.searchResponse = ["No matching class tag"]
+        this.name = ["No matching class name"]
         console.log("no class");
       } else {
         this.searchResponse = [res.data[0].class_tag]
+        this.name = [res.data[0].name]
       }
       this.type = 'searchTagResult'
       this.displayTagResult = true
       this.tableargs = {data: this.searchResponse, type: this.type}
+      this.tableargs2 = {data: this.name, type: 'name'}
     })
     // .catch(error => {
     //   console.log(error.response)
