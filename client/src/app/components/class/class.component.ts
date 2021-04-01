@@ -24,6 +24,9 @@ export class ClassComponent implements OnInit {
 
   ngOnInit(): void {
       this.curUser = JSON.parse(sessionStorage.curUser || '{}');
+      console.log(this.curUser.user_name)
+      console.log(this.curUser)
+      this.getAllUserClasses(this.curUser.user_name)
   }
 
   searchResponse : string[] = [];
@@ -32,27 +35,27 @@ export class ClassComponent implements OnInit {
   tableargs = {data: this.searchResponse, type: this.type}
   tableargs2 = {data: this.name, type: 'name'}
   displayTagResult = false
+  tagExists = false
 
-  // getSearchValue(val: string) {
-  //   axios.get(`/api/account/searchUsersCT`, { params: { prefix: val } })
-  //   .then((res) => {
-  //     console.log(res.data[0])
-  //     if (typeof res.data[0] === 'undefined'){
-  //       this.searchResponse = ["No matching class tag"]
-  //     } else {
-  //       // for (d in res.data[0]) {
-  //       //   this.searchResponse.push(d.user_name)
-  //       // }
-
-  //       //TODO: temp solution until prefix is implemented
-  //       this.searchResponse = [res.data[0].class_tag]
-  //       // this.searchResponse = res.data[0];
-  //     }
-  //     this.type = 'searchTagResult'
-  //     this.displayTagResult = true
-  //     this.tableargs = {data: this.searchResponse, type: this.type}
-  //   });
-  // }
+  displaySearchResult = false
+  table_args_class_list = {data: this.searchResponse, type: this.type}
+  getAllUserClasses(val:string){
+    console.log("Searching for all class tags of user")
+      axios.get(`/api/account/findUserCT`, { params: { prefix: val } })
+      .then((res) => {
+        console.log(res.data[0])
+        if (typeof res.data[0] === 'undefined'){
+          this.searchResponse = ["No matching user"]
+        } else {
+          this.searchResponse = [res.data[0].class_list]
+          console.log(this.searchResponse)
+        }
+        this.type = 'search'
+        this.displaySearchResult = true
+        this.table_args_class_list = {data: this.searchResponse, type: this.type}
+        console.log(this.table_args_class_list)
+      });
+  }
 
   getUserClasses(val: string) {
     console.log("searching class tags...")
@@ -62,10 +65,12 @@ export class ClassComponent implements OnInit {
       if (typeof res.data[0] === 'undefined'){
         this.searchResponse = ["No matching class tag"]
         this.name = ["No matching class name"]
+        this.tagExists = false
         console.log("no class");
       } else {
         this.searchResponse = [res.data[0].class_tag]
         this.name = [res.data[0].name]
+        this.tagExists = true
         console.log(this.name)
       }
       this.type = 'searchTagResult'
@@ -83,8 +88,12 @@ export class ClassComponent implements OnInit {
 
   }
 
-  addClass(){
-    this.tabs.push('New');
+  addClass(val: string){
+    this.getUserClasses(val);
+    if(this.tagExists != false){
+      this.tabs.push(val);
+    }
+    this.getAllUserClasses(val);
   }
 
   removeClass(index: number) {

@@ -7,6 +7,24 @@
   
 }
 
+/* .deleteClassBtn {
+  position: absolute;
+  right:    300;
+  bottom:   500;
+  z-index: 99999;
+} */
+
+.container {
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100vh;
+  display: flex;
+}
+.container .btn-holder {
+  justify-content: flex-end;
+  display: flex;
+}
+
 .button {
   border: none;
   padding: 15px 32px;
