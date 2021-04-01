@@ -4,18 +4,37 @@
   <mat-tab label="CS 407"></mat-tab>
   <mat-tab label="CS 448"></mat-tab>
   <mat-tab label="CS 471"></mat-tab>
+  
   <mat-tab disabled>
     <ng-template mat-tab-label>
-      <button mat-icon-button (click)="open(content)" placement="right" ngbTooltip="Add new class">
+      <button mat-icon-button (click)="open(content)" placement="right" ngbTooltip="New" tooltipClass = "toolfront">
           <mat-icon>add_circle</mat-icon>
       </button>
     </ng-template>
-</mat-tab>
+  </mat-tab>
 </mat-tab-group>
 
-<app-table [data]='tableargs1' ></app-table>
-<!-- <app-table [data]='tableargs2'></app-table>
-<app-table [data]='tableargs3'></app-table> -->
+<!-- <app-table [data]='tableargs1' ></app-table> -->
+
+<mat-tab-group >
+  <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
+      Contents for {{tab}} tab
+    <button mat-raised-button mat-button color="warn"
+        [disabled]="tabs.length === 1"
+        (click)="removeClass(index)">
+        Delete Class
+    </button>
+  </mat-tab>
+  <mat-tab disabled>
+    <ng-template mat-tab-label>
+      <button mat-icon-button (click)="open(content)" placement="right" ngbTooltip="New" tooltipClass = "toolfront">
+          <mat-icon>add_circle</mat-icon>
+      </button>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+
+
 
 
 <!-- <form class="example-form">
@@ -59,7 +78,7 @@
   <div class="modal-footer">
       <button type="button" 
           class="btn btn-outline-dark" 
-          (click)="modal.close('Save click')">
+          (click)="modal.close('Save click'); addClass()">
           Add Class
       </button>
   </div>

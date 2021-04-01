@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import axios from 'axios';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-
+import {FormControl} from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-class',
@@ -15,6 +16,8 @@ export class ClassComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   tableargs1 = {data: [], type: 'List of Classes'};
+  tabs = ['First', 'Second', 'Third'];
+  
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
@@ -68,7 +71,7 @@ export class ClassComponent implements OnInit {
       this.type = 'searchTagResult'
       this.displayTagResult = true
       this.tableargs = {data: this.searchResponse, type: this.type}
-      this.tableargs2 = {data: this.name, type: 'name'}
+      this.tableargs2 = {data: this.name, type: this.type}
     })
     // .catch(error => {
     //   console.log(error.response)
@@ -80,8 +83,12 @@ export class ClassComponent implements OnInit {
 
   }
 
-  addclass(){
+  addClass(){
+    this.tabs.push('New');
+  }
 
+  removeClass(index: number) {
+    this.tabs.splice(index, 1);
   }
 
   open(content: any) {
