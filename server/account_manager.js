@@ -311,7 +311,7 @@ const getUserChats = async function(usrname) {
  */
 const getChatHistory = async function(chat) {
 	let history;
-	let chatExists
+	let chatExists;
 
 	try{
 		chatExists = await db.collection("chat_room").find({_id: chat});
