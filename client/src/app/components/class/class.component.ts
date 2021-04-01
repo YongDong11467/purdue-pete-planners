@@ -12,12 +12,16 @@ export class ClassComponent implements OnInit {
 
   constructor(private modalService: NgbModal) { }
 
-  tableargs1 = {data: [], type: 'group 1'};
+  tableargs1 = {data: [], type: 'List of Classes'};
   tableargs2 = {data: [], type: 'group 2'};
   tableargs3 = {data: [], type: 'group 3'};
-  diningData = {};
+  
+  tableClassName: string[] = [];
+  tableClassTag: string[] = [];
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
+  user = this.curUser.user_name;
+
   
 
   ngOnInit(): void {
@@ -36,28 +40,28 @@ export class ClassComponent implements OnInit {
   searchResponse : string[] = [];
   type = 'none'
   tableargs = {data: this.searchResponse, type: this.type}
-  displaySearchResult = false
+  displayTagResult = false
 
-  getSearchValue(val: string) {
-    axios.get(`/api/account/searchUsersCT`, { params: { prefix: val } })
-    .then((res) => {
-      console.log(res.data[0])
-      if (typeof res.data[0] === 'undefined'){
-        this.searchResponse = ["No matching class tag"]
-      } else {
-        // for (d in res.data[0]) {
-        //   this.searchResponse.push(d.user_name)
-        // }
+  // getSearchValue(val: string) {
+  //   axios.get(`/api/account/searchUsersCT`, { params: { prefix: val } })
+  //   .then((res) => {
+  //     console.log(res.data[0])
+  //     if (typeof res.data[0] === 'undefined'){
+  //       this.searchResponse = ["No matching class tag"]
+  //     } else {
+  //       // for (d in res.data[0]) {
+  //       //   this.searchResponse.push(d.user_name)
+  //       // }
 
-        //TODO: temp solution until prefix is implemented
-        this.searchResponse = [res.data[0].classtag]
-        // this.searchResponse = res.data[0];
-      }
-      this.type = 'classTag'
-      this.displaySearchResult = true
-      this.tableargs = {data: this.searchResponse, type: this.type}
-    });
-  }
+  //       //TODO: temp solution until prefix is implemented
+  //       this.searchResponse = [res.data[0].class_tag]
+  //       // this.searchResponse = res.data[0];
+  //     }
+  //     this.type = 'searchTagResult'
+  //     this.displayTagResult = true
+  //     this.tableargs = {data: this.searchResponse, type: this.type}
+  //   });
+  // }
 
   getUserClasses(val: string) {
     console.log("searching class tags...")
@@ -66,16 +70,17 @@ export class ClassComponent implements OnInit {
       console.log(res.data[0])
       if (typeof res.data[0] === 'undefined'){
         this.searchResponse = ["No matching class tag"]
+        console.log("no class");
       } else {
         this.searchResponse = [res.data[0].class_tag]
       }
-      this.type = 'search'
-      this.displaySearchResult = true
+      this.type = 'searchTagResult'
+      this.displayTagResult = true
       this.tableargs = {data: this.searchResponse, type: this.type}
     })
-    .catch(error => {
-      console.log(error.response)
-    });
+    // .catch(error => {
+    //   console.log(error.response)
+    // });
   }
 
   onTabClick(event: any) {

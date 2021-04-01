@@ -149,31 +149,14 @@ const searchUsers = async function(prefix){
 	});
 }
 
-/**
- * Gets the study group with the given prefix
- *
- * @param {String} prefix
- */
-const searchClassTag = async function(prefix){
-	return new Promise(function(resolve, reject) {
-	  //TODO: error with regex try again later
-	  // var query = { Course_name: { $regex: `/^${prefix}/` } };
-	  var query = { Course_name: prefix };
-	  db.collection("Class_tag").find(query).toArray(function(err, result) {
-		if (err) throw err;
-		console.log(result);
-		resolve(result);
-	  });
-	});
-  }
-
 module.exports = {
     startDatabaseConnection:startDatabaseConnection,
     closeDatabaseConnection:closeDatabaseConnection,
     createAccount:createAccount,
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
-	searchUsers:searchUsers
+	searchUsers:searchUsers,
+	searchClassTag:searchClassTag
 }
 
 /**
@@ -209,6 +192,24 @@ const searchStudyGroup = async function(prefix){
       resolve(result);
     });
   });
+}
+
+/**
+ * Gets the class tag with the given prefix
+ *
+ * @param {String} prefix
+ */
+const searchClassTag = async function(prefix){
+	return new Promise(function(resolve, reject) {
+	  //TODO: error with regex try again later
+	  // var query = { Course_name: { $regex: `/^${prefix}/` } };
+	  var query = { class_tag: prefix };
+	  db.collection("Class_tag").find(query).toArray(function(err, result) {
+		if (err) throw err;
+		console.log(result);
+		resolve(result);
+	  });
+	});
 }
 
 const handleAcceptReject = async function(data){
@@ -262,6 +263,7 @@ module.exports = {
 	populateDatabase,
 	getUserInfo,
 	handleAcceptReject,
-	searchUsersCT
+	searchUsersCT,
+	searchClassTag
 }
 

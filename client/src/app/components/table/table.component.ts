@@ -35,7 +35,7 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'friend') {
       this.displayFriendResult = true
       this.displayedColumns = ['friend'];
-    } else if (this.data.type === 'classTag') {
+    } else if (this.data.type === 'searchTagResult') {
       this.displayTagResult = true
       this.displayedColumns = ['searchTagResult', 'searchClassTag'];
     } else {
@@ -58,7 +58,7 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'friendrequest') {
       this.displayFriendRequest = true
       this.displayedColumns = ['friendrequest', 'accept', 'decline'];
-    } else if (this.data.type === 'classTag') {
+    } else if (this.data.type === 'searchTagResult') {
       this.displayTagResult = true
       this.displayedColumns = ['searchTagResult', 'searchClassTag'];
     } else {

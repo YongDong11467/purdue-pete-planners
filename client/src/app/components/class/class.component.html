@@ -13,17 +13,18 @@
 </mat-tab>
 </mat-tab-group>
 
-<app-table [data]='tableargs1'></app-table>
+<app-table [data]='tableargs1' ></app-table>
 <!-- <app-table [data]='tableargs2'></app-table>
 <app-table [data]='tableargs3'></app-table> -->
+
 
 <form class="example-form">
   <mat-form-field class="example-full-width">
     <mat-label>Search For Class Tags</mat-label>
     <input matInput placeholder="cs444" #search>
   </mat-form-field>
-  <button (click)="getSearchValue(search.value)">Search!</button>
-  <app-table *ngIf="displaySearchResult" [data]='tableargs'></app-table>
+  <button (click)="getUserClasses(search.value)">Search!</button>
+  <app-table *ngIf="displayTagResult" [data]='tableargs'></app-table>
 </form>
 
 <ng-template #content let-modal>
@@ -49,7 +50,7 @@
                   <input matInput placeholder="cs444" #search>
                 </mat-form-field>
                 <button type="submit" (click)="getUserClasses(search.value)">Search!<i class="fa fa-search"></i></button>
-                <app-table *ngIf="displaySearchResult" [data]='tableargs'></app-table>
+                <app-table *ngIf="displayTagResult" [data]='tableargs'></app-table>
               </form>
           </div>
       </form>
