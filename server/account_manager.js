@@ -140,8 +140,8 @@ const searchUsers = async function(prefix){
  */
  const searchUsersCT = async function(classtag){
 	return new Promise(function(resolve, reject) {
-		var query = { user_name: classtag };
-		db.collection("User").find(query).toArray(function(err, result) {
+		var query = { class_tag: classtag };
+		db.collection("Class_tag").find(query).toArray(function(err, result) {
 			if (err) throw err;
 			console.log(result);
 			resolve(result);
