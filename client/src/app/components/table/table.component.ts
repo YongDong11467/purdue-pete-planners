@@ -14,6 +14,7 @@ export class TableComponent implements OnInit {
   displayFriendResult = false
   displayFriendRequest = false
   displayTagResult = false
+  displayUserClasses = false
   displayedColumns: string[] = [''];
   dataSource = new MatTableDataSource();
   curUser = JSON.parse(sessionStorage.curUser || '{}');
@@ -38,12 +39,10 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'searchTagResult') {
       this.displayTagResult = true
       this.displayedColumns = ['searchTagResult'];
-    } 
-    // else if (this.data.type === 'searchTagNameResult') {
-    //   this.displayTagResult = true
-    //   this.displayedColumns = ['searchTagNameResult'];
-    // } 
-    else {
+    } else if (this.data.type === 'userClassResult') {
+      this.displayUserClasses = true
+      this.displayedColumns = ['userClassResult'];
+    } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
       this.bld = this.data.type
@@ -65,9 +64,10 @@ export class TableComponent implements OnInit {
       this.displayedColumns = ['friendrequest', 'accept', 'decline'];
     } else if (this.data.type === 'searchTagResult') {
       this.displayTagResult = true
-      this.displayedColumns = ['searchTagResult'
-      // , 'searchTagNameResult'
-    ];
+      this.displayedColumns = ['searchTagResult'];
+    } else if (this.data.type === 'userClassResult') {
+      this.displayUserClasses = true
+      this.displayedColumns = ['userClassResult'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];

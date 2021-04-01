@@ -30,12 +30,11 @@
       <button></button>
     </ng-container>
     
-    <!-- <ng-container *ngIf="displayTagResult" matColumnDef="searchClassTag">
-      <th mat-header-cell *matHeaderCellDef> Action </th>   
-      <td mat-cell *matCellDef="let searchTagResult"> 
-        <button mat-raised-button (click)="clickedAddClass(searchTagResult)" >Add Class</button> 
-      </td>
-    </ng-container> -->
+    <ng-container *ngIf="displayUserClasses" matColumnDef="userClassResult">
+      <th mat-header-cell *matHeaderCellDef><b> User Classes List </b></th>   
+      <td mat-cell *matCellDef="let userClassResult"> {{userClassResult}} </td>
+      <button></button>
+    </ng-container>
 
 
     <ng-container *ngIf="displayMealResult" matColumnDef="mealResult">
