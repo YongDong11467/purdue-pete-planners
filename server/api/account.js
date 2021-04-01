@@ -38,6 +38,13 @@ router.route("/searchClassTag").get((req, res) => {
   });
 });
 
+router.route("/findUserCT").get((req, res) => {
+  manager.findUserCT(req.query.prefix).then(users => {
+    console.log(users)
+    res.json(users);
+  });
+});
+
 router.route("/sendfr").post((req, res) => {
   return manager.updateFriendRequest(req.body.curUser, req.body.data)
   .then(success => res.status(200).json(success))
