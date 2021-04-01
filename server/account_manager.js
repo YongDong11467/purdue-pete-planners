@@ -149,6 +149,24 @@ const searchUsers = async function(prefix){
 	});
 }
 
+/**
+ * Gets the study group with the given prefix
+ *
+ * @param {String} prefix
+ */
+const searchClassTag = async function(prefix){
+	return new Promise(function(resolve, reject) {
+	  //TODO: error with regex try again later
+	  // var query = { Course_name: { $regex: `/^${prefix}/` } };
+	  var query = { Course_name: prefix };
+	  db.collection("Class_tag").find(query).toArray(function(err, result) {
+		if (err) throw err;
+		console.log(result);
+		resolve(result);
+	  });
+	});
+  }
+
 module.exports = {
     startDatabaseConnection:startDatabaseConnection,
     closeDatabaseConnection:closeDatabaseConnection,

@@ -41,6 +41,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -87,7 +88,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FullCalendarModule,
     MatRadioModule,
     MatButtonModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
