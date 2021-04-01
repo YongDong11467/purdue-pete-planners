@@ -12,11 +12,20 @@ router.post("/events", (req,res) => {
 });
 
 router.route("/createEvent").post((req, res) => {
-    manager.createEvent(res.query.name, res.query.description, res.query.time, res.query.link, res.query.location, res.query.repeat).then(events => {
+    manager.createEvent(req.query.body.name, req.query.body.description, req.query.body.time, req.query.body.link, req.body.query.location, req.query.body.repeat).then(events => {
       console.log(events)
       res.json(events);
       res.send(events);
     });
   });
+
+/*
+  router.post("/createEvent", (req,res) => {
+    console.log(req);
+    response = "HTTP/1.1 200 OK";
+    res.end(response);
+});
+*/
+
 
   module.exports = router;

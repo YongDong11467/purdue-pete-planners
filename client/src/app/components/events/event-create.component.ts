@@ -14,11 +14,11 @@ import axios from 'axios'
 export class EventCreateComponent implements OnInit {
 
   //event vars
-  name: string = '';
-  desc: string = '';
-  dTime: string = '';
-  link: string = '';
-  location: string = '';
+  name: String = '';
+  desc: String = '';
+  dTime: String = '';
+  link: String = '';
+  location: String = '';
   repeat: number = 0;
 
   //submission vars
@@ -61,21 +61,26 @@ export class EventCreateComponent implements OnInit {
   onSubmit() {
     //alert('HEY');
     // stop here if form is invalid
-    alert(this.name + this.desc + this.link + this.location + this.dTime + this.repeat);
+    //alert(this.name + this.desc + this.link + this.location + this.dTime + this.repeat);
     if (this.form.invalid) {
       //alert('hey');
       return;
     }
     this.loading = true;
+    /*
     axios.post("/api/events/createEvent", { name:this.name, description:this.desc, link:this.link, location:this.location, Time:this.dTime, repeat:this.repeat} , 
      {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       }
+      
     })
     .then((res: any) => {
       console.log(res)
     });
+    */
+
+
     this.submitted = true;
     this.loading = false;
     //alert("you better fucking not have");
@@ -90,6 +95,7 @@ export class EventCreateComponent implements OnInit {
     this.dTime = dTimeInput.value;
     this.repeat = repeatInput;
     //alert('BITCH');
+    doTheThing(this.name, this.desc, this.dTime, this.link, this.location, this.repeat);
   }
 
   repeatChoiceHandler(event: any){
@@ -124,4 +130,18 @@ export class EventCreateComponent implements OnInit {
       this.tableargs = {data: this.searchResponse, type: this.type}
     });
   }
+}
+
+async function doTheThing(name:String,description:String, time:String, link:String, location:String, repeat:number) {
+  let init = {
+    method: "POST",
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ "name": name, "description": description, "Time":time, "link":link, "location":location, "repeat":repeat}),
+    mode: 'no-cors' as RequestMode
+  };
+
+  // This line checks the server
+  let apiResp = await fetch("http://localhost:3080/api/events/createEvent", init);
+  let jsonData = await apiResp.json();
+  console.log(jsonData);
 }

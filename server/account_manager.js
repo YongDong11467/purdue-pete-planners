@@ -85,7 +85,7 @@ const createAccount = async function(username, email, major, pass) {
 }
 
 const createEvent = async function(name, description, time, link, location, repeat) {
-	alert('hey');
+	//alert('hey');
 	const event = {
 		"name":name,
 		"description":description,
