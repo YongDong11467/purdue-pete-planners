@@ -12,7 +12,7 @@ router.post("/events", (req,res) => {
 });
 
 router.route("/createEvent").post((req, res) => {
-    manager.createEvent(req.query.name, req.query.description, req.query.time, req.query.link, req.query.location, req.query.repeat).then(events => {
+    manager.createEvent(res.query.name, res.query.description, res.query.time, res.query.link, res.query.location, res.query.repeat).then(events => {
       console.log(events)
       res.json(events);
       res.send(events);
@@ -20,4 +20,3 @@ router.route("/createEvent").post((req, res) => {
   });
 
   module.exports = router;
-  

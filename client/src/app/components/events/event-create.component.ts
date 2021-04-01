@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import axios from 'axios'
+
 //import {searchUsers} from 'server/account_manager.js';
 
 //declare function createEvent(name:string, description:string, time:string, link:string, location:string, repeat:number): any;
@@ -12,16 +13,21 @@ import axios from 'axios'
 })
 export class EventCreateComponent implements OnInit {
 
-  name = '';
-  desc = '';
-  dTime = '';
-  link = '';
-  location = '';
+  //event vars
+  name: string = '';
+  desc: string = '';
+  dTime: string = '';
+  link: string = '';
+  location: string = '';
   repeat: number = 0;
 
+  //submission vars
   form: FormGroup;
   loading = false;
   submitted = false;
+
+  //button toggle
+  expanded = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,19 +59,26 @@ export class EventCreateComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   onSubmit() {
-    this.loading = true;
-    
-    // alert('hey');
+    //alert('HEY');
     // stop here if form is invalid
+    alert(this.name + this.desc + this.link + this.location + this.dTime + this.repeat);
     if (this.form.invalid) {
+      //alert('hey');
       return;
     }
-    
-    axios.post("/purdue-pete-planners/server/api/events", { params: { name:this.name, description:this.desc, link:this.link, location:this.location, Time:this.dTime, repeat:this.repeat}})
+    this.loading = true;
+    axios.post("/api/events/createEvent", { name:this.name, description:this.desc, link:this.link, location:this.location, Time:this.dTime, repeat:this.repeat} , 
+     {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
     .then((res: any) => {
-      console.log(res.data[0])
+      console.log(res)
     });
     this.submitted = true;
+    this.loading = false;
+    //alert("you better fucking not have");
   }
 
 
@@ -76,11 +89,7 @@ export class EventCreateComponent implements OnInit {
     this.location = locInput.value;
     this.dTime = dTimeInput.value;
     this.repeat = repeatInput;
-
-    //thing.createEvent(this.name, this.desc, this.dTime, this.link, this.location, this.repeat);
-
-    
-    
+    //alert('BITCH');
   }
 
   repeatChoiceHandler(event: any){
@@ -89,4 +98,30 @@ export class EventCreateComponent implements OnInit {
 
   }
 
+  //Code from search component, reusing here for inviting users to events
+  searchResponse : string[] = [];
+  type = 'none'
+  tableargs = {data: this.searchResponse, type: this.type}
+  displaySearchResult = false
+
+  getSearchValue(val: string) {
+    axios.get(`/api/account/searchUsers`, { params: { prefix: val } })
+    .then((res) => {
+      console.log(res.data[0])
+      if (typeof res.data[0] === 'undefined'){
+        this.searchResponse = ["No matching user"]
+      } else {
+        // for (d in res.data[0]) {
+        //   this.searchResponse.push(d.user_name)
+        // }
+
+        //TODO: temp solution until prefix is impulmented
+        this.searchResponse = [res.data[0].user_name]
+        // this.searchResponse = res.data[0];
+      }
+      this.type = 'search'
+      this.displaySearchResult = true
+      this.tableargs = {data: this.searchResponse, type: this.type}
+    });
+  }
 }
