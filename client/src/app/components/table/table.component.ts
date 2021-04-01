@@ -96,7 +96,7 @@ export class TableComponent implements OnInit {
 
   clickedAddClass(username: any) {
     console.log(username)
-    axios.post("/api/account/searchClassTag", { curUser: this.curUser.classtag, data:  username})
+    axios.post("/api/account/searchClassTag", { curUser: this.curUser.class_list, data:  username})
   }
 
 }

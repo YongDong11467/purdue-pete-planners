@@ -33,10 +33,11 @@ export class ProfileComponent implements OnInit {
       phone: ['', Validators.required],
       major: [''],
       address: [''],
-      password: ['', [Validators.minLength(6), Validators.required, Validators.nullValidator]],
+      password: ['', [Validators.minLength(4), Validators.required, Validators.nullValidator]],
       confirmPassword: ['', [Validators.required, Validators.nullValidator]]
     }, {
-      validator: ConfirmedValidator('password', 'confirmPassword')
+      validator: ConfirmedValidator('password', 'confirmPassword'),
+      validator2: ConfirmedValidator('password', this.curUser.password)
     });
   }
 
@@ -48,12 +49,13 @@ export class ProfileComponent implements OnInit {
       phone: ['', [Validators.pattern('[- +()0-9]+')]],
       major: [''],
       address: [''],
-      password: ['', [Validators.minLength(6), Validators.required, Validators.nullValidator]],
+      password: ['', [Validators.minLength(4), Validators.required, Validators.nullValidator]],
       confirmPassword: ['', [Validators.required, Validators.nullValidator]]
     }, {
-      validator: ConfirmedValidator('password', 'confirmPassword')
+      validator: ConfirmedValidator('password', 'confirmPassword'),
+      validator2: ConfirmedValidator('password', this.curUser.password)
     });
-    console.log(this.user)
+    // console.log(this.user)
   }
 
   get f() {
@@ -70,12 +72,14 @@ export class ProfileComponent implements OnInit {
     }
     this.loading = true;
 
-    this.curUser.email = this.email;
-    this.curUser.phone = this.phone;
-    this.curUser.major = this.major;
-    this.curUser.address = this.address;
-
-    alert('New values: \n\n' + JSON.stringify(this.form.value, null, 4));
+    this.curUser.email = this.f.email.value;
+    this.curUser.phone = this.f.phone.value;
+    this.curUser.major = this.f.major.value;
+    this.curUser.address = this.f.address.value;
+    this.curUser.password = this.f.password.value;
+    
+    console.log(this.curUser)
+    // alert('New values: \n\n' + JSON.stringify(this.form.value, null, 4));
   }
 
   get userInfo(){

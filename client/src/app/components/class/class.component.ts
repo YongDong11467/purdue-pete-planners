@@ -24,7 +24,7 @@ export class ClassComponent implements OnInit {
 
   ngOnInit(): void {
       this.curUser = JSON.parse(sessionStorage.curUser || '{}');
-      console.log(this.curUser.user_name)
+      //console.log(this.curUser.user_name)
       console.log(this.curUser)
       this.getAllUserClasses(this.curUser.user_name)
   }
@@ -43,17 +43,17 @@ export class ClassComponent implements OnInit {
     console.log("Searching for all class tags of user")
       axios.get(`/api/account/findUserCT`, { params: { prefix: val } })
       .then((res) => {
-        console.log(res.data[0])
+        //console.log(res.data[0])
         if (typeof res.data[0] === 'undefined'){
           this.searchResponse = ["No matching user"]
         } else {
           this.searchResponse = [res.data[0].class_list]
-          console.log(this.searchResponse)
+          //console.log(this.searchResponse)
         }
         this.type = 'search'
         this.displaySearchResult = true
         this.table_args_class_list = {data: this.searchResponse, type: this.type}
-        console.log(this.table_args_class_list)
+        //console.log(this.table_args_class_list)
       });
   }
 
@@ -66,12 +66,12 @@ export class ClassComponent implements OnInit {
         this.searchResponse = ["No matching class tag"]
         this.name = ["No matching class name"]
         this.tagExists = false
-        console.log("no class");
+        //console.log("no class");
       } else {
         this.searchResponse = [res.data[0].class_tag]
         this.name = [res.data[0].name]
         this.tagExists = true
-        console.log(this.name)
+        //console.log(this.name)
       }
       this.type = 'searchTagResult'
       this.displayTagResult = true
