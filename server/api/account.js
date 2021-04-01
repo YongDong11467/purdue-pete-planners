@@ -61,6 +61,14 @@ router.route("/searchAllStudyGroup").get((req, res) => {
   });
 });
 
+router.route("/updateStudyGroupRequest").post((req, res) => {
+  console.log(req.body.data)
+  console.log(req.body)
+  return manager.updateStudyGroupRequest(req.body.curUser, req.body.data)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
+});
+
 // router.route("/DONOTGOHERE").get((req, res) => {
 //   manager.populateDatabase()
 // });

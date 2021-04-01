@@ -206,6 +206,29 @@ const searchAllStudyGroup = async function(){
   });
 }
 
+/**
+ * Update's the Member of the study group
+ *
+ * @param {String} study_group
+ */
+const updateStudyGroupRequest = async function(curuser, study_group){
+  //TODO: error checking on duplicate
+  curUser = curuser
+  console.log(study_group)
+  var myquery = { Course_name: study_group};
+  var newvalue = { $push: {Member: curUser} };
+  db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+  var userquery = {user_name: curuser};
+  var uservalue = { $push: {study_group: study_group} };
+  db.collection("User").updateOne(userquery, uservalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+}
+
 const handleAcceptReject = async function(data){
 	curUser = data.curUser
 	console.log(data)
@@ -253,6 +276,7 @@ module.exports = {
 	handleAcceptReject,
 	searchUsersCT,
   searchStudyGroup,
-  searchAllStudyGroup
+  searchAllStudyGroup,
+  updateStudyGroupRequest
 }
 
