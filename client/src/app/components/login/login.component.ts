@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit {
     // Function to login asynchronously
 
     this.loading = true;
-    this.router.navigate(['/home']);
     axios.get(`/api/account/searchUsers`, { params: { prefix: user } })
     .then((res) => {
       console.log(res.data[0])
@@ -58,6 +57,7 @@ export class LoginComponent implements OnInit {
         console.log('No matching users')
       } else {
         sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
+        this.router.navigate(['/home']);
       }
     });
 
