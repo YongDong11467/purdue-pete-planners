@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Directive, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import axios from 'axios';
-import { io } from "socket.io-client";
+import { messagingService } from '../../messaging.service';
 
 const SOCKET_ENDPOINT = 'localhost:3080';
 
@@ -12,19 +12,25 @@ const SOCKET_ENDPOINT = 'localhost:3080';
   styleUrls: ['./messaging.component.css']
 })
 export class MessagingComponent implements OnInit {
-  socket: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    messageService: messagingService
   ) { }
 
-  ngOnInit(): void {
-    this.setupSocketConnection();
+  chats: any;
+  curUser: any;
+
+  getUserChats(){
+    this.curUser = JSON.parse(sessionStorage.curUser || '{}');
+    console.log(this.curUser);
+    this.chats = this.curUser.chats;
+    console.log(this.chats);
   }
 
-  setupSocketConnection() {
-    this.socket = io(SOCKET_ENDPOINT);
+  ngOnInit(): void { 
+      this.getUserChats();
   }
 
 }

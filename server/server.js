@@ -6,7 +6,10 @@ const cors = require("cors");
 
 const app = require('express')();
 const http = require('http').createServer(app);
-const io = require("socket.io")(http);
+const io = require("socket.io")(http, {cors: {
+    origin: '*',
+  }
+});
 bodyParser = require("body-parser");
 port = 3080;
 
@@ -24,6 +27,7 @@ async function initialize_app(){
 
 //initialize_app();
 app.use(bodyParser.json());
+app.use(cors());
 app.use("/api/dining", diningRouter);
 app.use("/api/account", accountRouter);
 app.use("/api/messaging", messageRouter);
@@ -42,7 +46,7 @@ io.on('connection', (socket) => {
     });
 });
 
-http.listen(port, () => {
+http.listen(port, async () => {
     try{
         initialize_app();
         console.log(`Server listening on the port::${port}`);

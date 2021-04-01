@@ -11,8 +11,12 @@
             <mat-card class="chat-selector">
                 <mat-card-header>
                     <mat-card-title>Chats:</mat-card-title>
-    
                 </mat-card-header>
+                <ul class="chats">
+                    <li *ngFor="let chat of chats">
+                      <span class="badge">{{chat}}</span>
+                    </li>
+                  </ul>
             </mat-card>
 
             <mat-card class="message-editor">

@@ -44,6 +44,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
 
+import { messagingService } from './messaging.service';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -93,7 +94,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatButtonModule,
     MatPaginatorModule
   ],
-  providers: [],
+  providers: [messagingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
