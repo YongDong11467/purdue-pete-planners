@@ -21,6 +21,7 @@ export class MessagingComponent implements OnInit {
 
   chats: any;
   curUser: any;
+  selectedChat?: any;
 
   getUserChats(){
     this.curUser = JSON.parse(sessionStorage.curUser || '{}');
@@ -31,6 +32,15 @@ export class MessagingComponent implements OnInit {
 
   ngOnInit(): void { 
       this.getUserChats();
+  }
+
+  onSelect(chat: any): void {
+    this.selectedChat = chat;
+    console.log(this.selectedChat);
+    axios.get('/api/messaging/chatHistory', { params: { prefix: chat } })
+    .then((res) => {
+        console.log(res);
+    });
   }
 
 }

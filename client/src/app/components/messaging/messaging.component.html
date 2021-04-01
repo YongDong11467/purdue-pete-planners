@@ -13,7 +13,7 @@
                     <mat-card-title>Chats:</mat-card-title>
                 </mat-card-header>
                 <ul class="chats">
-                    <li *ngFor="let chat of chats">
+                    <li *ngFor="let chat of chats" (click)="onSelect(chat)">
                       <span class="badge">{{chat}}</span>
                     </li>
                   </ul>

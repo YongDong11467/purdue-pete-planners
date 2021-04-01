@@ -16,9 +16,11 @@ router.route("/userChats").get(async (req,res) => {
 });
 
 router.route("/chatHistory").get(async (req,res) => {
-    console.log(req);
-    let chathist = manager.getChatHistory(req.body.chatID);
-    console.log("From chat:\n" + chathist);
+    console.log("chat id to retrieve:" + req.query.prefix);
+    return manager.getChatHistory(req.query.prefix)
+    .then(chatHist => {
+        res.json(chatHist);
+    });
 });
 
 module.exports = router;
