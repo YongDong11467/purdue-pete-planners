@@ -149,6 +149,22 @@ const searchUsers = async function(prefix){
 	});
 }
 
+/**
+ * Gets all class tags given a user
+ *
+ * @param {String} prefix
+ */
+const findUserCT = async function(prefix){
+	return new Promise(function(resolve, reject) {
+		var query = { class_list: prefix };
+		db.collection("User").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			console.log(result);
+			resolve(result);
+		});
+	});
+}
+
 module.exports = {
     startDatabaseConnection:startDatabaseConnection,
     closeDatabaseConnection:closeDatabaseConnection,
@@ -263,6 +279,7 @@ module.exports = {
 	getUserInfo,
 	handleAcceptReject,
 	searchUsersCT,
-	searchClassTag
+	searchClassTag,
+	findUserCT
 }
 
