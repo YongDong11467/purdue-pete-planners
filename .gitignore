@@ -9,6 +9,7 @@
 
 # dependencies
 node_modules
+**/node_modules
 /client/src/app/assets
 
 # profiling files
