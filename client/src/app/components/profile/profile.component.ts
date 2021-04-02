@@ -55,7 +55,6 @@ export class ProfileComponent implements OnInit {
       validator: ConfirmedValidator('password', 'confirmPassword'),
       validator2: ConfirmedValidator('password', this.curUser.password)
     });
-    // console.log(this.user)
   }
 
   get f() {

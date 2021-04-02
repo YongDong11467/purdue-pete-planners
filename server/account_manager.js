@@ -268,6 +268,7 @@ const searchClassTag = async function(prefix){
 		resolve(result);
 	  });
 	});
+}
 /*
  * Gets all study groups
  *
