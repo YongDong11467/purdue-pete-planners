@@ -5,12 +5,12 @@
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title class="user-data">{{curUser?.user_name}}</mat-card-title>
-      <mat-card-subtitle>{{curUser?.email}}</mat-card-subtitle>
+      <mat-card-subtitle>{{email}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content class="user-data">
       <ul class="user-fw-status">
         <div><a class="button" routerLink="/friends" title="" routerLinkActive="activebutton">Friends</a></div>
-        <div><span>155</span></div>
+        <div><span>{{curUser?.friend.length}}</span></div>
         <div>
           <a class="button" routerLink="/profile" title="" routerLinkActive="activebutton">View Profile</a>
         </div>
@@ -31,36 +31,21 @@
     <mat-card-subtitle><a class="button" routerLink="/schedule" title="" routerLinkActive="activebutton">View Schedule</a></mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
+    <mat-list *ngFor="let dues of realdue">
       <mat-divider></mat-divider>
-      <mat-list-item>lab 2 CS354</mat-list-item>
-      <mat-list-item>due data: 3/2/2021</mat-list-item>
-      <mat-divider></mat-divider>
-      <mat-list-item>hw 4 CS 448</mat-list-item>
-      <mat-list-item>due data: 4/8/2021</mat-list-item>
-      <mat-divider></mat-divider>
-      <mat-list-item>project CS 407</mat-list-item>
-      <mat-list-item>due data: 12/3/2021</mat-list-item>
-      <mat-divider></mat-divider>
+      <mat-list-item>{{dues}}</mat-list-item>
     </mat-list>
   </mat-card-content>
 
   <p>                              </p>
-
   <mat-card-header>
-    <mat-card-title>Your Class</mat-card-title>
-    <mat-card-subtitle><a class="button" routerLink="/class" title="" routerLinkActive="activebutton">View Class</a></mat-card-subtitle>
+  <mat-card-title>Your Class</mat-card-title>
+  <mat-card-subtitle><a class="button" routerLink="/class" title="" routerLinkActive="activebutton">View Class</a></mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
+    <mat-list *ngFor="let class of classlist">
       <mat-divider></mat-divider>
-      <mat-list-item>CS 354</mat-list-item>
-      <mat-divider></mat-divider>
-      <mat-list-item>CS 448</mat-list-item>
-      <mat-divider></mat-divider>
-      <mat-list-item>CS 407</mat-list-item>
-      <mat-divider></mat-divider>
-      <mat-list-item>CS 471</mat-list-item>
+      <mat-list-item>{{class}}</mat-list-item>
     </mat-list>
   </mat-card-content>
   <!--<mat-card-actions>

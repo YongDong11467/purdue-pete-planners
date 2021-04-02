@@ -61,19 +61,19 @@ export class EventCreateComponent implements OnInit {
   onSubmit() {
     //alert('HEY');
     // stop here if form is invalid
-    //alert(this.name + this.desc + this.link + this.location + this.dTime + this.repeat);
+    // alert(this.name + this.desc + this.link + this.location + this.dTime + this.repeat);
     if (this.form.invalid) {
       //alert('hey');
       return;
     }
     this.loading = true;
     /*
-    axios.post("/api/events/createEvent", { name:this.name, description:this.desc, link:this.link, location:this.location, Time:this.dTime, repeat:this.repeat} , 
+    axios.post("/api/events/createEvent", { name:this.name, description:this.desc, link:this.link, location:this.location, Time:this.dTime, repeat:this.repeat} ,
      {
       headers: {
         'Content-Type': 'application/json'
       }
-      
+
     })
     .then((res: any) => {
       console.log(res)
