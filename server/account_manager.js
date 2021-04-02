@@ -4,6 +4,7 @@ const uri = "mongodb+srv://hyuen:cs407@cluster0.tw2mu.mongodb.net/myFirstDatabas
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const router = require("express").Router();
+const _ = require("underscore");
 
 // Global vars for Mongo DB connection
 var connection, db;
@@ -60,7 +61,7 @@ const createAccount = async function(username, email, major, pass) {
 		"schedule":[],
 		"major":major,
 		"study_group":[],
-		"direct_message":[],
+		"chats":[],
 		"friend":[],
 		"friend_request":[],
 		"book_room":[]
@@ -82,6 +83,20 @@ const createAccount = async function(username, email, major, pass) {
 	}
 
 	return 0;
+}
+
+const createEvent = async function(name, description, time, link, location, repeat) {
+	//alert('hey');
+	const event = {
+		"name":name,
+		"description":description,
+		"Time":time,
+		"link":link,
+		"location":location,
+		"repeat":repeat
+	}
+
+	await db.collection('Event').insertOne(event);
 }
 
 /**
@@ -133,6 +148,35 @@ const searchUsers = async function(prefix){
 	});
 }
 
+/*
+ * Summary. Function that gets the hashed password of an account
+ *
+ * @param {String} usrname 	The username of the account which the password is being extracted
+ *
+ * @return {int} 	Returns a value depending on invalid information (-1 = Cannot connect to database, 1 = Invalid Username) 
+ * @return {String} Returns a string of the password
+ */
+const getAccountPassword = async function(usrname) {
+	let userExists, pass;
+	try {
+		console.log("in get account password: " + usrname);
+		userExists = await userAccountExists(usrname);
+		if(userExists === -1){return -1;}
+
+		if(userExists) {
+			pass = await db.collection('User').findOne({user_name: usrname}, {projection: {password: true, _id: false}});
+			console.log(pass);
+		}
+	} catch (err) {
+		console.log(err.stack);
+		return -1;
+	}
+
+	if (!userExists) {return 1;}
+	else {return pass}; 
+
+}
+
 /**
  * Gets all users with the given class tag
  *
@@ -140,8 +184,8 @@ const searchUsers = async function(prefix){
  */
  const searchUsersCT = async function(classtag){
 	return new Promise(function(resolve, reject) {
-		var query = { user_name: classtag };
-		db.collection("User").find(query).toArray(function(err, result) {
+		var query = { class_tag: classtag };
+		db.collection("Class_tag").find(query).toArray(function(err, result) {
 			if (err) throw err;
 			console.log(result);
 			resolve(result);
@@ -171,7 +215,8 @@ module.exports = {
     createAccount:createAccount,
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
-	searchUsers:searchUsers
+	searchUsers:searchUsers,
+	createEvent:createEvent
 }
 
 /**
@@ -198,8 +243,6 @@ const updateFriendRequest = async function(curuser, receiver){
  */
 const searchStudyGroup = async function(prefix){
   return new Promise(function(resolve, reject) {
-    //TODO: error with regex try again later
-    // var query = { Course_name: { $regex: `/^${prefix}/` } };
     var query = { Course_name: prefix };
     db.collection("Study_group").find(query).toArray(function(err, result) {
       if (err) throw err;
@@ -225,6 +268,42 @@ const searchClassTag = async function(prefix){
 		resolve(result);
 	  });
 	});
+/*
+ * Gets all study groups
+ *
+ * @param {String} prefix
+ */
+const searchAllStudyGroup = async function(){
+  return new Promise(function(resolve, reject) {
+    db.collection("Study_group").find().toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * Update's the Member of the study group
+ *
+ * @param {String} study_group
+ */
+const updateStudyGroupRequest = async function(curuser, study_group){
+  //TODO: error checking on duplicate
+  curUser = curuser
+  console.log(study_group)
+  var myquery = { Course_name: study_group};
+  var newvalue = { $push: {Member: curUser} };
+  db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+  var userquery = {user_name: curuser};
+  var uservalue = { $push: {study_group: study_group} };
+  db.collection("User").updateOne(userquery, uservalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
 }
 
 const handleAcceptReject = async function(data){
@@ -271,15 +350,159 @@ const populateDatabase = async function(){
 
 }
 
+/*
+ * Summary. Function that checks if username exists in database
+ *
+ * @param {String} usrname The email of the account which the password is being extracted
+ *
+ * @return {int} Returns a value depending on if username exists (-1 = Cannot connect to database, 0 = Does not Exist, 1 = Exists) 
+ */
+const userAccountExists = async function(usrname) {
+	let userExists;
+
+	try {
+		userExists = await db.collection('User').find({user_name: usrname}).limit(1).count(true);
+	} catch (err) {
+		console.log(err.stack);
+		return -1;
+	}
+
+	return userExists;
+}
+
+/**
+ * Summary. Function that retrives chat rooms for a user
+ * 
+ * @param {String} username The username of the account in question
+ * 
+ * @return A list of conversations
+ */
+const getUserChats = async function(usrname) {
+	let chatList;
+
+	if(userAccountExists(usrname)){
+		try{
+			chatList = await db.collection('User').findOne({user_name:usrname}, {projection:{chats: true, _id: false}});
+			console.log(chatList)
+		} catch(err){
+			console.log(err.stack);
+			return -1;
+		}
+	}
+
+	return chatList;
+
+}
+
+/**
+ * Summary. Function that retrieve chat room message history for a given chat
+ * 
+ * @param {*} chat The id of the chat in question
+ * 
+ * @return An array of messages and their senders
+ */
+const getChatHistory = async function(chat) {
+	let history;
+	let chatExists;
+
+	try{
+		chatExists = await db.collection("chat_room").find({_id: chat});
+		if(!chatExists){
+			console.log("chat does not exist");
+			return -1;
+		}
+
+		history = await db.collection("chat_room").findOne({_id: chat}, {projection: {History: true, _id: false}});
+		console.log(history);
+	} catch(err){
+		console.log(err.stack);
+		return -1;
+	}
+	
+	return history;
+}
+
+/**
+ * Summary. Function to create a new chat room
+ * 
+ * @param {Array} users The list of users to be added to the chat
+ * 
+ * @return The id of the new chat document. -1 for failure, 0 for already exists
+ */
+const createChatRoom = async function(users) {
+	var new_chat;
+	if(users < 2){
+		console.log("cannot make chat with one person");
+		return -1;
+	}
+
+	const room = {
+		"Members": users,
+		"History":[]
+	};
+	
+	// check database for chat room with same participatnts.
+	let chats;
+	chats = await db.collection("chat_room").find({},{projection: {Members:true, _id:true}}).toArray();
+	console.log(chats);
+
+	var i;
+	for(i = 0; i< chats.length; i++){
+		chats[i].Members = chats[i].Members.sort();
+		users = users.sort();
+		if(_.difference(chats[i].Members, users).length == 0){
+			console.log("chat already exists");
+			return chats[i]._id;
+		}
+	}
+
+	new_chat = await db.collection("chat_room").insertOne(room);
+
+	console.log(new_chat.insertedId);
+
+	for(i = 0; i<users.length; i++){
+		addChatToUser(users[i], new_chat.insertedId);
+	}
+
+	return new_chat.insertedId;
+
+}
+
+/**
+ * Sumarry. Function to add chat room to user document
+ * 
+ * @param {String} user The user to add the chat to
+ * 
+ * @param {ObjectId} id The id of the new chat
+ * 
+ * @return An integer value (1 = success, 0 = failure, -1 = error)
+ */
+const addChatToUser = async function(user, id){
+	let retval;
+
+	retval = await db.collection('User').updateOne({user_name:user}, {$push: {direct_message: id}});
+	console.log(retval);
+}
+
 module.exports = {
 	searchUsers,
 	startDatabaseConnection,
 	updateFriendRequest,
 	populateDatabase,
 	getUserInfo,
+	getAccountPassword,
+	createAccount,
+	userAccountExists,
+	getUserChats,
+	createChatRoom,
+	addChatToUser,
+	getChatHistory,
 	handleAcceptReject,
 	searchUsersCT,
 	searchClassTag,
-	findUserCT
+	findUserCT,
+  searchStudyGroup,
+  searchAllStudyGroup,
+  updateStudyGroupRequest,
+	createEvent
 }
-

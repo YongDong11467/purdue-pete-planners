@@ -10,48 +10,83 @@ import axios from 'axios';
 })
 export class StudygroupComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    this.initPage(this.user);
+  }
   curUser = JSON.parse(sessionStorage.curUser || '{}');
-  tableargs1 = {data: ["Test Course name 1", ['Jack', 'Alex', 'Mary'], ['ChatRoom1'], ['Study Room 1']], type: 'Demo Study group 1'};
-  tableargs2 = {data: [], type: 'Study group 2'};
-  tableargs3 = {data: [], type: 'studygroup'};
-  tablemember = {data: [], type: 'member'};
-  tablechatroom = {data: [], type: 'studygroup'};
-  tablestudyroom = {data: [""], type: 'studygroup'};
-  tableargs4 = {data: ['Test Course name 1', this.tablemember, this.tablechatroom, this.tablestudyroom], type: 'studygroup'};
+  user = this.curUser.user_name;
+  curStudyGroup = 'CS 381';
+  tableargs1 = {data: [""], type: 'member'};
+  tableargs2 = {data: [""], type: 'chat_room'};
+  tableargs3 = {data: [""], type: 'study_room'};
+  tablemember: string[] = [];
+  tablechatroom: string[] = [];
+  tablestudyroom: string[] = [];
+  tablemeetingtime: Date;
   StudyGroupData = {};
 
-  ngOnInit(): void {
-    this.curUser = JSON.parse(sessionStorage.curUser || '{}');
-    console.log(this.tableargs1);
-    console.log(this.tableargs4);
-    /*axios.get(`/api/account/searchStudyGroup`, { params: { prefix: 'Test Course name 1' } })
-      .then((res) => {
-        console.log(res.data);
-        this.diningData = res.data.Meals;
-        this.tableargs1 = {data: res.data.Meals[0].Stations[0].Items, type: 'Breakfast'};
-        this.tableargs2 = {data: res.data.Meals[1].Stations[0].Items, type: 'Lunch'};
-        this.tableargs3 = {data: res.data.Meals[2].Stations[0].Items, type: 'Dinner'};
-        this.tableargs3 = {data: res.data[0], type: 'studygroup'};
-        this.tablemember = {data: res.data[0].Member, type: 'member'};
-        this.tablechatroom = {data: res.data[0].Chat_room, type: 'chat_room'};
-        this.tablestudyroom = {data: res.data[0].Study_room, type: 'study_room'};
-      });*/
 
-    console.log(this.tableargs3);
+  ngOnInit(): void {
+    this.initPage(this.user);
+  }
+
+  initPage(val: string) {
+    axios.get(`/api/account/searchStudyGroup`, { params: { prefix: 'CS 381' } })
+      .then((res) => {
+        if (typeof res.data[0] === 'undefined') {
+          this.tablemember = ["no member"];
+          this.tablechatroom = ["no chat room"];
+          this.tablestudyroom = ["no study room"];
+          console.log(this.tablemember);
+        } else {
+          this.tablemember = res.data[0].Member;
+          this.tablechatroom = res.data[0].Chat_room;
+          this.tablestudyroom = res.data[0].Study_room;
+          this.tablemeetingtime = res.data[0].Meeting_time;
+          console.log(res.data[0]);
+          console.log(this.tablemember);
+        }
+        this.tableargs1 = {data: this.tablemember, type: 'member'};
+        this.tableargs2 = {data: this.tablechatroom, type: 'chat_room'};
+        this.tableargs3 = {data: this.tablestudyroom, type: 'study_room'};
+        console.log(this.tableargs3);
+        console.log(this.tablemeetingtime);
+      });
   }
 
   onTabClick(event: any) {
     console.log(event.tab.textLabel);
-    /*axios.get(`/api/dining/locations`, { params: { location: event.tab.textLabel } })
+    this.curStudyGroup = event.tab.textLabel;
+    axios.get(`/api/account/searchStudyGroup`, { params: { prefix: event.tab.textLabel } })
       .then((res) => {
-        console.log(res.data);
-        this.diningData = res.data.Meals;
-        this.tableargs1 = {data: res.data.Meals[0].Stations[0].Items, type: 'Breakfast'};
-        this.tableargs2 = {data: res.data.Meals[1].Stations[0].Items, type: 'Lunch'};
-        this.tableargs3 = {data: res.data.Meals[2].Stations[0].Items, type: 'Dinner'};
-        console.log(this.tableargs1);
-      });*/
+        if (typeof res.data[0] === 'undefined') {
+          this.tablemember = ["no member"];
+          this.tablechatroom = ["no chat room"];
+          this.tablestudyroom = ["no study room"];
+          console.log(this.tablemember);
+        } else {
+          this.tablemember = res.data[0].Member;
+          this.tablechatroom = res.data[0].Chat_room;
+          this.tablestudyroom = res.data[0].Study_room;
+          this.tablemeetingtime = res.data[0].Meeting_time;
+          console.log(res.data[0]);
+          console.log(this.tablemember);
+        }
+        this.tableargs1 = {data: this.tablemember, type: 'member'};
+        this.tableargs2 = {data: this.tablechatroom, type: 'chat_room'};
+        this.tableargs3 = {data: this.tablestudyroom, type: 'study_room'};
+        console.log(this.tableargs3);
+        console.log(this.tablemeetingtime);
+      });
+  }
+
+  refresh() {
+    console.log("refreshing");
+    this.initPage(this.user);
+  }
+
+  clickedjoin(event: any) {
+    axios.post('/api/account/updateStudyGroupRequest', { curUser: this.curUser.user_name, data: this.curStudyGroup });
   }
 
 }

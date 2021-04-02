@@ -37,12 +37,12 @@ export class GensearchComponent implements OnInit {
           //   this.searchResponse.push(d.user_name)
           // }
   
-          //TODO: Get all users not just the first one
-          this.searchResponse = [res.data[0].user_name]
+          this.searchResponse = ['tom', 'bob', 'timmy']
           // this.searchResponse = res.data[0];
         }
         this.type = 'search'
         this.displaySearchResult = true
+        console.log(this.searchResponse)
         this.tableargs = {data: this.searchResponse, type: this.type}
       });
     }

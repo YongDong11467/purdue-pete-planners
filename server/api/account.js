@@ -6,17 +6,35 @@ router.route("/").get((req, res) => {
     res.json(account);
 });
 
-router.post("/login", (req,res) => {
-    console.log(req);
-    response = "HTTP/1.1 200 OK";
-    res.end(response);
+/**
+ * validates user credentials and allows login
+ */
+router.route("/login").post(async (req,res) => {
+    console.log(req.body);
+    let pass = await manager.getAccountPassword(req.body.username);
+    console.log("returned from account manager: " + pass.password);
+    if(pass.password != req.body.password){
+        //TODO: Add encryption for passwords
+        //Passwords don't match. Deny entry
+        return res.status(400).json("error");
+    }else{
+        return res.status(200).json("success");
+    }
 });
 
-router.post("/register", (req,res) => {
-
-    res.send('200: success')
+/**
+ * API endpoint to register a new user
+ */
+router.route("/register").post((req,res) => {
+    console.log(req.body.uname);
+    return manager.createAccount(req.body.uname,  req.body.email, 'cs', req.body.pass)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
 });
 
+/**
+ * 
+ */
 router.route("/searchUsers").get((req, res) => {
   manager.searchUsers(req.query.prefix).then(users => {
     console.log(users)
@@ -45,6 +63,9 @@ router.route("/findUserCT").get((req, res) => {
   });
 });
 
+/**
+ * 
+ */
 router.route("/sendfr").post((req, res) => {
   return manager.updateFriendRequest(req.body.curUser, req.body.data)
   .then(success => res.status(200).json(success))
@@ -66,6 +87,21 @@ router.route("/searchStudyGroup").get((req, res) => {
     console.log(users)
     res.json(users);
   });
+});
+
+router.route("/searchAllStudyGroup").get((req, res) => {
+  manager.searchAllStudyGroup().then(users => {
+    console.log(users)
+    res.json(users);
+  });
+});
+
+router.route("/updateStudyGroupRequest").post((req, res) => {
+  console.log(req.body.data)
+  console.log(req.body)
+  return manager.updateStudyGroupRequest(req.body.curUser, req.body.data)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
 });
 
 // router.route("/DONOTGOHERE").get((req, res) => {
