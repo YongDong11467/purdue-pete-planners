@@ -227,14 +227,50 @@ const updateFriendRequest = async function(curuser, receiver){
  */
 const searchStudyGroup = async function(prefix){
   return new Promise(function(resolve, reject) {
-    //TODO: error with regex try again later
-    // var query = { Course_name: { $regex: `/^${prefix}/` } };
     var query = { Course_name: prefix };
     db.collection("Study_group").find(query).toArray(function(err, result) {
       if (err) throw err;
       console.log(result);
       resolve(result);
     });
+  });
+}
+
+/**
+ * Gets all study groups
+ *
+ * @param {String} prefix
+ */
+const searchAllStudyGroup = async function(){
+  return new Promise(function(resolve, reject) {
+    db.collection("Study_group").find().toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * Update's the Member of the study group
+ *
+ * @param {String} study_group
+ */
+const updateStudyGroupRequest = async function(curuser, study_group){
+  //TODO: error checking on duplicate
+  curUser = curuser
+  console.log(study_group)
+  var myquery = { Course_name: study_group};
+  var newvalue = { $push: {Member: curUser} };
+  db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+  var userquery = {user_name: curuser};
+  var uservalue = { $push: {study_group: study_group} };
+  db.collection("User").updateOne(userquery, uservalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
   });
 }
 
@@ -431,5 +467,8 @@ module.exports = {
 	getChatHistory,
 	handleAcceptReject,
 	searchUsersCT,
+  searchStudyGroup,
+  searchAllStudyGroup,
+  updateStudyGroupRequest,
 	createEvent
 }
