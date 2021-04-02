@@ -1,5 +1,6 @@
 const diningRouter = require("./api/dining");
 const accountRouter = require("./api/account");
+const eventRouter = require("./api/events");
 const messageRouter = require("./api/messaging");
 const account_manager = require("./account_manager");
 const cors = require("cors");
@@ -30,6 +31,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use("/api/dining", diningRouter);
 app.use("/api/account", accountRouter);
+app.use("/api/events", eventRouter);
 app.use("/api/messaging", messageRouter);
 
 app.get('/', (req,res) => {
