@@ -12,8 +12,8 @@ router.post("/events", (req,res) => {
 });
 
 router.route("/createEvent").post((req, res) => {
-  console.log(req.data);
-   return manager.createEvent(req.name, req.description, req.Time, req.link, req.location, req.repeat)
+  console.log(req);
+   return manager.createEvent(req.body.name, req.body.description, req.body.Time, req.body.link, req.body.location, req.body.repeat)
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
   });
