@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import axios from 'axios';
 import { HttpClientModule } from '@angular/common/http'
 import { first } from 'rxjs/operators';
-import axios from 'axios'
 
 @Component({
   selector: 'app-login',
@@ -46,23 +46,33 @@ export class LoginComponent implements OnInit {
     let user = this.f.username.value;
     let pass = this.f.password.value;
 
-    // login(user,pass);
-    // Function to login asynchronously
+    console.log(user + " " + pass);
+    
+    axios.post('/api/account/login', {
+      "username" : user,
+      "password" : pass
+    })
+    .then((response) => {
+      console.log(response);
+      
+      axios.get(`/api/account/searchUsers`, { params: { prefix: user } })
+      .then((res) => {
+        console.log(res.data[0])
+        if (typeof res.data[0] === 'undefined'){
+          console.log('No matching users')
+        } else {
+          sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
+        }
+      });
 
-    this.loading = true;
-    axios.get(`/api/account/searchUsers`, { params: { prefix: user } })
-    .then((res) => {
-      console.log(res.data[0])
-      if (typeof res.data[0] === 'undefined'){
-        console.log('No matching users')
-      } else {
-        sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
-        this.router.navigate(['/home']);
-      }
+      this.loading = true;
+      this.router.navigate(['/home']);
+    })
+    .catch((error) => {
+      console.log(error);
     });
 
-  }
-
+    }
   
 }
 
