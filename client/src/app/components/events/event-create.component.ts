@@ -13,12 +13,14 @@ import axios from 'axios'
 })
 export class EventCreateComponent implements OnInit {
 
+  /*
   //event vars
   name: String = '';
   desc: String = '';
   dTime: String = '';
   link: String = '';
   location: String = '';
+  */
   repeat: number = 0;
 
   //submission vars
@@ -59,44 +61,39 @@ export class EventCreateComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   onSubmit() {
-    //alert('HEY');
-    // stop here if form is invalid
-    //alert(this.name + this.desc + this.link + this.location + this.dTime + this.repeat);
+
+    this.submitted = true;
+    let n = this.f.eventName.value;
+    let e = this.f.eventDescription.value;
+    let l = this.f.link.value;
+    let L = this.f.location.value;
+    let d = this.f.eventDate.value;
+    let r = this.repeat;
+
+    //alert(n + e + l + L + d + r);
     if (this.form.invalid) {
       //alert('hey');
       return;
     }
-    this.loading = true;
-    /*
-    axios.post("/api/events/createEvent", { name:this.name, description:this.desc, link:this.link, location:this.location, Time:this.dTime, repeat:this.repeat} , 
-     {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-      
+    //this.loading = true;
+
+    axios.post('/api/events/createEvent', {
+      name : n,
+      description : e,
+      Time : d,
+      link : l,
+      location : L,
+      repeat : r
     })
-    .then((res: any) => {
-      console.log(res)
+    .then((response) => {
+      console.log(response);
+      this.loading = true;
     });
-    */
 
-
-    this.submitted = true;
-    this.loading = false;
+    
     //alert("you better fucking not have");
   }
-
-
-  onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, linkInput: HTMLInputElement, locInput: HTMLInputElement, dTimeInput: HTMLInputElement, repeatInput: number){
-    this.name = nameInput.value;
-    this.desc = descInput.value;
-    this.link = linkInput.value;
-    this.location = locInput.value;
-    this.dTime = dTimeInput.value;
-    this.repeat = repeatInput;
-    //alert('BITCH');
-    doTheThing(this.name, this.desc, this.dTime, this.link, this.location, this.repeat);
-  }
+  
 
   repeatChoiceHandler(event: any){
 
@@ -131,6 +128,19 @@ export class EventCreateComponent implements OnInit {
     });
   }
 }
+
+/*
+  onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, linkInput: HTMLInputElement, locInput: HTMLInputElement, dTimeInput: HTMLInputElement, repeatInput: number){
+    this.name = nameInput.value;
+    this.desc = descInput.value;
+    this.link = linkInput.value;
+    this.location = locInput.value;
+    this.dTime = dTimeInput.value;
+    this.repeat = repeatInput;
+    //alert('BITCH');
+    doTheThing(this.name, this.desc, this.dTime, this.link, this.location, this.repeat);
+  }
+*/
 
 async function doTheThing(name:String,description:String, time:String, link:String, location:String, repeat:number) {
   let init = {
