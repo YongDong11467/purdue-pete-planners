@@ -13,36 +13,49 @@ export class ProfileComponent implements OnInit {
   loading = false;
   submitted = false;
 
+  username = ''
+  email = ''
+  phone = ''
+  major = ''
+  address = ''
+
+  curUser = JSON.parse(sessionStorage.curUser || '{}');
+  user = this.curUser.user_name;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
   ) {
     this.form = this.formBuilder.group({
-      username: ['', Validators.required],
+      username: [this.user], //['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       major: [''],
       address: [''],
-      password: ['', [Validators.minLength(6), Validators.required, Validators.nullValidator]],
+      password: ['', [Validators.minLength(4), Validators.required, Validators.nullValidator]],
       confirmPassword: ['', [Validators.required, Validators.nullValidator]]
     }, {
-      validator: ConfirmedValidator('password', 'confirmPassword')
+      validator: ConfirmedValidator('password', 'confirmPassword'),
+      validator2: ConfirmedValidator('password', this.curUser.password)
     });
   }
 
   ngOnInit(): void {
+    this.curUser = JSON.parse(sessionStorage.curUser || '{}');
     this.form = this.formBuilder.group({
-      username: [''],
+      username: [this.user],
       email: ['', [Validators.email]],
       phone: ['', [Validators.pattern('[- +()0-9]+')]],
       major: [''],
       address: [''],
-      password: ['', [Validators.minLength(6), Validators.required, Validators.nullValidator]],
+      password: ['', [Validators.minLength(4), Validators.required, Validators.nullValidator]],
       confirmPassword: ['', [Validators.required, Validators.nullValidator]]
     }, {
-      validator: ConfirmedValidator('password', 'confirmPassword')
+      validator: ConfirmedValidator('password', 'confirmPassword'),
+      validator2: ConfirmedValidator('password', this.curUser.password)
     });
+    // console.log(this.user)
   }
 
   get f() {
@@ -51,17 +64,30 @@ export class ProfileComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-
+  
     // reset alerts on submit
     // stop here if form is invalid
     if (this.form.invalid) {
       return;
     }
     this.loading = true;
-    alert('New values: \n\n' + JSON.stringify(this.form.value, null, 4));
+
+    this.curUser.email = this.f.email.value;
+    this.curUser.phone = this.f.phone.value;
+    this.curUser.major = this.f.major.value;
+    this.curUser.address = this.f.address.value;
+    this.curUser.password = this.f.password.value;
+    
+    console.log(this.curUser)
+    // alert('New values: \n\n' + JSON.stringify(this.form.value, null, 4));
+  }
+
+  get userInfo(){
+    return this.user;
   }
 
   resetform() {
+    this.submitted = false;
     this.form.reset();
   }
 

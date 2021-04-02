@@ -43,6 +43,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { messagingService } from './messaging.service';
 
@@ -93,6 +94,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatRadioModule,
     MatButtonModule,
     MatPaginatorModule,
+    NgbModule,
     MatSnackBarModule
   ],
   providers: [messagingService],

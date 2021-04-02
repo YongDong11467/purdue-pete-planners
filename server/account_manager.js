@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient; // Framework to communicate with mongodb
 const Binary = require('mongodb').Binary;           // Framework to store binary data in mongodb
 const uri = "mongodb+srv://hyuen:cs407@cluster0.tw2mu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"    // Mongo DB uri
-const client = new MongoClient(uri, { useNewUrlParser: true });
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const router = require("express").Router();
 const _ = require("underscore");
@@ -193,6 +193,22 @@ const getAccountPassword = async function(usrname) {
 	});
 }
 
+/**
+ * Gets all class tags given a user
+ *
+ * @param {String} prefix
+ */
+const findUserCT = async function(prefix){
+	return new Promise(function(resolve, reject) {
+		var query = { class_list: prefix };
+		db.collection("User").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			console.log(result);
+			resolve(result);
+		});
+	});
+}
+
 module.exports = {
     startDatabaseConnection:startDatabaseConnection,
     closeDatabaseConnection:closeDatabaseConnection,
@@ -237,6 +253,22 @@ const searchStudyGroup = async function(prefix){
 }
 
 /**
+ * Gets the class tag with the given prefix
+ *
+ * @param {String} prefix
+ */
+const searchClassTag = async function(prefix){
+	return new Promise(function(resolve, reject) {
+	  //TODO: error with regex try again later
+	  // var query = { Course_name: { $regex: `/^${prefix}/` } };
+	  var query = { class_tag: prefix };
+	  db.collection("Class_tag").find(query).toArray(function(err, result) {
+		if (err) throw err;
+		console.log(result);
+		resolve(result);
+	  });
+	});
+/*
  * Gets all study groups
  *
  * @param {String} prefix
@@ -467,6 +499,8 @@ module.exports = {
 	getChatHistory,
 	handleAcceptReject,
 	searchUsersCT,
+	searchClassTag,
+	findUserCT,
   searchStudyGroup,
   searchAllStudyGroup,
   updateStudyGroupRequest,

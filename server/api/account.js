@@ -49,6 +49,20 @@ router.route("/searchUsersCT").get((req, res) => {
   });
 });
 
+router.route("/searchClassTag").get((req, res) => {
+  manager.searchClassTag(req.query.prefix).then(users => {
+    console.log(users)
+    res.json(users);
+  });
+});
+
+router.route("/findUserCT").get((req, res) => {
+  manager.findUserCT(req.query.prefix).then(users => {
+    console.log(users)
+    res.json(users);
+  });
+});
+
 /**
  * 
  */

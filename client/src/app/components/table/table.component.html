@@ -18,6 +18,25 @@
       </td>
     </ng-container>
 
+    <ng-container *ngIf="displayTagResult" matColumnDef="searchTagResult">
+      <th mat-header-cell *matHeaderCellDef><b> Class </b></th>   
+      <td mat-cell *matCellDef="let searchTagResult"> {{searchTagResult}} </td>
+      <button></button>
+    </ng-container>
+
+    <ng-container *ngIf="displayTagResult" matColumnDef="searchTagNameResult">
+      <th mat-header-cell *matHeaderCellDef><b> Class Name</b></th>   
+      <td mat-cell *matCellDef="let searchTagNameResult"> {{searchTagNameResult}} </td>
+      <button></button>
+    </ng-container>
+    
+    <ng-container *ngIf="displayUserClasses" matColumnDef="userClassResult">
+      <th mat-header-cell *matHeaderCellDef><b> User Classes List </b></th>   
+      <td mat-cell *matCellDef="let userClassResult"> {{userClassResult}} </td>
+      <button></button>
+    </ng-container>
+
+
     <ng-container *ngIf="displayMealResult" matColumnDef="mealResult">
       <th mat-header-cell *matHeaderCellDef> {{bld}} </th>
       <td mat-cell *matCellDef="let mealResult"> {{mealResult.Name}} </td>
