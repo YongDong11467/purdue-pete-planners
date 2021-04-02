@@ -12,11 +12,10 @@ router.post("/events", (req,res) => {
 });
 
 router.route("/createEvent").post((req, res) => {
-    manager.createEvent(req.query.body.name, req.query.body.description, req.query.body.time, req.query.body.link, req.body.query.location, req.query.body.repeat).then(events => {
-      console.log(events)
-      res.json(events);
-      res.send(events);
-    });
+  console.log(req.data);
+   return manager.createEvent(req.name, req.description, req.Time, req.link, req.location, req.repeat)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
   });
 
 /*
