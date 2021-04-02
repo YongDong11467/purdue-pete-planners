@@ -70,12 +70,11 @@ export class EventCreateComponent implements OnInit {
     let d = this.f.eventDate.value;
     let r = this.repeat;
 
-    //alert(n + e + l + L + d + r);
     if (this.form.invalid) {
       //alert('hey');
       return;
     }
-    //this.loading = true;
+    this.loading = true;
 
     axios.post('/api/events/createEvent', {
       name : n,

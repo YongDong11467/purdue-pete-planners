@@ -24,10 +24,13 @@ export class StudygroupComponent implements OnInit {
   tablestudyroom: string[] = [];
   tablemeetingtime: Date;
   StudyGroupData = {};
+  name = [];
+
 
 
   ngOnInit(): void {
-    this.initPage(this.user);
+    this.name = this.curUser.study_group;
+    console.log(this.name);
   }
 
   initPage(val: string) {

@@ -46,6 +46,7 @@ import { StudygroupComponent } from './components/studygroup/studygroup.componen
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { messagingService } from './messaging.service';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -95,7 +96,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatButtonModule,
     MatPaginatorModule,
     NgbModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatExpansionModule
   ],
   providers: [messagingService],
   bootstrap: [AppComponent]

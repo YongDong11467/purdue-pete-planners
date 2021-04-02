@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {ConfirmedValidator} from './confirmedValidator';
+import axios from "axios";
 
 @Component({
   selector: 'app-profile',
@@ -13,11 +14,11 @@ export class ProfileComponent implements OnInit {
   loading = false;
   submitted = false;
 
-  username = ''
-  email = ''
-  phone = ''
-  major = ''
-  address = ''
+  username = '';
+  email = '';
+  phone = '';
+  major = '';
+  address = '';
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
@@ -28,7 +29,7 @@ export class ProfileComponent implements OnInit {
     private router: Router
   ) {
     this.form = this.formBuilder.group({
-      username: [this.user], //['', Validators.required],
+      username: [this.user], // ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       major: [''],
@@ -63,7 +64,7 @@ export class ProfileComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-  
+
     // reset alerts on submit
     // stop here if form is invalid
     if (this.form.invalid) {
@@ -76,8 +77,8 @@ export class ProfileComponent implements OnInit {
     this.curUser.major = this.f.major.value;
     this.curUser.address = this.f.address.value;
     this.curUser.password = this.f.password.value;
-    
-    console.log(this.curUser)
+
+    console.log(this.curUser);
     // alert('New values: \n\n' + JSON.stringify(this.form.value, null, 4));
   }
 
