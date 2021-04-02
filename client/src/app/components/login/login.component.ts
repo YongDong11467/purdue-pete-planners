@@ -60,11 +60,11 @@ export class LoginComponent implements OnInit {
           console.log('No matching users')
         } else {
           sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
+          this.router.navigate(['/home']);
         }
       });
 
       this.loading = true;
-      this.router.navigate(['/home']);
     })
     .catch((error) => {
       console.log(error);
