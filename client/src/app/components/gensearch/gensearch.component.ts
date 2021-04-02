@@ -38,7 +38,7 @@ export class GensearchComponent implements OnInit {
           // }
   
           this.searchResponse = ['tom', 'bob', 'timmy']
-          // this.searchResponse = res.data[0];
+          this.searchResponse = res.data[0].students;
         }
         this.type = 'search'
         this.displaySearchResult = true
