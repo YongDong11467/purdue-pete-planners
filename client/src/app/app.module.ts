@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { SearchComponent } from './components/search/search.component';
 import { TableComponent } from './components/table/table.component';
@@ -36,12 +37,14 @@ import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
 import {ClassComponent} from './components/class/class.component';
 import {FriendsComponent} from './components/friends/friends.component';
+import { MessagingComponent } from './components/messaging/messaging.component';
 import { GensearchComponent } from './components/gensearch/gensearch.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { messagingService } from './messaging.service';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -64,6 +67,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RegisterComponent,
     ClassComponent,
     FriendsComponent,
+    MessagingComponent,
     GensearchComponent,
     StudygroupComponent
   ],
@@ -84,12 +88,14 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatIconModule,
     MatCardModule,
     MatListModule,
+    MatGridListModule,
     FullCalendarModule,
     MatRadioModule,
     MatButtonModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSnackBarModule
   ],
-  providers: [],
+  providers: [messagingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
