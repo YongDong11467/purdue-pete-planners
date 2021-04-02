@@ -10,9 +10,11 @@ import { EventComponent } from './components/event/event.component';
 import { EventCreateComponent } from './components/events/event-create.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { ClassComponent } from './components/class/class.component';
-import { FriendsComponent } from './components/friends/friends.component';
+import {FriendsComponent} from './components/friends/friends.component';
+import { MessagingComponent } from './components/messaging/messaging.component';
 import { GensearchComponent } from './components/gensearch/gensearch.component';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
+
 
 
 const routes: Routes = [
@@ -26,6 +28,7 @@ const routes: Routes = [
   {path:'schedule', component:ScheduleComponent},
   {path: 'class', component: ClassComponent},
   {path: 'friends', component: FriendsComponent},
+  {path: 'messaging', component: MessagingComponent},
   {path: 'gensearch', component: GensearchComponent},
   {path: 'studygroup', component: StudygroupComponent}
 ];

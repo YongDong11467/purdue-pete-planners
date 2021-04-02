@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+
+    <body>
+        <script src="//cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+
+        <app-navbar></app-navbar>
+
+        <div class="grid-container">
+            <mat-card class="chat-selector">
+                <mat-card-header>
+                    <mat-card-title>Chats:</mat-card-title>
+                </mat-card-header>
+                <ul class="chats">
+                    <li *ngFor="let chat of chats" (click)="onSelect(chat)">
+                      <span class="badge">{{chat}}</span>
+                    </li>
+                  </ul>
+            </mat-card>
+
+            <mat-card class="message-editor">
+                <mat-card-content class="text-box">
+                    <form class="editor-form">
+                        <mat-form-field class="editor-full-width">
+                            <mat-label>Message</mat-label>
+                            <input matInput #message maxlength="256" placeholder="Message">
+                        </mat-form-field>
+                    </form>
+                </mat-card-content>
+            </mat-card>
+
+        </div>
+    </body>
+</html>
