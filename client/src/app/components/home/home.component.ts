@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   due = [];
   realdue = [];
   i = 0;
+  friendLen = 0
 
 
   constructor(private route: ActivatedRoute, private router: Router) {
@@ -26,14 +27,17 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.curUser = JSON.parse(sessionStorage.curUser || '{}');
+    this.friendLen = (this.curUser.friend).length
     this.email = this.curUser.email;
     this.classlist = this.curUser.class_list;
     console.log(this.classlist);
     this.due = this.curUser.due;
-    for (this.i = 0; this.i < this.due.length; this.i++ ) {
-      // @ts-ignore
-      this.realdue[this.i] = Object.values(this.due[this.i]);
-    }
+    if (typeof this.due !== 'undefined') {
+      for (this.i = 0; this.i < this.due.length; this.i++ ) {
+        // @ts-ignore
+        this.realdue[this.i] = Object.values(this.due[this.i]);
+      }
+   }
   }
 
   ngOnChanges() {
