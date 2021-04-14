@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
     });
 });
 
-http.listen(port, async () => {
+http.listen(process.env.PORT || port, async () => {
     try{
         initialize_app();
         console.log(`Server listening on the port::${port}`);
