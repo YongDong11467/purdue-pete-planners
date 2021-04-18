@@ -8,9 +8,17 @@ import axios from 'axios'
 })
 export class GensearchComponent implements OnInit {
 
+  buildings = []
+  building = {name: "No result", location: "None", bussiness_hour:"None", refimg:"https://www.cla.purdue.edu/resources/buildings/images/brng.jpg"}
+  showBuild = false
+
   constructor() { }
 
   ngOnInit(): void {
+    axios.get(`/api/account/getBuildings`)
+    .then((res) => {
+      this.buildings = res.data
+    });
   }
 
   filter = '1';
@@ -22,9 +30,23 @@ export class GensearchComponent implements OnInit {
   getSearchValue(val: string) {
     console.log(val)
     if (this.filter == '1') {
-      
-    } else if (this.filter == '2') {
+      // Buildings
+      // for (var i; i < this.buildings.length; i++) {
+      //   if (this.buildings[i].name == val) {
 
+      //   }
+      // }
+
+      //Purdue University Beering Hall
+      this.buildings.forEach((b:any) => {
+        console.log(b.name)
+        if (b.name == val) {
+          this.building = b
+        }
+      });
+      this.showBuild = true
+    } else if (this.filter == '2') {
+      this.showBuild = false
     } else if (this.filter == '3') {
       console.log("Searching for users with class tag")
       axios.get(`/api/account/searchUsersCT`, { params: { classtag: val } })
@@ -44,6 +66,7 @@ export class GensearchComponent implements OnInit {
         this.displaySearchResult = true
         console.log(this.searchResponse)
         this.tableargs = {data: this.searchResponse, type: this.type}
+        this.showBuild = false
       });
     }
   }
