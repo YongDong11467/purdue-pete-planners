@@ -11,6 +11,8 @@
         <mat-radio-button value="1">Buildings</mat-radio-button>
         <mat-radio-button value="2">Courses</mat-radio-button>
         <mat-radio-button value="3">Class Tags</mat-radio-button>
+        <mat-radio-button *ngIf="isAdmin" value="4">Ban User</mat-radio-button>
+        <mat-radio-button *ngIf="isAdmin" value="5">Ban ChatRoom</mat-radio-button>
     </mat-radio-group>
     <br/>
     <button mat-raised-button color="primary" (click)="getSearchValue(search.value)">Search!</button>
