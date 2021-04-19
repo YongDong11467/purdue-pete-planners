@@ -3,10 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import axios from 'axios'
 
-//import {searchUsers} from 'server/account_manager.js';
-
-//declare function createEvent(name:string, description:string, time:string, link:string, location:string, repeat:number): any;
- //const thing = require('./server/account_manager.js');
 @Component({
   selector: 'app-event-create',
   templateUrl: './event-create.component.html'
@@ -62,6 +58,9 @@ export class EventCreateComponent implements OnInit {
   // tslint:disable-next-line:typedef
   onSubmit() {
 
+    let curUser = JSON.parse(sessionStorage.curUser || '{}');
+    let user = curUser.user_name;
+
     this.submitted = true;
     let n = this.f.eventName.value;
     let e = this.f.eventDescription.value;
@@ -82,7 +81,8 @@ export class EventCreateComponent implements OnInit {
       Time : d,
       link : l,
       location : L,
-      repeat : r
+      repeat : r,
+      owner : user
     })
     .then((response) => {
       console.log(response);

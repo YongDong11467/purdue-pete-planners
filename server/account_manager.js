@@ -85,8 +85,7 @@ const createAccount = async function(username, email, major, pass) {
 	return 0;
 }
 
-const createEvent = async function(name, description, time, link, location, repeat) {
-	//alert('hey');
+const createEvent = async function(name, description, time, link, location, repeat, owner) {
 	/*
 	console.log(name);
 	console.log(description);
@@ -101,7 +100,8 @@ const createEvent = async function(name, description, time, link, location, repe
 		"Time":time,
 		"link":link,
 		"location":location,
-		"repeat":repeat
+		"repeat":repeat,
+		"owner":owner
 	}
 
 	await db.collection('Event').insertOne(event);
@@ -202,6 +202,22 @@ const getAccountPassword = async function(usrname) {
 }
 
 /**
+ * 
+ * @param {String} owner
+ */
+
+const searchUserEvent = async function(owner){
+	return new Promise(function(resolve, reject) {
+		var query = { owner: owner };
+		db.collection("owner").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			console.log(result);
+			resolve(result);
+		});
+	});
+}
+
+/**
  * Gets all class tags given a user
  *
  * @param {String} prefix
@@ -224,7 +240,8 @@ module.exports = {
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
 	searchUsers:searchUsers,
-	createEvent:createEvent
+	createEvent:createEvent,
+	searchUserEvent:searchUserEvent
 }
 
 /**
@@ -513,5 +530,6 @@ module.exports = {
   searchStudyGroup,
   searchAllStudyGroup,
   updateStudyGroupRequest,
-	createEvent
+	createEvent,
+	searchUserEvent
 }
