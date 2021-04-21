@@ -108,6 +108,22 @@ const createEvent = async function(name, description, time, link, location, repe
 }
 
 /**
+ * 
+ * @param {String} owner
+ */
+
+ const searchUserEvent = async function(owner){
+	return new Promise(function(resolve, reject) {
+		var query = { owner: owner };
+		db.collection("owner").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			console.log(result);
+			resolve(result);
+		});
+	});
+}
+
+/**
  * Gets all information about a user for the profile page
  *
  * @param {String} email
@@ -194,22 +210,6 @@ const getAccountPassword = async function(usrname) {
 	return new Promise(function(resolve, reject) {
 		var query = { class_tag: classtag };
 		db.collection("Class_tag").find(query).toArray(function(err, result) {
-			if (err) throw err;
-			console.log(result);
-			resolve(result);
-		});
-	});
-}
-
-/**
- * 
- * @param {String} owner
- */
-
-const searchUserEvent = async function(owner){
-	return new Promise(function(resolve, reject) {
-		var query = { owner: owner };
-		db.collection("owner").find(query).toArray(function(err, result) {
 			if (err) throw err;
 			console.log(result);
 			resolve(result);

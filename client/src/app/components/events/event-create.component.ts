@@ -127,30 +127,3 @@ export class EventCreateComponent implements OnInit {
     });
   }
 }
-
-/*
-  onAddEvent(nameInput: HTMLInputElement, descInput: HTMLTextAreaElement, linkInput: HTMLInputElement, locInput: HTMLInputElement, dTimeInput: HTMLInputElement, repeatInput: number){
-    this.name = nameInput.value;
-    this.desc = descInput.value;
-    this.link = linkInput.value;
-    this.location = locInput.value;
-    this.dTime = dTimeInput.value;
-    this.repeat = repeatInput;
-    //alert('BITCH');
-    doTheThing(this.name, this.desc, this.dTime, this.link, this.location, this.repeat);
-  }
-*/
-
-async function doTheThing(name:String,description:String, time:String, link:String, location:String, repeat:number) {
-  let init = {
-    method: "POST",
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ "name": name, "description": description, "Time":time, "link":link, "location":location, "repeat":repeat}),
-    mode: 'no-cors' as RequestMode
-  };
-
-  // This line checks the server
-  let apiResp = await fetch("http://localhost:3080/api/events/createEvent", init);
-  let jsonData = await apiResp.json();
-  console.log(jsonData);
-}

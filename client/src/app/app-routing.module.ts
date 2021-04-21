@@ -14,6 +14,7 @@ import {FriendsComponent} from './components/friends/friends.component';
 import { MessagingComponent } from './components/messaging/messaging.component';
 import { GensearchComponent } from './components/gensearch/gensearch.component';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
+import { EventPageComponent } from './components/events/event-page.component';
 
 
 
@@ -24,7 +25,8 @@ const routes: Routes = [
   {path:'profile', component:ProfileComponent},
   {path:'home', component:HomeComponent},
   {path:'dining', component:DiningComponent},
-  {path:'event', component:EventComponent},
+  {path:'event', component:EventComponent}, //Event Creation
+  {path:'eventPage', component:EventPageComponent}, //Event Viewing
   {path:'schedule', component:ScheduleComponent},
   {path: 'class', component: ClassComponent},
   {path: 'friends', component: FriendsComponent},
