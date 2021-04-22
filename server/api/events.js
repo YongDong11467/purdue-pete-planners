@@ -18,4 +18,11 @@ router.route("/createEvent").post((req, res) => {
     .catch(err => res.status(400).json(err));
   });
 
+  router.route("/searchUserEvent").get((req, res) => {
+    manager.searchUserEvent(req.query.prefix).then(users => {
+      console.log(users)
+      res.json(users);
+    });
+  });
+
   module.exports = router;

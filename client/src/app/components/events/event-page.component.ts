@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import axios from 'axios'
+//import {NavbarComponent} from './client/src/app/components/navbar'
 
 @Component({
     selector: 'app-event-page',
@@ -23,8 +24,8 @@ export class EventPageComponent implements OnInit{
     ngOnInit(): void {
         this.curUser = JSON.parse(sessionStorage.curUser || '{}');
         //console.log(this.curUser.user_name)
-        console.log(this.curUser)
-        this.getAllUserEvents(this.curUser.user_name)
+        console.log(this.curUser);
+        this.getAllUserEvents(this.curUser.user_name);
     }
 
     getAllUserEvents(val:string){
@@ -40,7 +41,7 @@ export class EventPageComponent implements OnInit{
             this.type = 'search'
             this.displaySearchResult = true
             this.table_args_event_list = {data: this.searchResponse, type: this.type}
-            //console.log(this.table_args_class_list)
+            console.log(this.table_args_event_list)
           });
       }
 }
