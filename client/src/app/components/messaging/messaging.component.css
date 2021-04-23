@@ -20,6 +20,12 @@
     width: 100%;
 }
 
+.chat-messages-show-list {
+  list-style-type:none;
+  margin: 0;
+  padding: 0;
+}
+
 .chats {
     margin: 0 0 2em 0;
     list-style-type: none;
