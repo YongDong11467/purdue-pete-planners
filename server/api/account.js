@@ -104,6 +104,13 @@ router.route("/updateStudyGroupRequest").post((req, res) => {
     .catch(err => res.status(400).json(err));
 });
 
+router.route("/getBuildings").get((req, res) => {
+  manager.getAllBuildings().then(buildings => {
+    console.log(buildings)
+    res.json(buildings);
+  });
+});
+
 // router.route("/DONOTGOHERE").get((req, res) => {
 //   manager.populateDatabase()
 // });

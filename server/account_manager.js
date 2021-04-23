@@ -85,7 +85,8 @@ const createAccount = async function(username, email, major, pass) {
 	return 0;
 }
 
-const createEvent = async function(name, description, time, link, location, repeat, owner) {
+const createEvent = async function(name, description, time, link, location, repeat) {
+	//alert('hey');
 	/*
 	console.log(name);
 	console.log(description);
@@ -100,27 +101,10 @@ const createEvent = async function(name, description, time, link, location, repe
 		"Time":time,
 		"link":link,
 		"location":location,
-		"repeat":repeat,
-		"owner":owner
+		"repeat":repeat
 	}
 
 	await db.collection('Event').insertOne(event);
-}
-
-/**
- * 
- * @param {String} owner
- */
-
- const searchUserEvent = async function(owner){
-	return new Promise(function(resolve, reject) {
-		var query = { owner: owner };
-		db.collection("owner").find(query).toArray(function(err, result) {
-			if (err) throw err;
-			console.log(result);
-			resolve(result);
-		});
-	});
 }
 
 /**
@@ -240,8 +224,7 @@ module.exports = {
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
 	searchUsers:searchUsers,
-	createEvent:createEvent,
-	searchUserEvent:searchUserEvent
+	createEvent:createEvent
 }
 
 /**
@@ -309,6 +292,21 @@ const searchAllStudyGroup = async function(){
   });
 }
 
+/*
+ * Gets buildings
+ *
+ * @param {String} prefix
+ */
+const getAllBuildings = async function(){
+	return new Promise(function(resolve, reject) {
+	  db.collection("Building").find().toArray(function(err, result) {
+		if (err) throw err;
+		console.log(result);
+		resolve(result);
+	  });
+	});
+  }
+
 /**
  * Update's the Member of the study group
  *
@@ -361,14 +359,52 @@ const handleAcceptReject = async function(data){
 // ONLY USE TO POPULATE EMPTY DATABASE FOR TESTING
 const populateDatabase = async function(){
 	console.log("POPUlating database")
-	var users = [
-		{ user_name: "bob", password: "1234", email: "bob@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[] },
-		{ user_name: "boby", password: "1234", email: "boby@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  },
-		{ user_name: "tom", password: "1234", email: "tom@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  },
-		{ user_name: "simp", password: "1234", email: "simp@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  }
+	var buildinginfo = [
+		// Too lazy to create hours object so I'll just go with strings or html
+		// That also that it is in our database so I'm not at fault right? ┌( ಠ‿ಠ)┘
+		{ name: "Purdue University Beering Hall", location: "100 University St, West Lafayette, IN 47907", 
+		bussiness_hour: 
+			`Sunday	Closed
+			Monday	6:30AM–11PM
+			Tuesday	6:30AM–11PM
+			Wednesday	6:30AM–11PM
+			Thursday	6:30AM–11PM
+			Friday	6:30AM–11PM
+			Saturday	6:30AM–6PM`,
+		refimg: "https://www.cla.purdue.edu/resources/buildings/images/brng.jpg"
+		},
+		{ name: "Purdue Mathematical Sciences Building", location: "150 N University St, West Lafayette, IN 47907",
+		bussiness_hour:
+			`Sunday	1–10PM
+			Monday	8AM–10PM
+			Tuesday	8AM–10PM
+			Wednesday	8AM–10PM
+			Thursday	8AM–10PM
+			Friday	8AM–5PM
+			Saturday	1–5PM`,
+		refimg: ""
+		},
+		{ name: "Purdue Physics Building", location: "525 Northwestern Ave, West Lafayette, IN 47907", 
+		bussiness_hour: 
+			`Missing Hours`,
+		refimg: "http://purdue7barz.s3.amazonaws.com/physics-ext.jpg"
+		},
+		{ name: "Recreational Sports Center", location: "355 N Martin Jischke Dr, West Lafayette, IN 47906",
+		bussiness_hour:
+			`Sunday	11AM–10PM
+			Monday	6AM–11PM
+			Tuesday	6AM–11PM
+			Wednesday	6AM–11PM
+			Thursday	6AM–11PM
+			Friday	6AM–10PM
+			Saturday	8AM–8PM
+			`,
+		refimg: ""
+		}
+		
 	];
 
-	db.collection("User").insertMany(users, function(err, res) {
+	db.collection("Building").insertMany(buildinginfo, function(err, res) {
 		if (err) {
 			console.log(err)
 		};
@@ -531,5 +567,5 @@ module.exports = {
   searchAllStudyGroup,
   updateStudyGroupRequest,
 	createEvent,
-	searchUserEvent
+	getAllBuildings
 }
