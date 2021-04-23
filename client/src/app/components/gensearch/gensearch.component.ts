@@ -96,7 +96,15 @@ export class GensearchComponent implements OnInit {
         this.tableargs = {data: res.data, type: this.type}
       });
     } else if (this.filter == '5') {
-      alert("not implemented yet")
+      axios.get(`/api/account/deleteStudyGroup`, { params: { prefix: val } })
+      .then((res) => {
+        console.log(res.data)
+        if (res.data === 0){
+          alert("Chatroom could not be found")
+        } else {
+          alert("One ChatRoom was deleted")
+        }
+      });
     }
   }
 }

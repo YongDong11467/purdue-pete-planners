@@ -130,6 +130,13 @@ export class TableComponent implements OnInit {
 
   clickedBan(username: any) {
     console.log(username)
+    if (username.banned == 'unban') {
+      axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, 
+        data: {username: username.user_name, newbanstatus: "ban"}, type:"ban" })
+    } else {
+      axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, 
+        data: {username: username.user_name, newbanstatus: "unban"}, type:"ban" })
+    }
   }
 
 }

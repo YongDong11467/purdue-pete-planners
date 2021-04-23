@@ -95,7 +95,7 @@
     <ng-container *ngIf="displayBanResult" matColumnDef="banstatus">
       <th mat-header-cell *matHeaderCellDef> Ban/Unban </th>
       <td mat-cell *matCellDef="let searchResult">
-        <button mat-raised-button (click)="clickedBan(searchResult)">{{searchResult.banned || "Unban"}}</button>
+        <button mat-raised-button (click)="clickedBan(searchResult)">{{searchResult.banned || "Ban"}}</button>
       </td>
     </ng-container>
 
