@@ -3,12 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import axios from 'axios'
-//import {NavbarComponent} from './client/src/app/components/navbar'
 
 @Component({
     selector: 'app-event-page',
-    templateUrl: './event-page.component.html',
-    styleUrls: ['./event-page.component.css']
+    templateUrl: 'event-page.component.html',
+    styleUrls: ['event-page.component.css']
   })
 export class EventPageComponent implements OnInit{
 

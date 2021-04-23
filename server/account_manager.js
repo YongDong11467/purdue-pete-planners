@@ -108,6 +108,22 @@ const createEvent = async function(name, description, time, link, location, repe
 }
 
 /**
+ * 
+ * @param {String} owner
+ */
+
+ const searchUserEvent = async function(owner){
+	return new Promise(function(resolve, reject) {
+		var query = { owner: owner };
+		db.collection("Event").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			console.log(result);
+			resolve(result);
+		});
+	});
+}
+
+/**
  * Gets all information about a user for the profile page
  *
  * @param {String} email
@@ -224,7 +240,8 @@ module.exports = {
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
 	searchUsers:searchUsers,
-	createEvent:createEvent
+	createEvent:createEvent,
+	searchUserEvent:searchUserEvent
 }
 
 /**
@@ -567,5 +584,6 @@ module.exports = {
   searchAllStudyGroup,
   updateStudyGroupRequest,
 	createEvent,
-	getAllBuildings
+	getAllBuildings,
+	searchUserEvent
 }

@@ -14,7 +14,8 @@ import {FriendsComponent} from './components/friends/friends.component';
 import { MessagingComponent } from './components/messaging/messaging.component';
 import { GensearchComponent } from './components/gensearch/gensearch.component';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
-import { EventPageComponent } from './components/events/event-page.component';
+import { EventPageComponent } from './components/eventPage/event-page.component';
+import {NavbarComponent} from './components/navbar/navbar.component';
 
 
 
@@ -32,7 +33,8 @@ const routes: Routes = [
   {path: 'friends', component: FriendsComponent},
   {path: 'messaging', component: MessagingComponent},
   {path: 'gensearch', component: GensearchComponent},
-  {path: 'studygroup', component: StudygroupComponent}
+  {path: 'studygroup', component: StudygroupComponent},
+  {path: 'navbar', component: NavbarComponent}
 ];
 
 @NgModule({
