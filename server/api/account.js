@@ -74,12 +74,25 @@ router.route("/sendfr").post((req, res) => {
 
 router.route("/updateUserInfo").post((req, res) => {
   console.log(req.body.data)
-  console.log(req.body)
+  console.log(req.body.type)
   if (req.body.type == "acceptfr" || req.body.type == "declinefr") {
     return manager.handleAcceptReject(req.body)
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
+  } else if (req.body.type == "ban") {
+    console.log("ban cond")
+    return manager.handleBanUpdate(req.body)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
   }
+});
+
+router.route("/deleteStudyGroup").get((req, res) => {
+  manager.deleteStudyGroup(req.query.prefix).then(ret => {
+    console.log("ret here")
+    console.log(ret)
+    res.json(ret);
+  });
 });
 
 router.route("/searchStudyGroup").get((req, res) => {
@@ -102,6 +115,13 @@ router.route("/updateStudyGroupRequest").post((req, res) => {
   return manager.updateStudyGroupRequest(req.body.curUser, req.body.data)
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
+});
+
+router.route("/getBuildings").get((req, res) => {
+  manager.getAllBuildings().then(buildings => {
+    console.log(buildings)
+    res.json(buildings);
+  });
 });
 
 // router.route("/DONOTGOHERE").get((req, res) => {

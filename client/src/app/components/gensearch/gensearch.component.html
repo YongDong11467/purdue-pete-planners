@@ -11,8 +11,28 @@
         <mat-radio-button value="1">Buildings</mat-radio-button>
         <mat-radio-button value="2">Courses</mat-radio-button>
         <mat-radio-button value="3">Class Tags</mat-radio-button>
+        <mat-radio-button *ngIf="isAdmin" value="4">Ban User</mat-radio-button>
+        <mat-radio-button *ngIf="isAdmin" value="5">Ban ChatRoom</mat-radio-button>
     </mat-radio-group>
     <br/>
     <button mat-raised-button color="primary" (click)="getSearchValue(search.value)">Search!</button>
     <app-table *ngIf="displaySearchResult" [data]='tableargs'></app-table>
+
+    <mat-card *ngIf="showBuild" class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{building?.name}}</mat-card-title>
+          <mat-card-subtitle>Purdue Univerity {{building?.location}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="{{building?.refimg}}" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p class="angular-with-newlines">
+            {{building?.bussiness_hour}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+    </mat-card>
 </div>

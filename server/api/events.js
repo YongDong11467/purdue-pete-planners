@@ -13,18 +13,28 @@ router.post("/events", (req,res) => {
 
 router.route("/createEvent").post((req, res) => {
   console.log(req);
-   return manager.createEvent(req.body.name, req.body.description, req.body.Time, req.body.link, req.body.location, req.body.repeat)
+   return manager.createEvent(req.body.name, req.body.description, req.body.Time, req.body.link, req.body.location, req.body.repeat, req.body.owner)
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
   });
 
-/*
-  router.post("/createEvent", (req,res) => {
-    console.log(req);
-    response = "HTTP/1.1 200 OK";
-    res.end(response);
-});
-*/
+  router.route("/searchUserEvent").get((req, res) => {
+    manager.searchUserEvent(req.query.prefix).then(users => {
+      //console.log(users)
+      res.json(users);
+    });
+  });
 
+  router.route("/getAllEvents").get((req,res) => {
+    manager.getAllEvents().then(response => {
+      res.json(response);
+    });
+  });
+
+  router.route("/getCurrentEvent").get((req,res) => {
+    manager.getCurrentEvent(req.query.prefix).then(response => {
+      res.json(response);
+    });
+  });
 
   module.exports = router;
