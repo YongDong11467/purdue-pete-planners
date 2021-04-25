@@ -16,6 +16,7 @@ export class TableComponent implements OnInit {
   displayMemberRequest = false
   displayChatRoomRequest = false
   displayStudyRoomRequest = false
+  displayAnnouncement = false
   displayedColumns: string[] = [''];
   dataSource = new MatTableDataSource();
   curUser = JSON.parse(sessionStorage.curUser || '{}');
@@ -46,6 +47,9 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'study_room') {
       this.displayStudyRoomRequest = true
       this.displayedColumns = ['study_room'];
+    } else if (this.data.type === 'announcement') {
+      this.displayAnnouncement = true
+      this.displayedColumns = ['announcement'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
@@ -75,6 +79,9 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'study_room') {
       this.displayStudyRoomRequest = true
       this.displayedColumns = ['study_room'];
+    } else if (this.data.type === 'announcement') {
+      this.displayAnnouncement = true
+      this.displayedColumns = ['announcement'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
