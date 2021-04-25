@@ -6,7 +6,7 @@
             <div class="form-group">
                 <div class="form-group">
                     <label for="eventName">Event Name</label>
-                    <input type="text" value="currentEvent.name" formControlName="eventName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventName.errors }" #name1/>
+                    <input type="text" formControlName="eventName" placeholder={{this.currentEvent.name}} class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventName.errors }" #name1/>
                     <div *ngIf="submitted && f.eventName.errors" class="invalid-feedback">
                         <div *ngIf="f.eventName.errors.required">An Event Name is required</div>
                     </div>
@@ -16,7 +16,7 @@
             <div class="form-group">
                 <div class="form-group">
                     <label for="link">Event Link</label>
-                    <input type="text" formControlName="link" class="form-control"  #link1/>
+                    <input type="text" formControlName="link" class="form-control" ng-value = "plz" #link1/>
               </div>
             </div>
 

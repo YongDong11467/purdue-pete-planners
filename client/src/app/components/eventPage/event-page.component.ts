@@ -11,42 +11,51 @@ import {Subscription} from 'rxjs';
     templateUrl: 'event-page.component.html',
     styleUrls: ['event-page.component.css']
   })
-export class EventPageComponent implements OnInit, OnDestroy{
+export class EventPageComponent implements OnInit /*, OnDestroy */{
+  //Data service vars
+  currentMessage:string;
+  constructor(private data: DataService) { 
+    //this.data.currentMessage.subscribe(msg => console.log("constructor msg", msg));
+    
+  }
 
-  constructor(private modalService: NgbModal,
-              private data: DataService) { }
+    //Current user
     curUser = JSON.parse(sessionStorage.curUser || '{}');
     user = this.curUser.user_name;
 
-    displaySearchResult = false;
-    searchResponse : string[] = [];
-    type = 'none';
-    table_args_event_list = {data: this.searchResponse, type: this.type};
-
+    //Storage for events to be displayed
     tabs;
     tabsAll;
     
-    message:string;
-    subscription: Subscription;
+    
+    //subscription: Subscription;
 
     ngOnInit(): void {
+        this.data.currentMessage.subscribe(result => { this.currentMessage = result;});
         this.curUser = JSON.parse(sessionStorage.curUser || '{}');
-        this.subscription = this.data.currentMessage.subscribe(message => this.message = message);
-        //console.log(this.curUser.user_name)
-        //console.log(this.curUser);
         this.getAllUserEvents(this.curUser.user_name);
-        //console.log("alsdgjalksgalk");
         this.getAllEvents();
     }
-
+/*
     ngOnDestroy(){
         this.subscription.unsubscribe();
     }
-
-    sendID(id){
+*/
+/*
+    updateID(){
+      this.data.currentMessage.subscribe(msg => {
+        this.message = msg;
+      });
+      console.log("message:", this.message);
+    }
+    */
+    newMessage(id){
       console.log("sendID proc");
-      console.log(id);
-      this.data.changeMessage(id);
+      //console.log(id);
+      this.currentMessage = id;
+      this.data.changeMessage(this.currentMessage);
+      //this.updateID();
+      //console.log("newmessage()", this.message);
     }
 
     getAllUserEvents(val:string){
@@ -55,17 +64,14 @@ export class EventPageComponent implements OnInit, OnDestroy{
           .then((res) => {
             //console.log(res.data[0])
             if (typeof res.data[0] == 'undefined'){
-              this.searchResponse = ["No user events"];
+              //this.searchResponse = ["No user events"];
+              console.log("No user events");
             } else {
               this.tabs = new Array(res.data.length);
               for(let i = 0; i < res.data.length; i++){
                 this.tabs[i] = res.data[i];
               }
             }
-            //this.type = 'search'
-            //this.displaySearchResult = true
-            //this.table_args_event_list = {data: this.searchResponse, type: this.type}
-            //console.log(this.table_args_event_list)
           });
       }
 
@@ -73,7 +79,8 @@ export class EventPageComponent implements OnInit, OnDestroy{
         axios.get("/api/events/getAllEvents")
           .then((res) => {
             if (typeof res.data[0] == 'undefined'){
-              this.searchResponse = ["No user events"];
+              //this.searchResponse = ["No user events"];
+              console.log("No user events");
             } else {
               this.tabsAll = new Array(res.data.length);
               for(let i = 0; i < res.data.length; i++){

@@ -9,10 +9,10 @@ import {Subscription} from 'rxjs';
   selector: 'app-event-edit',
   templateUrl: './event-edit.component.html'
 })
-export class EventEditComponent implements OnInit, OnDestroy {
+export class EventEditComponent implements OnInit /*OnDestroy */{
 
-  message:string;
-  subscription: Subscription;
+  currentMessage:string;
+  //subscription: Subscription;
   repeat: number = 0;
   currentEvent;
 
@@ -30,6 +30,7 @@ export class EventEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private data: DataService
   ) {
+    //this.data.currentMessage.subscribe(message => this.message = message)
     this.form = this.formBuilder.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
@@ -41,7 +42,8 @@ export class EventEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.data.currentMessage.subscribe(message => this.message = message);
+    //this.subscription = this.data.currentMessage.subscribe(message => this.message = message);
+    this.data.currentMessage.subscribe(msg => { this.currentMessage = msg});
     this.form = this.formBuilder.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
@@ -54,13 +56,15 @@ export class EventEditComponent implements OnInit, OnDestroy {
     this.getCurrentEvent();
   }
 
+  /*
   ngOnDestroy(){
     this.subscription.unsubscribe();
   }
-
+  */
   
   getCurrentEvent(){
-    axios.get("/api/events/getCurrentEvent", { params: { prefix: this.message } })
+    console.log("getCurrentEvent()", this.data.currentMessage);
+    axios.get("/api/events/getCurrentEvent", { params: { prefix: this.currentMessage } })
     .then((res) => {
       if (typeof res.data[0] == 'undefined'){
         this.searchResponse = ["No user events"];
