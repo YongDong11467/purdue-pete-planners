@@ -1,14 +1,19 @@
 <app-navbar></app-navbar>
-<mat-tab-group (selectedTabChange)="onTabClick($event)">
-  <mat-tab label="CS 381"></mat-tab>
-  <mat-tab label="CS 407"></mat-tab>
-  <mat-tab label="CS 373"></mat-tab>
-  <mat-tab label="CS 471"></mat-tab>
-  <mat-tab label="prove of change"></mat-tab>
-</mat-tab-group>
+
+
+
+
+  <mat-tab-group (selectedTabChange)="onTabClick($event)">
+    <mat-tab label="CS 381"></mat-tab>
+    <mat-tab label="CS 407"></mat-tab>
+    <mat-tab label="CS 373"></mat-tab>
+    <mat-tab label="CS 471"></mat-tab>
+    <mat-tab label="prove of change"></mat-tab>
+  </mat-tab-group>
 
 
 <app-table [data]='tableargs4' (toFriendPage)='refresh()'>Forth Study Group</app-table>
+<app-table [data]='tableargs6' (toFriendPage)='refresh()'>Second Study Group</app-table>
 <app-table [data]='tableargs1' (toFriendPage)='refresh()'>First Study Group</app-table>
 <app-table [data]='tableargs2' (toFriendPage)='refresh()'>Second Study Group</app-table>
 <app-table [data]='tableargs3' (toFriendPage)='refresh()'></app-table>
@@ -19,7 +24,7 @@
   Join
 </button>
 
-<!---<button type="button" (click)="expanded=!expanded">Invite Users</button>
+<button type="button" (click)="expanded=!expanded">Invite Users to Study Group</button>
 <div class="form-group" *ngIf="expanded">
 
   <form class="example-form">
@@ -30,7 +35,7 @@
     <app-table *ngIf="displaySearchResult" [data]='tableargs5'></app-table>
   </form>
   <button type="button" (click)="getSearchValue(search.value)">Search!</button>
-</div>--->
+</div>
 
 
 

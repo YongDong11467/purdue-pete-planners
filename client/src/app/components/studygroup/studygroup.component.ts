@@ -20,6 +20,7 @@ export class StudygroupComponent implements OnInit {
   tableargs2 = {data: [""], type: 'chat_room'};
   tableargs3 = {data: [""], type: 'study_room'};
   tableargs4 = {data: [""], type: 'announcement'};
+  tableargs6 = {data: [""], type: 'comments'};
   tablemember: string[] = [];
   tablechatroom: string[] = [];
   tablestudyroom: string[] = [];
@@ -28,10 +29,15 @@ export class StudygroupComponent implements OnInit {
   isMemeber = false;
   StudyGroupData = this.curUser.study_group;
   //inviting users
-  /*
   expanded = false;
-  displaySearchResult = false
-  tableargs5 = {data: this.searchResponse, type: this.type}*/
+  displaySearchResult = false;
+  searchResponse: string[] = [];
+  type = 'none';
+  tableargs5 = {data: this.searchResponse, type: this.type};
+  //comments
+  displayComments = true;
+  tablecomments: string[] = [];
+
 
 
   ngOnInit(): void {
@@ -52,14 +58,17 @@ export class StudygroupComponent implements OnInit {
           this.tablestudyroom = res.data[0].Study_room;
           this.tablemeetingtime = res.data[0].Meeting_time;
           this.tableannoucement = res.data[0].Announcement;
+          this.tablecomments = res.data[0].Comments;
           console.log(res.data[0]);
           console.log(this.tableannoucement);
           console.log(this.tablemember);
+          console.log(this.tablecomments);
         }
         this.tableargs1 = {data: this.tablemember, type: 'member'};
         this.tableargs2 = {data: this.tablechatroom, type: 'chat_room'};
         this.tableargs3 = {data: this.tablestudyroom, type: 'study_room'};
         this.tableargs4 = {data: this.tableannoucement, type: 'announcement'};
+        this.tableargs6 = {data: this.tablecomments, type: 'Comments'};
         console.log(this.tableargs3);
         console.log(this.tableargs4);
         console.log(this.tablemeetingtime);
@@ -82,7 +91,7 @@ export class StudygroupComponent implements OnInit {
           this.tablestudyroom = res.data[0].Study_room;
           this.tablemeetingtime = res.data[0].Meeting_time;
           this.tableannoucement = res.data[0].Announcement;
-
+          this.tablecomments = res.data[0].Comments;
           console.log(res.data[0]);
           console.log(this.tablemember);
         }
@@ -90,6 +99,7 @@ export class StudygroupComponent implements OnInit {
         this.tableargs2 = {data: this.tablechatroom, type: 'chat_room'};
         this.tableargs3 = {data: this.tablestudyroom, type: 'study_room'};
         this.tableargs4 = {data: this.tableannoucement, type: 'announcement'};
+        this.tableargs6 = {data: this.tablecomments, type: 'Comments'};
         console.log(this.tableargs3);
         console.log(this.tablemeetingtime);
       });
@@ -104,7 +114,7 @@ export class StudygroupComponent implements OnInit {
     axios.post('/api/account/updateStudyGroupRequest', { curUser: this.curUser.user_name, data: this.curStudyGroup });
   }
 
-  /*getSearchValue(val: string) {
+  getSearchValue(val: string) {
     axios.get(`/api/account/searchUsers`, {params: {prefix: val}})
       .then((res) => {
         console.log(res.data[0])
@@ -121,7 +131,7 @@ export class StudygroupComponent implements OnInit {
         }
         this.type = 'search'
         this.displaySearchResult = true
-        this.tableargs = {data: this.searchResponse, type: this.type}
+        this.tableargs5 = {data: this.searchResponse, type: this.type}
       });
-  }*/
+  }
 }
