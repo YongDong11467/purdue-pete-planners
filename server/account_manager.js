@@ -1,4 +1,5 @@
 const MongoClient = require('mongodb').MongoClient; // Framework to communicate with mongodb
+const ObjectId = require('mongodb').ObjectId;
 const Binary = require('mongodb').Binary;           // Framework to store binary data in mongodb
 const uri = "mongodb+srv://hyuen:cs407@cluster0.tw2mu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"    // Mongo DB uri
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -514,6 +515,29 @@ const getUserChats = async function(usrname) {
 }
 
 /**
+ * Adds new message to chat history
+ * @param {objectID} chat 
+ * @param {string} sender 
+ * @param {string} message 
+ */
+
+const updateChatHistory = async function(chat, sender, message) {
+	let chatID = ObjectId.createFromHexString(chat);
+	try{
+		db.collection("chat_room").updateOne({ "_id": chatID } , {
+			"$push": {
+				"History": {
+					"sender": sender,
+					"message": message
+				}
+			}
+		});
+	} catch (err){
+		console.error(err);
+	}
+}
+
+/**
  * Summary. Function that retrieve chat room message history for a given chat
  * 
  * @param {*} chat The id of the chat in question
@@ -524,14 +548,17 @@ const getChatHistory = async function(chat) {
 	let history;
 	let chatExists;
 
+	let id = ObjectId.createFromHexString(chat);
+	console.log(typeof(id));
+
 	try{
-		chatExists = await db.collection("chat_room").find({_id: chat});
+		chatExists = await db.collection("chat_room").find({_id: id});
 		if(!chatExists){
 			console.log("chat does not exist");
 			return -1;
 		}
 
-		history = await db.collection("chat_room").findOne({_id: chat}, {projection: {History: true, _id: false}});
+		history = await db.collection("chat_room").findOne({_id: id}, {projection: {History: true, _id: false}});
 		console.log(history);
 	} catch(err){
 		console.log(err.stack);
@@ -616,10 +643,15 @@ module.exports = {
 	createChatRoom,
 	addChatToUser,
 	getChatHistory,
+	updateChatHistory,
 	handleAcceptReject,
 	searchUsersCT,
 	searchClassTag,
 	findUserCT,
+  	searchStudyGroup,
+  	searchAllStudyGroup,
+  	updateStudyGroupRequest,
+	createEvent,
 	searchStudyGroup,
 	searchAllStudyGroup,
 	updateStudyGroupRequest,
