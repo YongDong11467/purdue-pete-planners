@@ -59,8 +59,13 @@ export class LoginComponent implements OnInit {
         if (typeof res.data[0] === 'undefined'){
           console.log('No matching users')
         } else {
-          sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
-          this.router.navigate(['/home']);
+          if (res.data[0].banned == "unban") {
+            alert("You have been hit with the BANMER")
+            window.location.reload();
+          } else {
+            sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
+            this.router.navigate(['/home']);
+          }
         }
       });
 

@@ -366,6 +366,16 @@ const updateStudyGroupRequest = async function(curuser, study_group){
   });
 }
 
+const deleteStudyGroup = async function(data){
+	return new Promise(function(resolve, reject) {
+		var myquery = { Course_name: data };
+		db.collection("Study_group").deleteOne(myquery, function(err, res) {
+			console.log(res.deletedCount)
+			resolve(res.deletedCount)
+		});
+	});
+}
+
 const handleAcceptReject = async function(data){
 	curUser = data.curUser
 	console.log(data)
@@ -390,6 +400,17 @@ const handleAcceptReject = async function(data){
 			console.log(err);
 		});
 	}
+}
+
+const handleBanUpdate = async function(data){
+	console.log("in handle ban update")
+	console.log(data.data.newbanstatus)
+	var myquery = { user_name: data.data.username };
+	var newvalue = { $set: {banned: data.data.newbanstatus} };
+	db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
 }
 
 // ONLY USE TO POPULATE EMPTY DATABASE FOR TESTING
@@ -599,12 +620,14 @@ module.exports = {
 	searchUsersCT,
 	searchClassTag,
 	findUserCT,
-  searchStudyGroup,
-  searchAllStudyGroup,
-  updateStudyGroupRequest,
+	searchStudyGroup,
+	searchAllStudyGroup,
+	updateStudyGroupRequest,
 	createEvent,
 	getAllBuildings,
 	searchUserEvent,
 	getAllEvents,
-	getCurrentEvent
+	getCurrentEvent,
+	handleBanUpdate,
+	deleteStudyGroup
 }
