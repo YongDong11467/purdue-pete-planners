@@ -16,7 +16,7 @@ import { GensearchComponent } from './components/gensearch/gensearch.component';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
 import { EventPageComponent } from './components/eventPage/event-page.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
-
+import {EventEditComponent} from './components/eventEdit/event-edit.component';
 
 
 const routes: Routes = [
@@ -28,6 +28,7 @@ const routes: Routes = [
   {path:'dining', component:DiningComponent},
   {path:'event', component:EventComponent}, //Event Creation
   {path:'eventPage', component:EventPageComponent}, //Event Viewing
+  {path:'eventEdit', component:EventEditComponent}, //Event editing
   {path:'schedule', component:ScheduleComponent},
   {path: 'class', component: ClassComponent},
   {path: 'friends', component: FriendsComponent},
@@ -39,6 +40,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

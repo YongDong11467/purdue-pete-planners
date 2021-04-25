@@ -1,0 +1,40 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div>
+    <h1 class = "custom_header">My Events</h1>
+    <mat-tab-group >
+      <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
+          <p>Description: {{tab.description}} </p>
+          <p>Event Time: {{tab.Time}}</p>
+          <p>Link: {{tab.link}}</p>
+          <p>Location: {{tab.location}}</p>
+          <div class="btn-holder">
+            <button mat-raised-button mat-button color="blue"
+                class = "deleteClassBtn"
+                [disabled]="tabs.length === 1"
+                (click)="sendID(tab._id)"
+                onclick="location.href='http://localhost:4200/eventEdit'">
+                Edit
+            </button>
+          </div>
+      </mat-tab>
+    </mat-tab-group>
+    </div>
+
+        <div>
+        <h1 class = "custom_header">All Events</h1>
+        <mat-tab-group >
+          <mat-tab *ngFor="let tabA of tabsAll; let index = index" [label]="tabA.name">
+              <p>Description: {{tabA.description}} </p>
+              <p>Event Time: {{tabA.Time}}</p>
+              <p>Link: {{tabA.link}}</p>
+              <p>Location: {{tabA.location}}</p>
+              <div class="btn-holder">
+                
+              </div>
+          </mat-tab>
+    </mat-tab-group>
+    </div>
+
+</div>
+

@@ -7,10 +7,17 @@
   
 }
 
+.custom_header {
+  margin-bottom: 0 !important;
+}
+
+.mat-tab-group {
+  margin-bottom: 48px;
+}
+
 .container {
   justify-content: space-between;
   flex-direction: column;
-  height: 100vh;
   display: flex;
 }
 .container .btn-holder {

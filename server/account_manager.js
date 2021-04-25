@@ -85,23 +85,15 @@ const createAccount = async function(username, email, major, pass) {
 	return 0;
 }
 
-const createEvent = async function(name, description, time, link, location, repeat) {
-	//alert('hey');
-	/*
-	console.log(name);
-	console.log(description);
-	console.log(time);
-	console.log(link);
-	console.log(location);
-	console.log(repeat);
-	*/
+const createEvent = async function(name, description, time, link, location, repeat, owner) {
 	const event = {
 		"name":name,
 		"description":description,
 		"Time":time,
 		"link":link,
 		"location":location,
-		"repeat":repeat
+		"repeat":repeat,
+		"owner":owner
 	}
 
 	await db.collection('Event').insertOne(event);
@@ -112,15 +104,40 @@ const createEvent = async function(name, description, time, link, location, repe
  * @param {String} owner
  */
 
- const searchUserEvent = async function(owner){
+ const searchUserEvent = async function(user){
 	return new Promise(function(resolve, reject) {
-		var query = { owner: owner };
-		db.collection("Event").find(query).toArray(function(err, result) {
+		//console.log(user);
+		db.collection("Event").find({owner: user}).toArray(function(err, result) {
 			if (err) throw err;
-			console.log(result);
+			//console.log(result);
 			resolve(result);
 		});
 	});
+}
+
+const getAllEvents = async function(){
+	return new Promise(function(resolve, reject) {
+		db.collection("Event").find().toArray(function(err, result) {
+			if(err) throw err;
+			//console.log(result);
+			resolve(result);
+		});
+	});
+}
+
+const getCurrentEvent = async function(id){
+	return new Promise(function(resolve, reject) {
+		console.log(id);
+		db.collection("Event").find({_id: id}).toArray(function(err, result) {
+			if (err) throw err;
+
+			resolve(result);
+		});
+	});
+}
+
+const updateEvent = async function(id, description, time, link, location, repeat, owner){
+
 }
 
 /**
@@ -241,7 +258,9 @@ module.exports = {
 	accountEmailExists:accountEmailExists,
 	searchUsers:searchUsers,
 	createEvent:createEvent,
-	searchUserEvent:searchUserEvent
+	searchUserEvent:searchUserEvent,
+	getAllEvents:getAllEvents,
+	getCurrentEvent:getCurrentEvent
 }
 
 /**
@@ -585,5 +604,7 @@ module.exports = {
   updateStudyGroupRequest,
 	createEvent,
 	getAllBuildings,
-	searchUserEvent
+	searchUserEvent,
+	getAllEvents,
+	getCurrentEvent
 }

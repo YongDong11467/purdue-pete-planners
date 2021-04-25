@@ -20,8 +20,20 @@ router.route("/createEvent").post((req, res) => {
 
   router.route("/searchUserEvent").get((req, res) => {
     manager.searchUserEvent(req.query.prefix).then(users => {
-      console.log(users)
+      //console.log(users)
       res.json(users);
+    });
+  });
+
+  router.route("/getAllEvents").get((req,res) => {
+    manager.getAllEvents().then(response => {
+      res.json(response);
+    });
+  });
+
+  router.route("/getCurrentEvent").get((req,res) => {
+    manager.getCurrentEvent(req.query.prefix).then(response => {
+      res.json(response);
     });
   });
 
