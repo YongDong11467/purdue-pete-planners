@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router, ActivatedRoute } from '@angular/router';
 import { interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
-import axios from 'axios'
+import axios from 'axios';
 
 @Component({
   selector: 'app-home',
@@ -13,48 +14,36 @@ export class HomeComponent implements OnInit {
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   interval: any;
+  email = '';
+  classlist = [];
+  due = [];
+  realdue = [];
+  i = 0;
+  friendLen = 0
 
-  constructor(private snackBar:MatSnackBar) { }
+
+  constructor(private route: ActivatedRoute, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.curUser = JSON.parse(sessionStorage.curUser || '{}');
-    // this.interval = setInterval(() => {
-      axios.get(`/api/account/searchUsers`, { params: { prefix: this.curUser.user_name } })
-      .then((res) => {
-        if (typeof res.data[0] === 'undefined') {
-          console.log('No matching users')
-        } else {
-          var newData = res.data[0].friend
-          var old = this.curUser.friend
-          // let difference = old.filter(x => !newData.includes(x));
-          // if (difference.length != 0) {
-          //   // for (var diff in difference) {
-          //   //   this.snackBar.open(`Your friend request to ${diff} was accepted`, '', {
-          //   //     duration:5000,
-          //   //     verticalPosition:'top'
-          //   //   });
-          //   // }
-          //   this.snackBar.open(`Your friend request to ${difference[0]} was accepted`, '', {
-          //     duration:5000,
-          //     verticalPosition:'top'
-          //   });
-          // }
-          if (old.length < newData.length) {
-            this.snackBar.open(`Your friend request to ${newData[newData.length - 1]} was accepted`, '', {
-              duration:5000,
-              verticalPosition:'top'
-            });
-            sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
-          }
-        }
-      });
-    // }, 5000);
+    this.friendLen = (this.curUser.friend).length
+    this.email = this.curUser.email;
+    this.classlist = this.curUser.class_list;
+    console.log(this.classlist);
+    this.due = this.curUser.due;
+    if (typeof this.due !== 'undefined') {
+      for (this.i = 0; this.i < this.due.length; this.i++ ) {
+        // @ts-ignore
+        this.realdue[this.i] = Object.values(this.due[this.i]);
+      }
+   }
   }
 
   ngOnChanges() {
     console.log("trigger on change")
     this.ngOnInit()
   }
-
-
 }
+
+

@@ -19,12 +19,10 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-  ) {     
-    this.form = this.formBuilder.group({
+  ) {this.form = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
-    }); 
-  }
+    });}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -47,33 +45,38 @@ export class LoginComponent implements OnInit {
     let pass = this.f.password.value;
 
     console.log(user + " " + pass);
-    
+
     axios.post('/api/account/login', {
       "username" : user,
       "password" : pass
     })
     .then((response) => {
       console.log(response);
-      
+
       axios.get(`/api/account/searchUsers`, { params: { prefix: user } })
       .then((res) => {
         console.log(res.data[0])
         if (typeof res.data[0] === 'undefined'){
           console.log('No matching users')
         } else {
-          sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
+          if (res.data[0].banned == "unban") {
+            alert("You have been hit with the BANMER")
+            window.location.reload();
+          } else {
+            sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
+            this.router.navigate(['/home']);
+          }
         }
       });
 
       this.loading = true;
-      this.router.navigate(['/home']);
     })
     .catch((error) => {
       console.log(error);
     });
 
     }
-  
+
 }
 
 async function login(user:String,pass:String) {

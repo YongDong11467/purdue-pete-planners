@@ -1,7 +1,8 @@
 const MongoClient = require('mongodb').MongoClient; // Framework to communicate with mongodb
+const ObjectId = require('mongodb').ObjectId;
 const Binary = require('mongodb').Binary;           // Framework to store binary data in mongodb
 const uri = "mongodb+srv://hyuen:cs407@cluster0.tw2mu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"    // Mongo DB uri
-const client = new MongoClient(uri, { useNewUrlParser: true });
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const router = require("express").Router();
 const _ = require("underscore");
@@ -85,18 +86,59 @@ const createAccount = async function(username, email, major, pass) {
 	return 0;
 }
 
-const createEvent = async function(name, description, time, link, location, repeat) {
-	//alert('hey');
+const createEvent = async function(name, description, time, link, location, repeat, owner) {
 	const event = {
 		"name":name,
 		"description":description,
 		"Time":time,
 		"link":link,
 		"location":location,
-		"repeat":repeat
+		"repeat":repeat,
+		"owner":owner
 	}
 
 	await db.collection('Event').insertOne(event);
+}
+
+/**
+ * 
+ * @param {String} owner
+ */
+
+ const searchUserEvent = async function(user){
+	return new Promise(function(resolve, reject) {
+		//console.log(user);
+		db.collection("Event").find({owner: user}).toArray(function(err, result) {
+			if (err) throw err;
+			//console.log(result);
+			resolve(result);
+		});
+	});
+}
+
+const getAllEvents = async function(){
+	return new Promise(function(resolve, reject) {
+		db.collection("Event").find().toArray(function(err, result) {
+			if(err) throw err;
+			//console.log(result);
+			resolve(result);
+		});
+	});
+}
+
+const getCurrentEvent = async function(id){
+	return new Promise(function(resolve, reject) {
+		console.log(id);
+		db.collection("Event").find({_id: id}).toArray(function(err, result) {
+			if (err) throw err;
+
+			resolve(result);
+		});
+	});
+}
+
+const updateEvent = async function(id, description, time, link, location, repeat, owner){
+
 }
 
 /**
@@ -193,6 +235,22 @@ const getAccountPassword = async function(usrname) {
 	});
 }
 
+/**
+ * Gets all class tags given a user
+ *
+ * @param {String} prefix
+ */
+const findUserCT = async function(prefix){
+	return new Promise(function(resolve, reject) {
+		var query = { class_list: prefix };
+		db.collection("User").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			console.log(result);
+			resolve(result);
+		});
+	});
+}
+
 module.exports = {
     startDatabaseConnection:startDatabaseConnection,
     closeDatabaseConnection:closeDatabaseConnection,
@@ -200,7 +258,10 @@ module.exports = {
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
 	searchUsers:searchUsers,
-	createEvent:createEvent
+	createEvent:createEvent,
+	searchUserEvent:searchUserEvent,
+	getAllEvents:getAllEvents,
+	getCurrentEvent:getCurrentEvent
 }
 
 /**
@@ -237,6 +298,23 @@ const searchStudyGroup = async function(prefix){
 }
 
 /**
+ * Gets the class tag with the given prefix
+ *
+ * @param {String} prefix
+ */
+const searchClassTag = async function(prefix){
+	return new Promise(function(resolve, reject) {
+	  //TODO: error with regex try again later
+	  // var query = { Course_name: { $regex: `/^${prefix}/` } };
+	  var query = { class_tag: prefix };
+	  db.collection("Class_tag").find(query).toArray(function(err, result) {
+		if (err) throw err;
+		console.log(result);
+		resolve(result);
+	  });
+	});
+}
+/*
  * Gets all study groups
  *
  * @param {String} prefix
@@ -250,6 +328,21 @@ const searchAllStudyGroup = async function(){
     });
   });
 }
+
+/*
+ * Gets buildings
+ *
+ * @param {String} prefix
+ */
+const getAllBuildings = async function(){
+	return new Promise(function(resolve, reject) {
+	  db.collection("Building").find().toArray(function(err, result) {
+		if (err) throw err;
+		console.log(result);
+		resolve(result);
+	  });
+	});
+  }
 
 /**
  * Update's the Member of the study group
@@ -272,6 +365,16 @@ const updateStudyGroupRequest = async function(curuser, study_group){
     if (err) throw err;
     console.log(err);
   });
+}
+
+const deleteStudyGroup = async function(data){
+	return new Promise(function(resolve, reject) {
+		var myquery = { Course_name: data };
+		db.collection("Study_group").deleteOne(myquery, function(err, res) {
+			console.log(res.deletedCount)
+			resolve(res.deletedCount)
+		});
+	});
 }
 
 const handleAcceptReject = async function(data){
@@ -300,17 +403,66 @@ const handleAcceptReject = async function(data){
 	}
 }
 
+const handleBanUpdate = async function(data){
+	console.log("in handle ban update")
+	console.log(data.data.newbanstatus)
+	var myquery = { user_name: data.data.username };
+	var newvalue = { $set: {banned: data.data.newbanstatus} };
+	db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
+}
+
 // ONLY USE TO POPULATE EMPTY DATABASE FOR TESTING
 const populateDatabase = async function(){
 	console.log("POPUlating database")
-	var users = [
-		{ user_name: "bob", password: "1234", email: "bob@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[] },
-		{ user_name: "boby", password: "1234", email: "boby@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  },
-		{ user_name: "tom", password: "1234", email: "tom@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  },
-		{ user_name: "simp", password: "1234", email: "simp@gmail.com", schedule:[], major: "cs", study_group: [], direct_message: [], friend: [], friend_request: [], book_room:[]  }
+	var buildinginfo = [
+		// Too lazy to create hours object so I'll just go with strings or html
+		// That also that it is in our database so I'm not at fault right? ┌( ಠ‿ಠ)┘
+		{ name: "Purdue University Beering Hall", location: "100 University St, West Lafayette, IN 47907", 
+		bussiness_hour: 
+			`Sunday	Closed
+			Monday	6:30AM–11PM
+			Tuesday	6:30AM–11PM
+			Wednesday	6:30AM–11PM
+			Thursday	6:30AM–11PM
+			Friday	6:30AM–11PM
+			Saturday	6:30AM–6PM`,
+		refimg: "https://www.cla.purdue.edu/resources/buildings/images/brng.jpg"
+		},
+		{ name: "Purdue Mathematical Sciences Building", location: "150 N University St, West Lafayette, IN 47907",
+		bussiness_hour:
+			`Sunday	1–10PM
+			Monday	8AM–10PM
+			Tuesday	8AM–10PM
+			Wednesday	8AM–10PM
+			Thursday	8AM–10PM
+			Friday	8AM–5PM
+			Saturday	1–5PM`,
+		refimg: ""
+		},
+		{ name: "Purdue Physics Building", location: "525 Northwestern Ave, West Lafayette, IN 47907", 
+		bussiness_hour: 
+			`Missing Hours`,
+		refimg: "http://purdue7barz.s3.amazonaws.com/physics-ext.jpg"
+		},
+		{ name: "Recreational Sports Center", location: "355 N Martin Jischke Dr, West Lafayette, IN 47906",
+		bussiness_hour:
+			`Sunday	11AM–10PM
+			Monday	6AM–11PM
+			Tuesday	6AM–11PM
+			Wednesday	6AM–11PM
+			Thursday	6AM–11PM
+			Friday	6AM–10PM
+			Saturday	8AM–8PM
+			`,
+		refimg: ""
+		}
+		
 	];
 
-	db.collection("User").insertMany(users, function(err, res) {
+	db.collection("Building").insertMany(buildinginfo, function(err, res) {
 		if (err) {
 			console.log(err)
 		};
@@ -363,6 +515,29 @@ const getUserChats = async function(usrname) {
 }
 
 /**
+ * Adds new message to chat history
+ * @param {objectID} chat 
+ * @param {string} sender 
+ * @param {string} message 
+ */
+
+const updateChatHistory = async function(chat, sender, message) {
+	let chatID = ObjectId.createFromHexString(chat);
+	try{
+		db.collection("chat_room").updateOne({ "_id": chatID } , {
+			"$push": {
+				"History": {
+					"sender": sender,
+					"message": message
+				}
+			}
+		});
+	} catch (err){
+		console.error(err);
+	}
+}
+
+/**
  * Summary. Function that retrieve chat room message history for a given chat
  * 
  * @param {*} chat The id of the chat in question
@@ -373,14 +548,17 @@ const getChatHistory = async function(chat) {
 	let history;
 	let chatExists;
 
+	let id = ObjectId.createFromHexString(chat);
+	console.log(typeof(id));
+
 	try{
-		chatExists = await db.collection("chat_room").find({_id: chat});
+		chatExists = await db.collection("chat_room").find({_id: id});
 		if(!chatExists){
 			console.log("chat does not exist");
 			return -1;
 		}
 
-		history = await db.collection("chat_room").findOne({_id: chat}, {projection: {History: true, _id: false}});
+		history = await db.collection("chat_room").findOne({_id: id}, {projection: {History: true, _id: false}});
 		console.log(history);
 	} catch(err){
 		console.log(err.stack);
@@ -465,10 +643,23 @@ module.exports = {
 	createChatRoom,
 	addChatToUser,
 	getChatHistory,
+	updateChatHistory,
 	handleAcceptReject,
 	searchUsersCT,
-  searchStudyGroup,
-  searchAllStudyGroup,
-  updateStudyGroupRequest,
-	createEvent
+	searchClassTag,
+	findUserCT,
+  	searchStudyGroup,
+  	searchAllStudyGroup,
+  	updateStudyGroupRequest,
+	createEvent,
+	searchStudyGroup,
+	searchAllStudyGroup,
+	updateStudyGroupRequest,
+	createEvent,
+	getAllBuildings,
+	searchUserEvent,
+	getAllEvents,
+	getCurrentEvent,
+	handleBanUpdate,
+	deleteStudyGroup
 }

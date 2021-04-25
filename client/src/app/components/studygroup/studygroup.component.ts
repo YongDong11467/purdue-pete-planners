@@ -25,6 +25,7 @@ export class StudygroupComponent implements OnInit {
   tablechatroom: string[] = [];
   tablestudyroom: string[] = [];
   tablemeetingtime: Date;
+
   tableannoucement: string[] = [];
   isMemeber = false;
   StudyGroupData = this.curUser.study_group;
@@ -38,10 +39,14 @@ export class StudygroupComponent implements OnInit {
   displayComments = true;
   tablecomments: string[] = [];
 
+  StudyGroupData = {};
+  name = [];
+
 
 
   ngOnInit(): void {
-    this.initPage(this.user);
+    this.name = this.curUser.study_group;
+    console.log(this.name);
   }
 
   initPage(val: string) {

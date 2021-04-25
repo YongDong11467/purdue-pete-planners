@@ -1,23 +1,20 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
-import axios from 'axios'
+import axios from 'axios';
+import {DataService} from "../../data.service";
+import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-event-create',
-  templateUrl: './event-create.component.html'
+  selector: 'app-event-edit',
+  templateUrl: './event-edit.component.html'
 })
-export class EventCreateComponent implements OnInit {
+export class EventEditComponent implements OnInit /*OnDestroy */{
 
-  /*
-  //event vars
-  name: String = '';
-  desc: String = '';
-  dTime: String = '';
-  link: String = '';
-  location: String = '';
-  */
+  currentMessage:string;
+  //subscription: Subscription;
   repeat: number = 0;
+  currentEvent;
 
   //submission vars
   form: FormGroup;
@@ -31,7 +28,9 @@ export class EventCreateComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private data: DataService
   ) {
+    //this.data.currentMessage.subscribe(message => this.message = message)
     this.form = this.formBuilder.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
@@ -42,7 +41,9 @@ export class EventCreateComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    //this.subscription = this.data.currentMessage.subscribe(message => this.message = message);
+    this.data.currentMessage.subscribe(msg => { this.currentMessage = msg});
     this.form = this.formBuilder.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
@@ -51,7 +52,29 @@ export class EventCreateComponent implements OnInit {
       eventDate: [null, Validators.required],
       repeatChoice: [null]
     });
+
+    this.getCurrentEvent();
   }
+
+  /*
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+  }
+  */
+  
+  getCurrentEvent(){
+    console.log("getCurrentEvent()", this.data.currentMessage);
+    axios.get("/api/events/getCurrentEvent", { params: { prefix: this.currentMessage } })
+    .then((res) => {
+      if (typeof res.data[0] == 'undefined'){
+        this.searchResponse = ["No user events"];
+      } else {
+        console.log(res.data.name);
+        this.currentEvent = res.data;
+      }
+    });
+  }
+
 
   get f() { return this.form.controls; }
 
@@ -75,29 +98,16 @@ export class EventCreateComponent implements OnInit {
     }
     this.loading = true;
 
-    axios.post('/api/events/createEvent', {
-      name : n,
-      description : e,
-      Time : d,
-      link : l,
-      location : L,
-      repeat : r,
-      owner : user
-    })
-    .then((response) => {
-      console.log(response);
-      this.loading = true;
-    });
-
     
-    //alert("you better fucking not have");
   }
   
+  updateEvent(){
 
+  }
+
+  //Handles choosing repetiion for schedule
   repeatChoiceHandler(event: any){
-
     this.repeat = event.target.value;
-
   }
 
   //Code from search component, reusing here for inviting users to events

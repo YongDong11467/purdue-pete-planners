@@ -1,11 +1,12 @@
+<app-navbar></app-navbar>
 <div class="card">
-    <h4 class="card-header">Event Creation</h4>
+    <h4 class="card-header">Event Editing</h4>
     <div class="card-body">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <div class="form-group">
                     <label for="eventName">Event Name</label>
-                    <input type="text" formControlName="eventName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventName.errors }" #name1/>
+                    <input type="text" formControlName="eventName" placeholder={{this.currentEvent.name}} class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventName.errors }" #name1/>
                     <div *ngIf="submitted && f.eventName.errors" class="invalid-feedback">
                         <div *ngIf="f.eventName.errors.required">An Event Name is required</div>
                     </div>
@@ -15,7 +16,7 @@
             <div class="form-group">
                 <div class="form-group">
                     <label for="link">Event Link</label>
-                    <input type="text" formControlName="link" class="form-control"  #link1/>
+                    <input type="text" formControlName="link" class="form-control" ng-value = "plz" #link1/>
               </div>
             </div>
 
@@ -83,4 +84,3 @@
         </form>
     </div>
 </div>
-

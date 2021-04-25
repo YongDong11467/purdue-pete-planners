@@ -23,6 +23,7 @@ async function initialize_app(){
     let id = await account_manager.createChatRoom(["goodwi13", "simp"]);
     console.log(id);
     await account_manager.getChatHistory(id);
+    account_manager.updateChatHistory("605eab6ba0b72004bfd31ce6","goodwi13", "How are you?");
     */
 }
 
@@ -41,14 +42,30 @@ app.get('/', (req,res) => {
 io.on('connection', (socket) => {
     console.log('a user connected via socket.io');
 
-    socket.on('message', (message) => {});
+    socket.on('join', async(room) => {
+        try {
+            socket.join(room);
+            socket.emit('joined', room)
+            console.log("User attempting to join chat: " + room);
+            socket.activeRoom = room;
+        } catch (err) {
+            console.error(err);
+        }
+    });
+
+    socket.on('message', (room, sender, message) => {
+        console.log(room)
+        console.log(sender +": " + message)
+        account_manager.updateChatHistory(socket.activeRoom, sender, message)
+        io.to(room).emit("message-broadcast", sender, message);
+    });
 
     socket.on('disconect', () => {
         console.log('a user disconnected via socket.io');
     });
 });
 
-http.listen(port, async () => {
+http.listen(process.env.PORT || port, async () => {
     try{
         initialize_app();
         console.log(`Server listening on the port::${port}`);
