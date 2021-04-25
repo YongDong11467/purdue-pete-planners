@@ -80,6 +80,19 @@
       <td mat-cell *matCellDef="let study_room"> {{study_room}} </td>
       <button></button>
     </ng-container>
+
+    <ng-container *ngIf="displayAnnouncement" matColumnDef="announcement">
+      <th mat-header-cell *matHeaderCellDef> Announcement </th>
+      <td mat-cell *matCellDef="let announcement"> {{announcement}} </td>
+      <button></button>
+    </ng-container>
+
+    <ng-container *ngIf="displayComments" matColumnDef="Comments">
+      <th mat-header-cell *matHeaderCellDef> Comments </th>
+      <td mat-cell *matCellDef="let Comments"> {{Comments}} </td>
+      <button></button>
+    </ng-container>
+
     <!-- <ng-container *ngIf="displayIncFR" matColumnDef="frResult">
       <th mat-header-cell *matHeaderCellDef> {{bld}} </th>
       <td mat-cell *matCellDef="let mealResult"> {{mealResult.Name}} </td>
