@@ -32,6 +32,7 @@
             ],
             "styles": [
 
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "./node_modules/@fullcalendar/common/main.css",
               "./node_modules/@fullcalendar/daygrid/main.css",
@@ -62,13 +63,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1.5mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "400kb",
+                  "maximumError": "500kb"
                 }
               ]
             }

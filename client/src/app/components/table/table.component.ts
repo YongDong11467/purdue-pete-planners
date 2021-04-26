@@ -13,13 +13,16 @@ export class TableComponent implements OnInit {
   displayMealResult = false
   displayFriendResult = false
   displayFriendRequest = false
+  displayTagResult = false
+  displayUserClasses = false
   displayMemberRequest = false
   displayChatRoomRequest = false
   displayStudyRoomRequest = false
   displayAnnouncement = false
   displayComments = false
+  displayBanResult = false
   displayedColumns: string[] = [''];
-  dataSource = new MatTableDataSource();
+  dataSource: MatTableDataSource<any[]> = new MatTableDataSource<any[]>([]);
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   bld = ''
 
@@ -39,6 +42,12 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'friend') {
       this.displayFriendResult = true
       this.displayedColumns = ['friend'];
+    } else if (this.data.type === 'searchTagResult') {
+      this.displayTagResult = true
+      this.displayedColumns = ['searchTagResult'];
+    } else if (this.data.type === 'userClassResult') {
+      this.displayUserClasses = true
+      this.displayedColumns = ['userClassResult'];
     } else if (this.data.type === 'member') {
       this.displayMemberRequest = true
       this.displayedColumns = ['member'];
@@ -54,6 +63,9 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'Comments') {
       this.displayComments = true
       this.displayedColumns = ['Comments'];
+    } else if (this.data.type === 'ban') {
+      this.displayBanResult = true;
+      this.displayedColumns = ['banResult', 'banstatus'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
@@ -61,7 +73,7 @@ export class TableComponent implements OnInit {
     }
     this.dataSource = new MatTableDataSource(this.data.data);
     this.dataSource.paginator = this.paginator
-    console.log(this.data)
+    console.log(this.data.data)
   }
 
   ngOnChanges() {
@@ -74,6 +86,12 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'friendrequest') {
       this.displayFriendRequest = true
       this.displayedColumns = ['friendrequest', 'accept', 'decline'];
+    } else if (this.data.type === 'searchTagResult') {
+      this.displayTagResult = true
+      this.displayedColumns = ['searchTagResult'];
+    } else if (this.data.type === 'userClassResult') {
+      this.displayUserClasses = true
+      this.displayedColumns = ['userClassResult'];
     } else if (this.data.type === 'member') {
       this.displayMemberRequest = true
       this.displayedColumns = ['member'];
@@ -89,12 +107,16 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'Comments') {
       this.displayComments = true
       this.displayedColumns = ['Comments'];
+    } else if (this.data.type === 'ban') {
+      this.displayBanResult = true;
+      this.displayedColumns = ['banResult', 'banstatus'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
       this.bld = this.data.type
     }
     this.dataSource = new MatTableDataSource(this.data.data);
+    console.log(this.data.data)
     this.dataSource.paginator = this.paginator
   }
 
@@ -113,6 +135,22 @@ export class TableComponent implements OnInit {
     axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, data: username, type:"declinefr" }).then(res =>
       this.toFriendPage.emit(username))
     console.log(username)
+  }
+
+  clickedAddClass(username: any) {
+    console.log(username)
+    axios.post("/api/account/searchClassTag", { curUser: this.curUser.class_list, data:  username})
+  }
+
+  clickedBan(username: any) {
+    console.log(username)
+    if (username.banned == 'unban') {
+      axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, 
+        data: {username: username.user_name, newbanstatus: "ban"}, type:"ban" })
+    } else {
+      axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, 
+        data: {username: username.user_name, newbanstatus: "unban"}, type:"ban" })
+    }
   }
 
 }

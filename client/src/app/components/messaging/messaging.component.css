@@ -1,7 +1,7 @@
 .grid-container{
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-auto-rows: 100px;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 400px 50px;
 }
 
 .message-editor{
@@ -14,10 +14,18 @@
     width: 100%;
     float: left;
     margin-top: 5px;
+    overflow: auto;
 }
 
 .editor-full-width{
     width: 100%;
+}
+
+.chat-messages-show-list {
+  list-style-type:none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
 }
 
 .chats {

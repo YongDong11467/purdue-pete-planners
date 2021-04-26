@@ -43,8 +43,13 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { messagingService } from './messaging.service';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { EventPageComponent } from './components/eventPage/event-page.component';
+import {EventEditComponent} from './components/eventEdit/event-edit.component';
+import {DataService} from './data.service';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -63,13 +68,15 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     EventComponent,
     ScheduleComponent,
     EventCreateComponent,
+    EventPageComponent,
     LoginComponent,
     RegisterComponent,
     ClassComponent,
     FriendsComponent,
     MessagingComponent,
     GensearchComponent,
-    StudygroupComponent
+    StudygroupComponent,
+    EventEditComponent
   ],
   imports: [
     BrowserModule,
@@ -93,9 +100,12 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatRadioModule,
     MatButtonModule,
     MatPaginatorModule,
-    MatSnackBarModule
+    NgbModule,
+    MatSnackBarModule,
+    MatExpansionModule
   ],
-  providers: [messagingService],
+  providers: [messagingService,
+              DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
