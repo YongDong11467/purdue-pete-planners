@@ -12,18 +12,39 @@
   </mat-tab-group>
 
 
-<app-table [data]='tableargs4' (toFriendPage)='refresh()'>Forth Study Group</app-table>
+<app-table [data]='tableargs4' (toFriendPage)='refresh()' *ngIf="isMemeber">Forth Study Group</app-table>
+
+<div class="form-group" *ngIf="isMemeber">
+  <button type="button" (click)="announcementexpand=!announcementexpand" *ngIf="!announcementexpand">Press to Enter Announcement</button>
+  <button type="button" (click)="announcementexpand=!announcementexpand" *ngIf="announcementexpand">Go Back</button>
+  <form novalidate class="simple-form" *ngIf="announcementexpand" name="simpleform">
+    <label>New Announcement: <input #box /></label><br />
+    <button type="button" (click)="clickedAnnouncesubmit(box.value)">Submit Information</button>
+  </form>
+
+</div>
+
 <app-table [data]='tableargs6' (toFriendPage)='refresh()'>Second Study Group</app-table>
+
+<div class="form-group" *ngIf="isMemeber">
+  <button type="button" (click)="commentexpand=!commentexpand" *ngIf="!commentexpand">Press to Enter Comment</button>
+  <button type="button" (click)="commentexpand=!commentexpand" *ngIf="commentexpand">Go Back</button>
+  <form novalidate class="simple-form" *ngIf="commentexpand">
+    <label>New Comment: <input #box2 /></label><br />
+    <button type="button" (click)="clickedCommentsubmit(box2.value)">Submit Information</button>
+  </form>
+</div>
+
 <app-table [data]='tableargs1' (toFriendPage)='refresh()'>First Study Group</app-table>
-<app-table [data]='tableargs2' (toFriendPage)='refresh()'>Second Study Group</app-table>
-<app-table [data]='tableargs3' (toFriendPage)='refresh()'></app-table>
+<app-table [data]='tableargs2' (toFriendPage)='refresh()' *ngIf="isMemeber">Second Study Group</app-table>
+<app-table [data]='tableargs3' (toFriendPage)='refresh()' *ngIf="isMemeber"></app-table>
 <mat-card-title class="user-data">Meeting time: {{this.tablemeetingtime | date:"MM/dd/yyyy 'at' h:mma"}}</mat-card-title>
 
 
 <button id="join" type="button" (click)="clickedjoin(this.user)" class="btn btn-primary">
   Join
 </button>
-
+<div class="form-group" *ngIf="isMemeber">
 <button type="button" (click)="expanded=!expanded">Invite Users to Study Group</button>
 <div class="form-group" *ngIf="expanded">
 
@@ -35,6 +56,7 @@
     <app-table *ngIf="displaySearchResult" [data]='tableargs5'></app-table>
   </form>
   <button type="button" (click)="getSearchValue(search.value)">Search!</button>
+</div>
 </div>
 
 

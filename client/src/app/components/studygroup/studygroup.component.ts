@@ -1,7 +1,9 @@
 
 
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import axios from 'axios';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-studygroup',
@@ -13,6 +15,7 @@ export class StudygroupComponent implements OnInit {
   constructor() {
     this.initPage(this.user);
   }
+  clickMessage = 'asfsf';
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
   curStudyGroup = 'CS 381';
@@ -26,8 +29,13 @@ export class StudygroupComponent implements OnInit {
   tablestudyroom: string[] = [];
   tablemeetingtime: Date;
   tableannoucement: string[] = [];
+  //Form creation
   isMemeber = false;
   StudyGroupData = this.curUser.study_group;
+  commentexpand = false;
+  announcementexpand = false;
+  newcomment = [''];
+  newannouncement = [''];
   //inviting users
   expanded = false;
   displaySearchResult = false;
@@ -63,6 +71,13 @@ export class StudygroupComponent implements OnInit {
           console.log(this.tableannoucement);
           console.log(this.tablemember);
           console.log(this.tablecomments);
+        }
+        if (this.tablemember.indexOf(this.user) === -1) {
+          this.isMemeber = false;
+          console.log('false');
+        } else {
+          this.isMemeber = true;
+          console.log('true');
         }
         this.tableargs1 = {data: this.tablemember, type: 'member'};
         this.tableargs2 = {data: this.tablechatroom, type: 'chat_room'};
@@ -111,7 +126,25 @@ export class StudygroupComponent implements OnInit {
   }
 
   clickedjoin(event: any) {
-    axios.post('/api/account/updateStudyGroupRequest', { curUser: this.curUser.user_name, data: this.curStudyGroup });
+    axios.post('/api/account/updateStudyGroupRequest', { curUser: this.curUser.user_name, data: this.curStudyGroup});
+  }
+
+  clickedCommentsubmit(event: any) {
+    console.log(this.newcomment);
+    // axios.post('/api/account/updateStudyGroupRequest', { curUser: this.curUser.user_name, data: this.curStudyGroup, entered: this.newcomment });
+    this.commentexpand = false;
+  }
+
+  clickedAnnouncesubmit(value) {
+    console.log(value);
+    this.newannouncement = value;
+    console.log('ksjfkslf');
+    console.log(this.newannouncement);
+    console.log(this.curUser.user_name);
+    axios.post('/api/account/updateStudyGroupAnnounce', {
+      curUser: this.curUser.user_name, data: this.curStudyGroup, entered: this.newannouncement
+    });
+    this.announcementexpand = false;
   }
 
   getSearchValue(val: string) {

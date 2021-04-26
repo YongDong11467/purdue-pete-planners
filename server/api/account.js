@@ -33,7 +33,7 @@ router.route("/register").post((req,res) => {
 });
 
 /**
- * 
+ *
  */
 router.route("/searchUsers").get((req, res) => {
   manager.searchUsers(req.query.prefix).then(users => {
@@ -50,7 +50,7 @@ router.route("/searchUsersCT").get((req, res) => {
 });
 
 /**
- * 
+ *
  */
 router.route("/sendfr").post((req, res) => {
   return manager.updateFriendRequest(req.body.curUser, req.body.data)
@@ -86,6 +86,15 @@ router.route("/updateStudyGroupRequest").post((req, res) => {
   console.log(req.body.data)
   console.log(req.body)
   return manager.updateStudyGroupRequest(req.body.curUser, req.body.data)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
+});
+
+router.route("/updateStudyGroupAnnounce").post((req, res) => {
+  console.log(req.body.data)
+  console.log(req.body)
+  console.log('reached here 2')
+  return manager.updateStudyGroupAnnounce(req.body.curUser, req.body.data, req.body.entered)
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
 });
