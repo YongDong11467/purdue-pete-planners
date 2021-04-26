@@ -18,6 +18,8 @@ export class TableComponent implements OnInit {
   displayMemberRequest = false
   displayChatRoomRequest = false
   displayStudyRoomRequest = false
+  displayAnnouncement = false
+  displayComments = false
   displayBanResult = false
   displayedColumns: string[] = [''];
   dataSource: MatTableDataSource<any[]> = new MatTableDataSource<any[]>([]);
@@ -55,6 +57,12 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'study_room') {
       this.displayStudyRoomRequest = true
       this.displayedColumns = ['study_room'];
+    } else if (this.data.type === 'announcement') {
+      this.displayAnnouncement = true
+      this.displayedColumns = ['announcement'];
+    } else if (this.data.type === 'Comments') {
+      this.displayComments = true
+      this.displayedColumns = ['Comments'];
     } else if (this.data.type === 'ban') {
       this.displayBanResult = true;
       this.displayedColumns = ['banResult', 'banstatus'];
@@ -93,6 +101,12 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'study_room') {
       this.displayStudyRoomRequest = true
       this.displayedColumns = ['study_room'];
+    } else if (this.data.type === 'announcement') {
+      this.displayAnnouncement = true
+      this.displayedColumns = ['announcement'];
+    } else if (this.data.type === 'Comments') {
+      this.displayComments = true
+      this.displayedColumns = ['Comments'];
     } else if (this.data.type === 'ban') {
       this.displayBanResult = true;
       this.displayedColumns = ['banResult', 'banstatus'];
