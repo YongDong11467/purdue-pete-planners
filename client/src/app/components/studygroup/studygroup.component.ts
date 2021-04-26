@@ -47,7 +47,6 @@ export class StudygroupComponent implements OnInit {
   displayComments = true;
   tablecomments: string[] = [];
 
-  StudyGroupData = {};
   name = [];
 
 
@@ -134,20 +133,20 @@ export class StudygroupComponent implements OnInit {
     axios.post('/api/account/updateStudyGroupRequest', { curUser: this.curUser.user_name, data: this.curStudyGroup});
   }
 
-  clickedCommentsubmit(event: any) {
+  clickedCommentsubmit(value) {
+    this.newcomment = value;
     console.log(this.newcomment);
-    // axios.post('/api/account/updateStudyGroupRequest', { curUser: this.curUser.user_name, data: this.curStudyGroup, entered: this.newcomment });
+    axios.post('/api/account/updateStudyGroupComment', { data: this.curStudyGroup, entered: this.newcomment });
     this.commentexpand = false;
   }
 
   clickedAnnouncesubmit(value) {
     console.log(value);
     this.newannouncement = value;
-    console.log('ksjfkslf');
     console.log(this.newannouncement);
     console.log(this.curUser.user_name);
     axios.post('/api/account/updateStudyGroupAnnounce', {
-      curUser: this.curUser.user_name, data: this.curStudyGroup, entered: this.newannouncement
+      data: this.curStudyGroup, entered: this.newannouncement
     });
     this.announcementexpand = false;
   }

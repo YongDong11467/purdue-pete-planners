@@ -372,12 +372,12 @@ const updateStudyGroupRequest = async function(curuser, study_group){
  *
  * @param {String} study_group
  */
-const updateStudyGroupComment = async function(curuser, study_group, info){
+const updateStudyGroupComment = async function(study_group, info){
   //TODO: error checking on duplicate
-  curUser = curuser
+  Info = info
   console.log(study_group)
   var myquery = { Course_name: study_group};
-  var newvalue = { $push: {Member: curUser} };
+  var newvalue = { $push: {Comments: Info} };
   db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
     if (err) throw err;
     console.log(err);
@@ -389,12 +389,14 @@ const updateStudyGroupComment = async function(curuser, study_group, info){
  *
  * @param {String} study_group
  */
-const updateStudyGroupAnnounce = async function(curuser, study_group, info){
-  curUser = curuser
+const updateStudyGroupAnnounce = async function(study_group, info){
+  //curUser = curuser
+  Info = info
   console.log(study_group)
+  console.log(info)
   console.log('reached here')
   var myquery = { Course_name: study_group};
-  var newvalue = { $push: {Member: curUser} };
+  var newvalue = { $push: {Announcement: Info} };
   db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
     if (err) throw err;
     console.log(err);
@@ -685,6 +687,7 @@ module.exports = {
   updateStudyGroupRequest,
 	createEvent,
   updateStudyGroupAnnounce,
+  updateStudyGroupComment,
 	searchClassTag,
 	findUserCT,
   	searchStudyGroup,

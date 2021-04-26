@@ -120,9 +120,18 @@ router.route("/updateStudyGroupRequest").post((req, res) => {
 
 router.route("/updateStudyGroupAnnounce").post((req, res) => {
   console.log(req.body.data)
+  console.log(req.body.entered)
   console.log(req.body)
   console.log('reached here 2')
-  return manager.updateStudyGroupAnnounce(req.body.curUser, req.body.data, req.body.entered)
+  return manager.updateStudyGroupAnnounce(req.body.data, req.body.entered)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
+});
+
+router.route("/updateStudyGroupComment").post((req, res) => {
+  console.log(req.body.data)
+  console.log(req.body.entered)
+  return manager.updateStudyGroupComment(req.body.data, req.body.entered)
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
 });
