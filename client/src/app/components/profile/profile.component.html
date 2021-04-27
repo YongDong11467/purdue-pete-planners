@@ -12,9 +12,14 @@
                       <h4>{{this.user}}</h4>
                       <p class="text-secondary mb-1">Bio </p>
                       <p class="text-muted font-size-sm">West Lafayette, IN</p>
-                      <!-- <button class="btn btn-primary">Add Friend</button> -->
-                      <div class="divider"></div>
-                      <!-- <button class="btn btn-outline-primary">Message</button> -->
+                      <label class="image-upload-container btn btn-bwm">
+                        <span>Add profile picture</span>
+                        <input #imageInput
+                               type="file"
+                               accept="image/*"
+                               (change)="processImageInput(imageInput)">
+                        </label>
+    
                     </div>
                   </div>
                 </div>
@@ -34,6 +39,14 @@
             </div>
             <div class="col-md-8">
               <div class="card mb-3">
+
+                <label class="image-upload-container btn btn-bwm">
+                    <span>Add profile picture</span>
+                    <input #imageInput
+                           type="file"
+                           accept="image/*"
+                           (change)="processImageInput(imageInput)">
+                </label>
 
                 <form [formGroup]="form" (ngSubmit)="onSubmit()">
                     <div class="row">

@@ -2,6 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {ConfirmedValidator} from './confirmedValidator';
+import { isConstructorDeclaration } from 'typescript';
+
+class ImageFile {
+  pending: boolean = false;
+  status: string = 'init';
+
+  constructor(public src: string, public file: File) {}
+}
 
 @Component({
   selector: 'app-profile',
@@ -101,4 +109,10 @@ export class ProfileComponent implements OnInit {
     //   console.log('Error deleting user:', error);
     // });
   }
+  
+  processImageInput(imageInput: any) {
+      selectedFile: ImageFile;
+    
+  }
+
 }
