@@ -21,6 +21,7 @@ export class TableComponent implements OnInit {
   displayAnnouncement = false
   displayComments = false
   displayBanResult = false
+  displayStudyInvite = false
   displayedColumns: string[] = [''];
   dataSource: MatTableDataSource<any[]> = new MatTableDataSource<any[]>([]);
   curUser = JSON.parse(sessionStorage.curUser || '{}');
@@ -66,6 +67,9 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'ban') {
       this.displayBanResult = true;
       this.displayedColumns = ['banResult', 'banstatus'];
+    } else if (this.data.type === 'studyinvite') {
+      this.displayStudyInvite = true;
+      this.displayedColumns = ['studyinvite', 'sendstudyinv'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
@@ -110,6 +114,9 @@ export class TableComponent implements OnInit {
     } else if (this.data.type === 'ban') {
       this.displayBanResult = true;
       this.displayedColumns = ['banResult', 'banstatus'];
+    } else if (this.data.type === 'studyinvite') {
+      this.displayStudyInvite = true;
+      this.displayedColumns = ['studyinvite', 'studygroup', 'sendstudyinv'];
     } else {
       this.displayMealResult = true;
       this.displayedColumns = ['mealResult'];
@@ -124,6 +131,8 @@ export class TableComponent implements OnInit {
     console.log(username)
     axios.post("/api/account/sendfr", { curUser: this.curUser.user_name, data: username })
   }
+
+
 
   clickedAccept(username: any) {
     axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, data: username, type:"acceptfr" }).then(res =>
@@ -145,12 +154,16 @@ export class TableComponent implements OnInit {
   clickedBan(username: any) {
     console.log(username)
     if (username.banned == 'unban') {
-      axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, 
+      axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name,
         data: {username: username.user_name, newbanstatus: "ban"}, type:"ban" })
     } else {
-      axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name, 
+      axios.post("/api/account/updateUserInfo", { curUser: this.curUser.user_name,
         data: {username: username.user_name, newbanstatus: "unban"}, type:"ban" })
     }
   }
 
+  clickedStudyRequest(username: any) {
+    console.log(username)
+    axios.post("/api/account/sendfr", { curUser: this.curUser.user_name, data: username })
+  }
 }

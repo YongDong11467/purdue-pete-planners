@@ -101,7 +101,7 @@ const createEvent = async function(name, description, time, link, location, repe
 }
 
 /**
- * 
+ *
  * @param {String} owner
  */
 
@@ -195,7 +195,7 @@ const searchUsers = async function(prefix){
  *
  * @param {String} usrname 	The username of the account which the password is being extracted
  *
- * @return {int} 	Returns a value depending on invalid information (-1 = Cannot connect to database, 1 = Invalid Username) 
+ * @return {int} 	Returns a value depending on invalid information (-1 = Cannot connect to database, 1 = Invalid Username)
  * @return {String} Returns a string of the password
  */
 const getAccountPassword = async function(usrname) {
@@ -215,7 +215,7 @@ const getAccountPassword = async function(usrname) {
 	}
 
 	if (!userExists) {return 1;}
-	else {return pass}; 
+	else {return pass};
 
 }
 
@@ -367,6 +367,42 @@ const updateStudyGroupRequest = async function(curuser, study_group){
   });
 }
 
+/**
+ * Update's the Comment of the study group
+ *
+ * @param {String} study_group
+ */
+const updateStudyGroupComment = async function(study_group, info){
+  //TODO: error checking on duplicate
+  Info = info
+  console.log(study_group)
+  var myquery = { Course_name: study_group};
+  var newvalue = { $push: {Comments: Info} };
+  db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+}
+
+/**
+ * Update's the Announcement of the study group
+ *
+ * @param {String} study_group
+ */
+const updateStudyGroupAnnounce = async function(study_group, info){
+  //curUser = curuser
+  Info = info
+  console.log(study_group)
+  console.log(info)
+  console.log('reached here')
+  var myquery = { Course_name: study_group};
+  var newvalue = { $push: {Announcement: Info} };
+  db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+}
+
 const deleteStudyGroup = async function(data){
 	return new Promise(function(resolve, reject) {
 		var myquery = { Course_name: data };
@@ -420,8 +456,8 @@ const populateDatabase = async function(){
 	var buildinginfo = [
 		// Too lazy to create hours object so I'll just go with strings or html
 		// That also that it is in our database so I'm not at fault right? ┌( ಠ‿ಠ)┘
-		{ name: "Purdue University Beering Hall", location: "100 University St, West Lafayette, IN 47907", 
-		bussiness_hour: 
+		{ name: "Purdue University Beering Hall", location: "100 University St, West Lafayette, IN 47907",
+		bussiness_hour:
 			`Sunday	Closed
 			Monday	6:30AM–11PM
 			Tuesday	6:30AM–11PM
@@ -442,8 +478,8 @@ const populateDatabase = async function(){
 			Saturday	1–5PM`,
 		refimg: ""
 		},
-		{ name: "Purdue Physics Building", location: "525 Northwestern Ave, West Lafayette, IN 47907", 
-		bussiness_hour: 
+		{ name: "Purdue Physics Building", location: "525 Northwestern Ave, West Lafayette, IN 47907",
+		bussiness_hour:
 			`Missing Hours`,
 		refimg: "http://purdue7barz.s3.amazonaws.com/physics-ext.jpg"
 		},
@@ -459,7 +495,7 @@ const populateDatabase = async function(){
 			`,
 		refimg: ""
 		}
-		
+
 	];
 
 	db.collection("Building").insertMany(buildinginfo, function(err, res) {
@@ -475,7 +511,7 @@ const populateDatabase = async function(){
  *
  * @param {String} usrname The email of the account which the password is being extracted
  *
- * @return {int} Returns a value depending on if username exists (-1 = Cannot connect to database, 0 = Does not Exist, 1 = Exists) 
+ * @return {int} Returns a value depending on if username exists (-1 = Cannot connect to database, 0 = Does not Exist, 1 = Exists)
  */
 const userAccountExists = async function(usrname) {
 	let userExists;
@@ -492,9 +528,9 @@ const userAccountExists = async function(usrname) {
 
 /**
  * Summary. Function that retrives chat rooms for a user
- * 
+ *
  * @param {String} username The username of the account in question
- * 
+ *
  * @return A list of conversations
  */
 const getUserChats = async function(usrname) {
@@ -516,9 +552,9 @@ const getUserChats = async function(usrname) {
 
 /**
  * Adds new message to chat history
- * @param {objectID} chat 
- * @param {string} sender 
- * @param {string} message 
+ * @param {objectID} chat
+ * @param {string} sender
+ * @param {string} message
  */
 
 const updateChatHistory = async function(chat, sender, message) {
@@ -539,9 +575,9 @@ const updateChatHistory = async function(chat, sender, message) {
 
 /**
  * Summary. Function that retrieve chat room message history for a given chat
- * 
+ *
  * @param {*} chat The id of the chat in question
- * 
+ *
  * @return An array of messages and their senders
  */
 const getChatHistory = async function(chat) {
@@ -564,15 +600,15 @@ const getChatHistory = async function(chat) {
 		console.log(err.stack);
 		return -1;
 	}
-	
+
 	return history;
 }
 
 /**
  * Summary. Function to create a new chat room
- * 
+ *
  * @param {Array} users The list of users to be added to the chat
- * 
+ *
  * @return The id of the new chat document. -1 for failure, 0 for already exists
  */
 const createChatRoom = async function(users) {
@@ -586,7 +622,7 @@ const createChatRoom = async function(users) {
 		"Members": users,
 		"History":[]
 	};
-	
+
 	// check database for chat room with same participatnts.
 	let chats;
 	chats = await db.collection("chat_room").find({},{projection: {Members:true, _id:true}}).toArray();
@@ -616,11 +652,11 @@ const createChatRoom = async function(users) {
 
 /**
  * Sumarry. Function to add chat room to user document
- * 
+ *
  * @param {String} user The user to add the chat to
- * 
+ *
  * @param {ObjectId} id The id of the new chat
- * 
+ *
  * @return An integer value (1 = success, 0 = failure, -1 = error)
  */
 const addChatToUser = async function(user, id){
@@ -646,6 +682,12 @@ module.exports = {
 	updateChatHistory,
 	handleAcceptReject,
 	searchUsersCT,
+  searchStudyGroup,
+  searchAllStudyGroup,
+  updateStudyGroupRequest,
+	createEvent,
+  updateStudyGroupAnnounce,
+  updateStudyGroupComment,
 	searchClassTag,
 	findUserCT,
   	searchStudyGroup,
