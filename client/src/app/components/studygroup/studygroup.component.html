@@ -37,28 +37,41 @@
 </div>
 
 <app-table [data]='tableargs1' (toFriendPage)='refresh()'>First Study Group</app-table>
+
+<div class="form-group" *ngIf="isMemeber">
+  <button type="button" (click)="expanded=!expanded">Invite Users to Study Group</button>
+  <div class="form-group" *ngIf="expanded">
+
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <mat-label>Search For Users</mat-label>
+        <input matInput placeholder="Enter name here" #search>
+      </mat-form-field>
+      <!--    <app-table *ngIf="displayStudyInvite" [data]='tableargs5'></app-table>-->
+
+    </form>
+    <button type="button" (click)="getSearchValue(search.value)">Search!</button>
+    <div class="form-group" *ngIf="enteredname">
+      <tr><button mat-raised-button (click)="clickedBacktoName()" >Go Back</button></tr>
+      <tr></tr>
+      <tr><label *ngIf="!isFriend">{{search.value}} does not exist</label>
+        <label *ngIf="isFriend">{{search.value}} is a valid user. Press the button below to invite him to {{this.curStudyGroup}}</label></tr>
+      <tr></tr>
+      <tr><button mat-raised-button (click)="clickedStudyRequest(search.value)" *ngIf="isFriend">Invite to study group</button></tr>
+
+    </div>
+  </div>
+</div>
+
 <app-table [data]='tableargs2' (toFriendPage)='refresh()' *ngIf="isMemeber">Second Study Group</app-table>
 <app-table [data]='tableargs3' (toFriendPage)='refresh()' *ngIf="isMemeber"></app-table>
-<mat-card-title class="user-data">Meeting time: {{this.tablemeetingtime | date:"MM/dd/yyyy 'at' h:mma"}}</mat-card-title>
+<tr><mat-card-title class="user-data">Meeting time: {{this.tablemeetingtime | date:"MM/dd/yyyy 'at' h:mma"}}</mat-card-title></tr>
 
-
-<button id="join" type="button" (click)="clickedjoin(this.user)" class="btn btn-primary">
+<tr>
+<button id="join" type="button" (click)="clickedjoin(this.user)" class="btn btn-primary" *ngIf="!isMemeber">
   Join
-</button>
-<div class="form-group" *ngIf="isMemeber">
-<button type="button" (click)="expanded=!expanded">Invite Users to Study Group</button>
-<div class="form-group" *ngIf="expanded">
+</button></tr>
 
-  <form class="example-form">
-    <mat-form-field class="example-full-width">
-      <mat-label>Search For Users</mat-label>
-      <input matInput placeholder="Placeholder" #search>
-    </mat-form-field>
-    <app-table *ngIf="displaySearchResult" [data]='tableargs5'></app-table>
-  </form>
-  <button type="button" (click)="getSearchValue(search.value)">Search!</button>
-</div>
-</div>
 
 
 

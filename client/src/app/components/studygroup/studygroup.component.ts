@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import axios from 'axios';
 import {ActivatedRoute, Router} from "@angular/router";
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-studygroup',
@@ -37,14 +38,16 @@ export class StudygroupComponent implements OnInit {
   announcementexpand = false;
   newcomment = [''];
   newannouncement = [''];
+  isFriend = false;
+  enteredname = false;
   //inviting users
   expanded = false;
-  displaySearchResult = false;
+  displayStudyInvite = false;
   searchResponse: string[] = [];
   type = 'none';
-  tableargs5 = {data: this.searchResponse, type: this.type};
+  tableargs5 = {data: this.searchResponse, type: 'studyinvite'};
   //comments
-  displayComments = true;
+  displayedColumns = ['studyinvite', 'sendstudyinv'];
   tablecomments: string[] = [];
 
   name = [];
@@ -152,23 +155,31 @@ export class StudygroupComponent implements OnInit {
   }
 
   getSearchValue(val: string) {
+    this.enteredname = true;
     axios.get(`/api/account/searchUsers`, {params: {prefix: val}})
       .then((res) => {
         console.log(res.data[0])
         if (typeof res.data[0] === 'undefined') {
           this.searchResponse = ["No matching user"]
+          this.isFriend = false;
         } else {
-          // for (d in res.data[0]) {
-          //   this.searchResponse.push(d.user_name)
-          // }
-
-          //TODO: temp solution until prefix is impulmented
           this.searchResponse = [res.data[0].user_name]
-          // this.searchResponse = res.data[0];
+          this.isFriend = true;
         }
-        this.type = 'search'
-        this.displaySearchResult = true
+        this.type = 'studyinvite'
+        this.displayStudyInvite = true
         this.tableargs5 = {data: this.searchResponse, type: this.type}
       });
+  }
+
+  clickedStudyRequest(value) {
+    //console.log(username)
+    axios.post('/api/account/updateStudyGroupRequest', { curUser: value, data: this.curStudyGroup });
+    this.enteredname = false;
+  }
+
+  clickedBacktoName() {
+    this.isFriend = false;
+    this.enteredname = false;
   }
 }
