@@ -69,7 +69,7 @@ export class EventPageComponent implements OnInit /*, OnDestroy */{
               this.tabsAll = new Array(res.data.length);
               for(let i = 0; i < res.data.length; i++){
                 this.tabsAll[i] = res.data[i];
-                console.log(this.tabsAll[i].name);
+                //console.log(this.tabsAll[i].name);
               }
               
             }

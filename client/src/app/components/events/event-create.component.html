@@ -55,21 +55,6 @@
                     <option value=3>Monthly</option>
                 </select>
             </div>
-            
-            <button type="button" (click)="expanded=!expanded">Invite Users</button>
-            <div class="form-group" *ngIf="expanded">
-                
-                <form class="example-form">
-                    <mat-form-field class="example-full-width">
-                      <mat-label>Search For Users</mat-label>
-                      <input matInput placeholder="Placeholder" #search>
-                    </mat-form-field>
-                    <app-table *ngIf="displaySearchResult" [data]='tableargs'></app-table>
-                </form>
-                <button type="button" (click)="getSearchValue(search.value)">Search!</button>
-            </div>
-            
-           
 
             <div class="form-group">
 

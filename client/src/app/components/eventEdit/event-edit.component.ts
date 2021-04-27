@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import axios from 'axios';
-import { ObjectUnsubscribedError } from 'rxjs';
 
 @Component({
   selector: 'app-event-edit',
@@ -16,9 +15,6 @@ export class EventEditComponent implements OnInit{
   form: FormGroup;
   loading = false;
   submitted = false;
-
-  //button toggle
-  expanded = false;
 
   //ID of event to be edited
   id:string;
@@ -37,7 +33,8 @@ export class EventEditComponent implements OnInit{
       link: [''],
       location: ['', Validators.required],
       eventDate: [null, Validators.required],
-      repeatChoice: [null]
+      repeatChoice: [null],
+      invitedUser: ['']
     });
   }
 
@@ -49,22 +46,24 @@ export class EventEditComponent implements OnInit{
       link: [''],
       location: ['', Validators.required],
       eventDate: [null, Validators.required],
-      repeatChoice: [null]
+      repeatChoice: [null],
+      invitedUser: [null]
     });
     
   }
   
+  searchResponse;
   getCurrentEvent(){
-    console.log("welcome to edit", this.id);
+    //console.log("welcome to edit", this.id);
     let formatID = 'ObjectId(\"' + this.id + '\")';
     console.log(formatID);
     axios.get("/api/events/getCurrentEvent", { params: { prefix: this.id } })
     .then((res) => {
       if (typeof res.data == 'undefined'){
-        console.log("excuse me bitch?");
+        //console.log("excuse me bitch?");
         this.searchResponse = ["No user events"];
       } else {
-        console.log("some form of data has been collected");
+        //console.log("some form of data has been collected");
         this.currentEvent = res.data;
         console.log(this.currentEvent.name);
       }
@@ -74,7 +73,7 @@ export class EventEditComponent implements OnInit{
 
   get f() { return this.form.controls; }
 
-  // tslint:disable-next-line:typedef
+  
   onSubmit() {
 
     let curUser = JSON.parse(sessionStorage.curUser || '{}');
@@ -87,14 +86,17 @@ export class EventEditComponent implements OnInit{
     let L = this.f.location.value;
     let d = this.f.eventDate.value;
     let r = this.repeat;
+    let i = this.f.invitedUser.value;
 
     if (this.form.invalid) {
       //alert('hey');
       return;
     }
-    this.loading = true;
+    this.loading=true;
+    //console.log(this.id, n, e, l, L, d, r);
     
     axios.post('/api/events/updateEvent', {
+      _id: this.id,
       name: n,
       description: e,
       Time: d,
@@ -106,38 +108,25 @@ export class EventEditComponent implements OnInit{
       console.log(response);
       this.loading = true;
     });
-    
+    console.log("event updated... time 4 invite");
+
+    if(i != null){
+      console.log("sneding invite:", i, user, n, this.id);
+      axios.post('/api/events/updateEventInvite', {
+        reciever: i,
+        sender: user,
+        eventName: n,
+        eventID: this.id
+      })
+      .then((response) =>{
+        console.log("response")
+      });
+    }
+    console.log("invite sent... allegedly");
   }
 
   //Handles choosing repetiion for schedule
   repeatChoiceHandler(event: any){
     this.repeat = event.target.value;
-  }
-
-  //Code from search component, reusing here for inviting users to events
-  searchResponse : string[] = [];
-  type = 'none'
-  tableargs = {data: this.searchResponse, type: this.type}
-  displaySearchResult = false
-
-  getSearchValue(val: string) {
-    axios.get(`/api/account/searchUsers`, { params: { prefix: val } })
-    .then((res) => {
-      console.log(res.data[0])
-      if (typeof res.data[0] === 'undefined'){
-        this.searchResponse = ["No matching user"]
-      } else {
-        // for (d in res.data[0]) {
-        //   this.searchResponse.push(d.user_name)
-        // }
-
-        //TODO: temp solution until prefix is impulmented
-        this.searchResponse = [res.data[0].user_name]
-        // this.searchResponse = res.data[0];
-      }
-      this.type = 'search'
-      this.displaySearchResult = true
-      this.tableargs = {data: this.searchResponse, type: this.type}
-    });
   }
 }
