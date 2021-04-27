@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
-import axios from 'axios'
+import axios from 'axios';
 
 @Component({
   selector: 'app-event-create',
@@ -89,10 +89,10 @@ export class EventCreateComponent implements OnInit {
       this.loading = true;
     });
 
-    
+
     //alert("you better fucking not have");
   }
-  
+
 
   repeatChoiceHandler(event: any){
 

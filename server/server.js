@@ -1,6 +1,7 @@
 const diningRouter = require("./api/dining");
 const accountRouter = require("./api/account");
 const eventRouter = require("./api/events");
+const scheduleRouter = require("./api/schedule");
 const messageRouter = require("./api/messaging");
 const account_manager = require("./account_manager");
 const cors = require("cors");
@@ -34,6 +35,7 @@ app.use("/api/dining", diningRouter);
 app.use("/api/account", accountRouter);
 app.use("/api/events", eventRouter);
 app.use("/api/messaging", messageRouter);
+app.use("/api/schedule", scheduleRouter)
 
 app.get('/', (req,res) => {
     res.send('Default route');

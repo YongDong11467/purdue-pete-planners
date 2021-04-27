@@ -50,6 +50,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { EventPageComponent } from './components/eventPage/event-page.component';
 import {EventEditComponent} from './components/eventEdit/event-edit.component';
 
+
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin
