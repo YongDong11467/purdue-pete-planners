@@ -12,8 +12,7 @@
             <button mat-raised-button mat-button color="blue"
                 class = "deleteClassBtn"
                 [disabled]="tabs.length === 1"
-                (click)="newMessage(tab._id)"
-                onclick="location.href='http://localhost:4200/eventEdit'">
+                (click)="sendID(tab._id)">
                 Edit
             </button>
           </div>

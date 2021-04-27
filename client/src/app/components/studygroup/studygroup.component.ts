@@ -39,7 +39,7 @@ export class StudygroupComponent implements OnInit {
   displayComments = true;
   tablecomments: string[] = [];
 
-  StudyGroupData = {};
+  //StudyGroupData = {};
   name = [];
 
 

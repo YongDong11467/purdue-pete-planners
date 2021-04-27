@@ -126,18 +126,12 @@ const getAllEvents = async function(){
 	});
 }
 
-const getCurrentEvent = async function(id){
-	return new Promise(function(resolve, reject) {
-		console.log(id);
-		db.collection("Event").find({_id: id}).toArray(function(err, result) {
-			if (err) throw err;
-
-			resolve(result);
-		});
-	});
+const getCurrentEvent = async function(findid){
+	let event = db.collection("Event").findOne({_id: ObjectId(findid)});
+	return event;
 }
 
-const updateEvent = async function(id, description, time, link, location, repeat, owner){
+const updateEvent = async function(id, description, time, link, location, repeat){
 
 }
 
@@ -261,7 +255,8 @@ module.exports = {
 	createEvent:createEvent,
 	searchUserEvent:searchUserEvent,
 	getAllEvents:getAllEvents,
-	getCurrentEvent:getCurrentEvent
+	getCurrentEvent:getCurrentEvent,
+	updateEvent:updateEvent
 }
 
 /**
@@ -661,5 +656,6 @@ module.exports = {
 	getAllEvents,
 	getCurrentEvent,
 	handleBanUpdate,
-	deleteStudyGroup
+	deleteStudyGroup,
+	updateEvent
 }

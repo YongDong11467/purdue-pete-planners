@@ -2,17 +2,13 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import axios from 'axios';
-import {DataService} from "../../data.service";
-import {Subscription} from 'rxjs';
+import { ObjectUnsubscribedError } from 'rxjs';
 
 @Component({
   selector: 'app-event-edit',
   templateUrl: './event-edit.component.html'
 })
-export class EventEditComponent implements OnInit /*OnDestroy */{
-
-  currentMessage:string;
-  //subscription: Subscription;
+export class EventEditComponent implements OnInit{
   repeat: number = 0;
   currentEvent;
 
@@ -24,13 +20,17 @@ export class EventEditComponent implements OnInit /*OnDestroy */{
   //button toggle
   expanded = false;
 
+  //ID of event to be edited
+  id:string;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
-    private data: DataService
+    private router: Router
   ) {
-    //this.data.currentMessage.subscribe(message => this.message = message)
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as {id: string};
+    this.id = state.id;
+
     this.form = this.formBuilder.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
@@ -42,8 +42,7 @@ export class EventEditComponent implements OnInit /*OnDestroy */{
   }
 
   ngOnInit() {
-    //this.subscription = this.data.currentMessage.subscribe(message => this.message = message);
-    this.data.currentMessage.subscribe(msg => { this.currentMessage = msg});
+    this.getCurrentEvent();
     this.form = this.formBuilder.group({
       eventName: ['', Validators.required],
       eventDescription: ['', Validators.required],
@@ -52,25 +51,22 @@ export class EventEditComponent implements OnInit /*OnDestroy */{
       eventDate: [null, Validators.required],
       repeatChoice: [null]
     });
-
-    this.getCurrentEvent();
+    
   }
-
-  /*
-  ngOnDestroy(){
-    this.subscription.unsubscribe();
-  }
-  */
   
   getCurrentEvent(){
-    console.log("getCurrentEvent()", this.data.currentMessage);
-    axios.get("/api/events/getCurrentEvent", { params: { prefix: this.currentMessage } })
+    console.log("welcome to edit", this.id);
+    let formatID = 'ObjectId(\"' + this.id + '\")';
+    console.log(formatID);
+    axios.get("/api/events/getCurrentEvent", { params: { prefix: this.id } })
     .then((res) => {
-      if (typeof res.data[0] == 'undefined'){
+      if (typeof res.data == 'undefined'){
+        console.log("excuse me bitch?");
         this.searchResponse = ["No user events"];
       } else {
-        console.log(res.data.name);
+        console.log("some form of data has been collected");
         this.currentEvent = res.data;
+        console.log(this.currentEvent.name);
       }
     });
   }
@@ -97,12 +93,20 @@ export class EventEditComponent implements OnInit /*OnDestroy */{
       return;
     }
     this.loading = true;
-
     
-  }
-  
-  updateEvent(){
-
+    axios.post('/api/events/updateEvent', {
+      name: n,
+      description: e,
+      Time: d,
+      link: l,
+      location: L,
+      repeat: r
+    })
+    .then((response) => {
+      console.log(response);
+      this.loading = true;
+    });
+    
   }
 
   //Handles choosing repetiion for schedule

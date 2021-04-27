@@ -6,7 +6,7 @@
             <div class="form-group">
                 <div class="form-group">
                     <label for="eventName">Event Name</label>
-                    <input type="text" formControlName="eventName" placeholder={{this.currentEvent.name}} class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventName.errors }" #name1/>
+                    <input type="text" formControlName="eventName"  ngModel={{this.currentEvent.name}} class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventName.errors }" #name1/>
                     <div *ngIf="submitted && f.eventName.errors" class="invalid-feedback">
                         <div *ngIf="f.eventName.errors.required">An Event Name is required</div>
                     </div>
@@ -16,21 +16,21 @@
             <div class="form-group">
                 <div class="form-group">
                     <label for="link">Event Link</label>
-                    <input type="text" formControlName="link" class="form-control" ng-value = "plz" #link1/>
+                    <input type="text" ngModel={{this.currentEvent.link}} formControlName="link" class="form-control" ng-value = "plz" #link1/>
               </div>
             </div>
 
             <div class="form-group">
                 <div class="form-group">
                     <label for="location">Event Location</label>
-                    <input type="text" formControlName="location" class="form-control"  #location1/>
+                    <input type="text" ngModel={{this.currentEvent.location}} formControlName="location" class="form-control"  #location1/>
               </div>
             </div>
               
             <div class="form-group">
                 <div class="form-group">
                     <label for="eventDescription">Event Description</label>
-                    <textarea formControlName="eventDescription" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventDescription.errors }" rows = "5" cols = "30" #desc1></textarea>
+                    <textarea formControlName="eventDescription" ngModel={{this.currentEvent.description}} class="form-control" [ngClass]="{ 'is-invalid': submitted && f.eventDescription.errors }" rows = "5" cols = "30" #desc1></textarea>
                     <div *ngIf="submitted && f.eventDescription.errors" class="invalid-feedback">
                         <div *ngIf="f.eventDescription.errors.required">An Event Description is required</div>
                     </div>
