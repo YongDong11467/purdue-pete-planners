@@ -1,7 +1,10 @@
 
 
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import axios from 'axios';
+import {ActivatedRoute, Router} from "@angular/router";
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-studygroup',
@@ -13,6 +16,7 @@ export class StudygroupComponent implements OnInit {
   constructor() {
     this.initPage(this.user);
   }
+  clickMessage = 'asfsf';
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
   curStudyGroup = 'CS 381';
@@ -27,19 +31,25 @@ export class StudygroupComponent implements OnInit {
   tablemeetingtime: Date;
 
   tableannoucement: string[] = [];
+  //Form creation
   isMemeber = false;
   StudyGroupData = this.curUser.study_group;
+  commentexpand = false;
+  announcementexpand = false;
+  newcomment = [''];
+  newannouncement = [''];
+  isFriend = false;
+  enteredname = false;
   //inviting users
   expanded = false;
-  displaySearchResult = false;
+  displayStudyInvite = false;
   searchResponse: string[] = [];
   type = 'none';
-  tableargs5 = {data: this.searchResponse, type: this.type};
+  tableargs5 = {data: this.searchResponse, type: 'studyinvite'};
   //comments
-  displayComments = true;
+  displayedColumns = ['studyinvite', 'sendstudyinv'];
   tablecomments: string[] = [];
 
-  //StudyGroupData = {};
   name = [];
 
 
@@ -68,6 +78,13 @@ export class StudygroupComponent implements OnInit {
           console.log(this.tableannoucement);
           console.log(this.tablemember);
           console.log(this.tablecomments);
+        }
+        if (this.tablemember.indexOf(this.user) === -1) {
+          this.isMemeber = false;
+          console.log('false');
+        } else {
+          this.isMemeber = true;
+          console.log('true');
         }
         this.tableargs1 = {data: this.tablemember, type: 'member'};
         this.tableargs2 = {data: this.tablechatroom, type: 'chat_room'};
@@ -116,27 +133,53 @@ export class StudygroupComponent implements OnInit {
   }
 
   clickedjoin(event: any) {
-    axios.post('/api/account/updateStudyGroupRequest', { curUser: this.curUser.user_name, data: this.curStudyGroup });
+    axios.post('/api/account/updateStudyGroupRequest', { curUser: this.curUser.user_name, data: this.curStudyGroup});
+  }
+
+  clickedCommentsubmit(value) {
+    this.newcomment = value;
+    console.log(this.newcomment);
+    axios.post('/api/account/updateStudyGroupComment', { data: this.curStudyGroup, entered: this.newcomment });
+    this.commentexpand = false;
+  }
+
+  clickedAnnouncesubmit(value) {
+    console.log(value);
+    this.newannouncement = value;
+    console.log(this.newannouncement);
+    console.log(this.curUser.user_name);
+    axios.post('/api/account/updateStudyGroupAnnounce', {
+      data: this.curStudyGroup, entered: this.newannouncement
+    });
+    this.announcementexpand = false;
   }
 
   getSearchValue(val: string) {
+    this.enteredname = true;
     axios.get(`/api/account/searchUsers`, {params: {prefix: val}})
       .then((res) => {
         console.log(res.data[0])
         if (typeof res.data[0] === 'undefined') {
           this.searchResponse = ["No matching user"]
+          this.isFriend = false;
         } else {
-          // for (d in res.data[0]) {
-          //   this.searchResponse.push(d.user_name)
-          // }
-
-          //TODO: temp solution until prefix is impulmented
           this.searchResponse = [res.data[0].user_name]
-          // this.searchResponse = res.data[0];
+          this.isFriend = true;
         }
-        this.type = 'search'
-        this.displaySearchResult = true
+        this.type = 'studyinvite'
+        this.displayStudyInvite = true
         this.tableargs5 = {data: this.searchResponse, type: this.type}
       });
+  }
+
+  clickedStudyRequest(value) {
+    //console.log(username)
+    axios.post('/api/account/updateStudyGroupRequest', { curUser: value, data: this.curStudyGroup });
+    this.enteredname = false;
+  }
+
+  clickedBacktoName() {
+    this.isFriend = false;
+    this.enteredname = false;
   }
 }

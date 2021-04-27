@@ -382,6 +382,42 @@ const updateStudyGroupRequest = async function(curuser, study_group){
   });
 }
 
+/**
+ * Update's the Comment of the study group
+ *
+ * @param {String} study_group
+ */
+const updateStudyGroupComment = async function(study_group, info){
+  //TODO: error checking on duplicate
+  Info = info
+  console.log(study_group)
+  var myquery = { Course_name: study_group};
+  var newvalue = { $push: {Comments: Info} };
+  db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+}
+
+/**
+ * Update's the Announcement of the study group
+ *
+ * @param {String} study_group
+ */
+const updateStudyGroupAnnounce = async function(study_group, info){
+  //curUser = curuser
+  Info = info
+  console.log(study_group)
+  console.log(info)
+  console.log('reached here')
+  var myquery = { Course_name: study_group};
+  var newvalue = { $push: {Announcement: Info} };
+  db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+}
+
 const deleteStudyGroup = async function(data){
 	return new Promise(function(resolve, reject) {
 		var myquery = { Course_name: data };
@@ -661,6 +697,12 @@ module.exports = {
 	updateChatHistory,
 	handleAcceptReject,
 	searchUsersCT,
+  searchStudyGroup,
+  searchAllStudyGroup,
+  updateStudyGroupRequest,
+	createEvent,
+  updateStudyGroupAnnounce,
+  updateStudyGroupComment,
 	searchClassTag,
 	findUserCT,
   	searchStudyGroup,
