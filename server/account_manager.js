@@ -65,7 +65,8 @@ const createAccount = async function(username, email, major, pass) {
 		"chats":[],
 		"friend":[],
 		"friend_request":[],
-		"book_room":[]
+		"book_room":[],
+		"event_invite":[]
 	}
 
 	let emailExists;
@@ -140,19 +141,30 @@ const getAllEvents = async function(){
 	});
 }
 
-const getCurrentEvent = async function(id){
-	return new Promise(function(resolve, reject) {
-		console.log(id);
-		db.collection("Event").find({_id: id}).toArray(function(err, result) {
-			if (err) throw err;
-
-			resolve(result);
-		});
-	});
+const getCurrentEvent = async function(findid){
+	let event = db.collection("Event").findOne({_id: ObjectId(findid)});
+	return event;
 }
 
-const updateEvent = async function(id, description, time, link, location, repeat, owner){
+const updateEvent = async function(id, nameParam, desc, date, linkParam, loc, repeatParam){
+	await db.collection("Event").updateOne({_id: ObjectId(id)},
+	 {$set: { name: nameParam, description: desc, Time: date, link: linkParam, location: loc, repeat: repeatParam},},
+	  function(err, res) {
+		  if(err) throw err;
+		  console.log(err);
+	  });
+	//console.log("something happened?");
+}
 
+const updateEventInvite = async function(reciever, sender, eventName, eventID){
+	console.log("manager");
+	console.log("hello from managerjs ", reciever, sender, eventName, eventID);
+	var myquery = { user_name: reciever };
+	var newvalue = { $push: {event_invite:  [sender, eventName, eventID]  }};
+	await db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
 }
 
 /**
@@ -276,6 +288,8 @@ module.exports = {
 	searchUserEvent:searchUserEvent,
 	getAllEvents:getAllEvents,
 	getCurrentEvent:getCurrentEvent,
+	updateEvent:updateEvent,
+	updateEventInvite:updateEventInvite,
   createSchedule:createSchedule
 }
 
@@ -719,5 +733,7 @@ module.exports = {
 	getCurrentEvent,
 	handleBanUpdate,
 	deleteStudyGroup,
+	updateEvent,
+	updateEventInvite,
   createSchedule
 }

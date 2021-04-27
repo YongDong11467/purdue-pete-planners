@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, ɵCompiler_compileModuleSync__POST_R3__, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import axios from 'axios';
-import {DataService} from "../../data.service";
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -14,9 +13,11 @@ import {Subscription} from 'rxjs';
 export class EventPageComponent implements OnInit /*, OnDestroy */{
   //Data service vars
   currentMessage:string;
-  constructor(private data: DataService) { 
-    //this.data.currentMessage.subscribe(msg => console.log("constructor msg", msg));
-    
+  @Input() idToSend:string;
+  @Output() toEventEdit = new EventEmitter();
+
+  constructor(private router: Router) { 
+
   }
 
     //Current user
@@ -28,34 +29,17 @@ export class EventPageComponent implements OnInit /*, OnDestroy */{
     tabsAll;
     
     
-    //subscription: Subscription;
 
     ngOnInit(): void {
-        this.data.currentMessage.subscribe(result => { this.currentMessage = result;});
         this.curUser = JSON.parse(sessionStorage.curUser || '{}');
         this.getAllUserEvents(this.curUser.user_name);
         this.getAllEvents();
     }
-/*
-    ngOnDestroy(){
-        this.subscription.unsubscribe();
-    }
-*/
-/*
-    updateID(){
-      this.data.currentMessage.subscribe(msg => {
-        this.message = msg;
-      });
-      console.log("message:", this.message);
-    }
-    */
-    newMessage(id){
-      console.log("sendID proc");
-      //console.log(id);
-      this.currentMessage = id;
-      this.data.changeMessage(this.currentMessage);
-      //this.updateID();
-      //console.log("newmessage()", this.message);
+
+    sendID(sendId){
+      //console.log(sendId);
+      const navigationExtras: NavigationExtras = {state: {id: sendId}};
+      this.router.navigate(['eventEdit'], navigationExtras);
     }
 
     getAllUserEvents(val:string){
@@ -85,7 +69,7 @@ export class EventPageComponent implements OnInit /*, OnDestroy */{
               this.tabsAll = new Array(res.data.length);
               for(let i = 0; i < res.data.length; i++){
                 this.tabsAll[i] = res.data[i];
-                console.log(this.tabsAll[i].name);
+                //console.log(this.tabsAll[i].name);
               }
               
             }
