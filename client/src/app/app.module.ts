@@ -51,6 +51,7 @@ import { EventPageComponent } from './components/eventPage/event-page.component'
 import {EventEditComponent} from './components/eventEdit/event-edit.component';
 import {DataService} from './data.service';
 
+
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin
