@@ -100,6 +100,20 @@ const createEvent = async function(name, description, time, link, location, repe
 	await db.collection('Event').insertOne(event);
 }
 
+const createSchedule =  async function(title,date,userName) {
+  const schedule = {
+    "title":title,
+    "date":date
+  }
+  var myquery = { user_name: userName };
+  var newvalue = { $push: {schedule: schedule} };
+  db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+  //await  db.collection('User').find({"user_name":userName}).insertOne;
+}
+
 /**
  *
  * @param {String} owner
@@ -261,7 +275,8 @@ module.exports = {
 	createEvent:createEvent,
 	searchUserEvent:searchUserEvent,
 	getAllEvents:getAllEvents,
-	getCurrentEvent:getCurrentEvent
+	getCurrentEvent:getCurrentEvent,
+  createSchedule:createSchedule
 }
 
 /**
@@ -703,5 +718,6 @@ module.exports = {
 	getAllEvents,
 	getCurrentEvent,
 	handleBanUpdate,
-	deleteStudyGroup
+	deleteStudyGroup,
+  createSchedule
 }

@@ -13,12 +13,13 @@ import axios from 'axios';
 export class HomeComponent implements OnInit {
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
-  interval: any;
   email = '';
   classlist = [];
+  className = [];
   due = [];
   realdue = [];
   i = 0;
+  j = 0;
   friendLen = 0
 
 
@@ -30,6 +31,11 @@ export class HomeComponent implements OnInit {
     this.friendLen = (this.curUser.friend).length
     this.email = this.curUser.email;
     this.classlist = this.curUser.class_list;
+    console.log(Object.values(this.classlist[0]));
+    /*for (this.j = 0; this.j < this.classlist.length; this.j++) {
+      // @ts-ignore
+      this.className[this.j] = this.curUser.class_list[this.j].class_tag;
+    }*/
     console.log(this.classlist);
     this.due = this.curUser.due;
     if (typeof this.due !== 'undefined') {
