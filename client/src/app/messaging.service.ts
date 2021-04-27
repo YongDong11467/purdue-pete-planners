@@ -5,6 +5,6 @@ export class messagingService {
     private socket;
 
     constructor() {
-        this.socket = io(this.url);
+        //this.socket = io(this.url);
     }
 }
