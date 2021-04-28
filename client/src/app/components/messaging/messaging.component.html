@@ -16,11 +16,14 @@
                     <li *ngFor="let chat of chats" (click)="onSelect(chat)">
                       <span class="badge">{{chat}}</span>
                     </li>
-                  </ul>
+                </ul>
             </mat-card>
             <mat-card class = "chat-messages">
                 <ul class="chat-messages-show-list" id="message-list">
                 </ul>
+            </mat-card>
+            <mat-card class="button-holder">
+                <button class="new-chat" id="new-chat-button" (click)="NewChat()"> Create New Chat </button>
             </mat-card>
             <mat-card class="message-editor">
                 <mat-card-content class="text-box">

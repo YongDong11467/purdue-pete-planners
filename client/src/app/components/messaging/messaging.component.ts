@@ -43,6 +43,13 @@ export class MessagingComponent implements OnInit {
   }
 
   onSelect(chat: any): void {
+    //reset the chat block 
+    var ul = document.getElementById("message-list");
+    while(ul?.firstChild) {
+      ul.removeChild(ul.firstChild);
+    }
+
+    // get the history of the selected chat.
     this.selectedChat = chat;
     let data;
     console.log(this.selectedChat);
@@ -80,6 +87,10 @@ export class MessagingComponent implements OnInit {
     console.log(this.message);
     this.socket.emit("message", this.selectedChat, this.curUser.user_name, this.message);
     this.message='';
+  }
+
+  NewChat(){
+    
   }
 
 }
