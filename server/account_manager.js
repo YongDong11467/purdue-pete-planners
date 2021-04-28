@@ -99,6 +99,10 @@ const createEvent = async function(name, description, time, link, location, repe
 	}
 
 	await db.collection('Event').insertOne(event);
+	await db.collection('User').updateOne({user_name: owner[0]}, { $push: {schedule: event}}, function(err, res) {
+		if (err) throw err;
+		console.log(err);
+	});
 }
 
 const createSchedule =  async function(title,date,userName) {
@@ -160,7 +164,7 @@ const updateEventInvite = async function(reciever, sender, eventName, eventID){
 	console.log("manager");
 	console.log("hello from managerjs ", reciever, sender, eventName, eventID);
 	var myquery = { user_name: reciever };
-	var newvalue = { $push: {event_invite:  [sender, eventName, eventID]  }};
+	var newvalue = { $push: {event_invite:  [sender[0], eventName, eventID]  }};
 	await db.collection("User").updateOne(myquery, newvalue, function(err, res) {
 	if (err) throw err;
 		console.log(err);
