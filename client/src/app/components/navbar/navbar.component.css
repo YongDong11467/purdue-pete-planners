@@ -2,6 +2,15 @@
     justify-content: space-between;
 }
 
+.mat-toolbar.mat-primary {
+    background: #CFB991;
+    color: #000000;
+  }
+
+.button {
+    color: #000000;
+}
+
 a {
     padding-right: 1rem;
 }
