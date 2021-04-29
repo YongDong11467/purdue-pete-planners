@@ -88,9 +88,7 @@ export class EventCreateComponent implements OnInit {
       console.log(response);
       this.loading = true;
     });
-
-
-    //alert("you better fucking not have");
+    this.router.navigate(['eventPage']);
   }
 
 
