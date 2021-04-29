@@ -87,6 +87,7 @@ const createAccount = async function(username, email, major, pass) {
 	return 0;
 }
 
+//create a new event and add it to the db
 const createEvent = async function(name, description, time, link, location, repeat, owner) {
 	const event = {
 		"name":name,
@@ -95,10 +96,15 @@ const createEvent = async function(name, description, time, link, location, repe
 		"link":link,
 		"location":location,
 		"repeat":repeat,
-		"owner":owner
+		"owner":owner,
+		"invited":[]
 	}
 
 	await db.collection('Event').insertOne(event);
+	await db.collection('User').updateOne({user_name: owner[0]}, { $push: {schedule: event}}, function(err, res) {
+		if (err) throw err;
+		console.log(err);
+	});
 }
 
 const createSchedule =  async function(title,date,userName,link) {
@@ -113,20 +119,17 @@ const createSchedule =  async function(title,date,userName,link) {
     if (err) throw err;
     console.log(err);
   });
-  //await  db.collection('User').find({"user_name":userName}).insertOne;
 }
 
 /**
  *
  * @param {String} owner
  */
-
+//returns all user created events
  const searchUserEvent = async function(user){
 	return new Promise(function(resolve, reject) {
-		//console.log(user);
 		db.collection("Event").find({owner: user}).toArray(function(err, result) {
 			if (err) throw err;
-			//console.log(result);
 			resolve(result);
 		});
 	});
@@ -156,21 +159,33 @@ const getDue = async function(prefix){
   });
 }
 
-const getAllEvents = async function(){
+//checks all events for the user to see if theyve accepted an invite
+const searchInvitedEvent = async function(user){
 	return new Promise(function(resolve, reject) {
-		db.collection("Event").find().toArray(function(err, result) {
+		db.collection("Event").find({invited: user}).toArray(function(err, result) {
 			if(err) throw err;
-			//console.log(result);
 			resolve(result);
 		});
 	});
 }
 
+//returns all evnts in the db
+const getAllEvents = async function(){
+	return new Promise(function(resolve, reject) {
+		db.collection("Event").find().toArray(function(err, result) {
+			if(err) throw err;
+			resolve(result);
+		});
+	});
+}
+
+//gets an event by its id
 const getCurrentEvent = async function(findid){
 	let event = db.collection("Event").findOne({_id: ObjectId(findid)});
 	return event;
 }
 
+//updates an events data after edits
 const updateEvent = async function(id, nameParam, desc, date, linkParam, loc, repeatParam){
 	await db.collection("Event").updateOne({_id: ObjectId(id)},
 	 {$set: { name: nameParam, description: desc, Time: date, link: linkParam, location: loc, repeat: repeatParam},},
@@ -178,18 +193,53 @@ const updateEvent = async function(id, nameParam, desc, date, linkParam, loc, re
 		  if(err) throw err;
 		  console.log(err);
 	  });
-	//console.log("something happened?");
 }
 
+//adds an event invitation to the users event invtie array
 const updateEventInvite = async function(reciever, sender, eventName, eventID){
-	console.log("manager");
-	console.log("hello from managerjs ", reciever, sender, eventName, eventID);
 	var myquery = { user_name: reciever };
-	var newvalue = { $push: {event_invite:  [sender, eventName, eventID]  }};
+	var newvalue = { $push: {event_invite:  [sender[0], eventName, eventID]  }};
 	await db.collection("User").updateOne(myquery, newvalue, function(err, res) {
 	if (err) throw err;
 		console.log(err);
 	});
+}
+
+//searches for all events user is invited to
+const searchUserEventInvites = async function(user){
+	invites = await db.collection("User").findOne({user_name: user}, {projection: {event_invite: true, _id: false}});
+	console.log(invites);
+	return invites;
+}
+
+//accepts an event invitation by adding the users name to the events invited array, removes invite from users invite list
+const acceptEventInvite = async function(sentUser, sentName, eventID, user){
+	db.collection("Event").updateOne({_id: ObjectId(eventID)}, { $push: {invited: user}});
+	db.collection("User").updateOne({user_name: user}, { $pull: {event_invite: [sentUser, sentName, eventID]}});
+}
+
+//declines an event invitation by removing it from the invite list
+const declineEventInvite = async function(sentUser, sentName, eventID, user){
+	await db.collection("User").updateOne({user_name: user}, { $pull: {event_invite: [sentUser, sentName, eventID]}});
+}
+
+//for use in deleting an event
+//removes any invites to event from all users
+const removeInvites = async function(sentUser, sentName, eventID){
+	return new Promise(function(resolve, reject) {
+		db.collection("User").updateMany({}, { $pull: {event_invite: [sentUser, sentName, eventID]}});
+	});
+}
+
+//delete event from db
+const deleteEvent = async function(sentUser, sentName, eventID){
+	let stuff= removeInvites(sentUser, sentName, eventID);
+	db.collection("Event").deleteOne({_id: ObjectId(eventID)});
+}
+
+//Remove event from interested tab
+const removeEvent = async function(user, eventID){
+	await db.collection("Event").updateOne({_id: ObjectId(eventID)}, {$pull: {invited: user}});
 }
 
 /**
@@ -317,7 +367,14 @@ module.exports = {
 	updateEvent:updateEvent,
 	updateEventInvite:updateEventInvite,
   createSchedule:createSchedule,
-  getDue:getDue
+  getDue:getDue,
+  createSchedule:createSchedule,
+	searchUserEventInvites:searchUserEventInvites,
+	acceptEventInvite:acceptEventInvite,
+	declineEventInvite:declineEventInvite,
+	searchInvitedEvent:searchInvitedEvent,
+	deleteEvent:deleteEvent,
+	removeEvent:removeEvent
 }
 
 /**
@@ -766,5 +823,12 @@ module.exports = {
   createSchedule,
   getEvent,
   getEvent,
-  getDue
+  getDue,
+  createSchedule,
+	searchUserEventInvites,
+	acceptEventInvite,
+	declineEventInvite,
+	searchInvitedEvent,
+	deleteEvent,
+	removeEvent
 }

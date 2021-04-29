@@ -119,10 +119,11 @@ export class EventEditComponent implements OnInit{
         eventID: this.id
       })
       .then((response) =>{
-        console.log("response")
+        console.log(response)
       });
     }
     console.log("invite sent... allegedly");
+    this.router.navigate(['eventPage']);
   }
 
   //Handles choosing repetiion for schedule
