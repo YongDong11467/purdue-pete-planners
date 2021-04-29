@@ -27,9 +27,19 @@ router.route("/login").post(async (req,res) => {
  */
 router.route("/register").post((req,res) => {
     console.log(req.body.uname);
-    return manager.createAccount(req.body.uname,  req.body.email, 'cs', req.body.pass)
+    return manager.createAccount(req.body.uname,  req.body.email, 'cs', req.body.pass, '222-222-2222', 'address')
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
+});
+
+/**
+ * API endpoint to edit user info
+ */
+router.route("/profile").post((req,res) => {
+  console.log(req.body);
+  return manager.editProfileInfo(req.body.user_name, req.body.email, req.body.phone, req.body.major, req.body.address, req.body.password)
+  .then(success => res.status(200).json(success))
+  .catch(err => res.status(400).json(err));
 });
 
 /**

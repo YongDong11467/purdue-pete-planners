@@ -50,21 +50,26 @@ const closeDatabaseConnection = async function() {
  * @param {String} email
  * @param {String} major
  * @param {String} pass
+ * @param {String} phone
+ * @param {String} address
  * @return {Int} returns success value. (-1 = account creation failed, 0 = account creation success)
  */
-const createAccount = async function(username, email, major, pass) {
+const createAccount = async function(username, email, major, pass, phone, address) {
 	// create a JSON user object
 	const user = {
 		"user_name":username,
 		"password":pass,
 		"email":email,
+		"phone":phone,
+		"address":address,
 		"schedule":[],
 		"major":major,
 		"study_group":[],
 		"chats":[],
 		"friend":[],
 		"friend_request":[],
-		"book_room":[]
+		"book_room":[],
+		"classes":[]
 	}
 
 	let emailExists;
@@ -84,6 +89,42 @@ const createAccount = async function(username, email, major, pass) {
 
 	return 0;
 }
+
+const editProfileInfo = async function(username, email, phone, major, address, pass) {
+	// curUser = data.curUser
+	// let myquery;
+	console.log("editProfInfo: ", username, email, phone,major, address, pass);
+
+	// try {		
+	// 	db.collection('User').updateOne(
+	// 		{user_name: username},
+	// 		{ $set: {
+	// 			user_name:username,
+	// 			email:email,
+	// 			phone:phone,
+	// 			major:major,
+	// 			address:address,
+	// 			password:pass
+	// 		}}
+	// 	)
+	// } catch (error) {
+	// 	console.log(err.stack);
+	// 	return -1;
+	// }
+
+	var myquery = { user_name: username };
+	var newvalue = { $set: {user_name:username, email:email, phone:phone, major:major, address:address, password:pass} };
+	//console.log("newvalue: ", user_name, email, phone, major, address, password);
+	db.collection('User').updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
+
+	return 0;
+}
+
+
+
 
 const createEvent = async function(name, description, time, link, location, repeat) {
 	//alert('hey');
@@ -216,7 +257,8 @@ module.exports = {
 	getUserInfo:getUserInfo,
 	accountEmailExists:accountEmailExists,
 	searchUsers:searchUsers,
-	createEvent:createEvent
+	createEvent:createEvent,
+	editProfileInfo:editProfileInfo,
 }
 
 /**
@@ -505,5 +547,6 @@ module.exports = {
   searchStudyGroup,
   searchAllStudyGroup,
   updateStudyGroupRequest,
-	createEvent
+	createEvent,
+	editProfileInfo,
 }
