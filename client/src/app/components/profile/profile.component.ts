@@ -5,6 +5,7 @@ import {ConfirmedValidator} from './confirmedValidator';
 import { isConstructorDeclaration } from 'typescript';
 import {ImageService} from './imageService';
 import axios from 'axios';
+import {testUsernameAvailable} from './user_available';
 
 class ImageFile {
   pending: boolean = false;
@@ -33,6 +34,8 @@ export class ProfileComponent implements OnInit {
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
   oldpass = this.curUser.password;
+  olduser = this.curUser.user_name;
+  user_id = this.curUser._id;
   
   constructor(
     private formBuilder: FormBuilder,
@@ -41,7 +44,7 @@ export class ProfileComponent implements OnInit {
     private imageService: ImageService
   ) {
     this.form = this.formBuilder.group({
-      username: [this.user], //['', Validators.required],
+      username: [this.curUser.user_name, [Validators.required]],
       email: [this.user.email, [Validators.required, Validators.email]],
       phone: [this.user.phone, Validators.required],
       major: [this.user.major],
@@ -49,6 +52,7 @@ export class ProfileComponent implements OnInit {
       password: [this.user.password, [Validators.minLength(4), Validators.required, Validators.nullValidator]],
       confirmPassword: ['', [Validators.minLength(4), Validators.required, Validators.nullValidator]]
     }, {
+      //validator: testUsernameAvailable(this.user),
       validator: ConfirmedValidator('password', 'confirmPassword'),
       // validator2: ConfirmedValidator(this.oldpass, 'password')
     });
@@ -57,7 +61,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.curUser = JSON.parse(sessionStorage.curUser || '{}');
     this.form = this.formBuilder.group({
-      username: [this.user],
+      username: [this.curUser.user_name, [Validators.required]],
       email: [this.user.email, [Validators.email]],
       phone: [this.user.phone, [Validators.pattern('[- +()0-9]+')]],
       major: [this.user.major],
@@ -65,12 +69,14 @@ export class ProfileComponent implements OnInit {
       password: [this.user.password, [Validators.minLength(4), Validators.required, Validators.nullValidator]],
       confirmPassword: ['', [Validators.minLength(4), Validators.required, Validators.nullValidator]]
     }, {
+      //validator: testUsernameAvailable(this.user),
       validator: ConfirmedValidator('password', 'confirmPassword'),
       // validator2: ConfirmedValidator(this.oldpass, 'password')
     });
-    // console.log(this.user)
-    console.log(this.oldpass);
+     console.log(this.user)
+    //console.log(this.form.value(this.username));
     console.log('password');
+    console.log(this.user_id);
   }
 
   get f() {
@@ -84,11 +90,19 @@ export class ProfileComponent implements OnInit {
     // stop here if form is invalid
     if (this.form.invalid) {
       return;
+    }else if (testUsernameAvailable(this.f.username.value, this.olduser) === 0){
+      return;
     }
     this.loading = true;
+
     console.log("curUser.pass: ", this.curUser.password);
     console.log("curUser.major: ", this.curUser.major);
     console.log("f.major.value: ", this.f.major.value);
+    console.log("user id: ", this.user_id);
+
+    if(this.f.username.value !== null && testUsernameAvailable(this.f.username.value, this.olduser) !== 0){
+      this.curUser.username = this.f.username.value;
+    }
     if(this.f.email.value !== null){
       this.curUser.email = this.f.email.value;
     }
@@ -112,7 +126,7 @@ export class ProfileComponent implements OnInit {
     // this.curUser.address = this.f.address.value;
     //this.curUser.password = this.f.password.value;
 
-    let uname = this.curUser.user_name;
+    let uname = this.curUser.username;
     let uemail = this.curUser.email;
     let uphone = this.curUser.phone;
     let umajor = this.curUser.major;

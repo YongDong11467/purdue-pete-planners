@@ -37,9 +37,20 @@ router.route("/register").post((req,res) => {
  */
 router.route("/profile").post((req,res) => {
   console.log(req.body);
+  //console.log("req-body-user-id: ", req.body._id);
   return manager.editProfileInfo(req.body.user_name, req.body.email, req.body.phone, req.body.major, req.body.address, req.body.password)
   .then(success => res.status(200).json(success))
   .catch(err => res.status(400).json(err));
+});
+
+/**
+ * 
+ */
+router.route("/searchUserID").get((req, res) => {
+  manager.searchUserID(req.query.prefix).then(users => {
+    console.log(users)
+    res.json(users);
+  });
 });
 
 /**

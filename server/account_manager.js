@@ -95,23 +95,6 @@ const editProfileInfo = async function(username, email, phone, major, address, p
 	// let myquery;
 	console.log("editProfInfo: ", username, email, phone,major, address, pass);
 
-	// try {		
-	// 	db.collection('User').updateOne(
-	// 		{user_name: username},
-	// 		{ $set: {
-	// 			user_name:username,
-	// 			email:email,
-	// 			phone:phone,
-	// 			major:major,
-	// 			address:address,
-	// 			password:pass
-	// 		}}
-	// 	)
-	// } catch (error) {
-	// 	console.log(err.stack);
-	// 	return -1;
-	// }
-
 	var myquery = { user_name: username };
 	var newvalue = { $set: {user_name:username, email:email, phone:phone, major:major, address:address, password:pass} };
 	//console.log("newvalue: ", user_name, email, phone, major, address, password);
@@ -189,6 +172,25 @@ const searchUsers = async function(prefix){
 	});
 }
 
+/**
+ * Gets the user with the given ID
+ *
+ * @param {String} prefix
+ */
+var userObject = new Object();
+const searchUserID = async function(prefix){
+	return new Promise(function(resolve, reject) {
+		var query = { _id: userObject.prefix };
+		console.log("query: ", query);
+		console.log("userprefix: ", {user: prefix});
+		db.collection("User").find({user: prefix}).toArray(function(err, result) {
+			if (err) throw err;
+			console.log(result);
+			resolve(result);
+		});
+	});
+}
+
 /*
  * Summary. Function that gets the hashed password of an account
  *
@@ -259,6 +261,7 @@ module.exports = {
 	searchUsers:searchUsers,
 	createEvent:createEvent,
 	editProfileInfo:editProfileInfo,
+	searchUserID:searchUserID,
 }
 
 /**
@@ -549,4 +552,5 @@ module.exports = {
   updateStudyGroupRequest,
 	createEvent,
 	editProfileInfo,
+	searchUserID,
 }
