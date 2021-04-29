@@ -107,10 +107,11 @@ const createEvent = async function(name, description, time, link, location, repe
 	});
 }
 
-const createSchedule =  async function(title,date,userName) {
+const createSchedule =  async function(title,date,userName,link) {
   const schedule = {
     "title":title,
-    "date":date
+    "date":date,
+    "link":link
   }
   var myquery = { user_name: userName };
   var newvalue = { $push: {schedule: schedule} };
@@ -132,6 +133,30 @@ const createSchedule =  async function(title,date,userName) {
 			resolve(result);
 		});
 	});
+}
+
+const getEvent = async function(prefix){
+  console.log(prefix);
+  return new Promise(function(resolve, reject) {
+    var myquery = { user_name: prefix };
+    db.collection("User").find(myquery, {projection: {schedule: true, _id: false}}).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      resolve(result);
+    });
+  });
+}
+
+const getDue = async function(prefix){
+  console.log(prefix);
+  return new Promise(function(resolve, reject) {
+    var myquery = { user_name: prefix };
+    db.collection("User").find(myquery, {projection: {schedule: true, _id: false}}).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      resolve(result);
+    });
+  });
 }
 
 //checks all events for the user to see if theyve accepted an invite
@@ -337,10 +362,13 @@ module.exports = {
 	createEvent:createEvent,
 	searchUserEvent:searchUserEvent,
 	getAllEvents:getAllEvents,
+  getEvent:getEvent,
 	getCurrentEvent:getCurrentEvent,
 	updateEvent:updateEvent,
 	updateEventInvite:updateEventInvite,
-  	createSchedule:createSchedule,
+  createSchedule:createSchedule,
+  getDue:getDue,
+  createSchedule:createSchedule,
 	searchUserEventInvites:searchUserEventInvites,
 	acceptEventInvite:acceptEventInvite,
 	declineEventInvite:declineEventInvite,
@@ -381,6 +409,7 @@ const searchStudyGroup = async function(prefix){
     });
   });
 }
+
 
 /**
  * Gets the class tag with the given prefix
@@ -791,7 +820,11 @@ module.exports = {
 	deleteStudyGroup,
 	updateEvent,
 	updateEventInvite,
-  	createSchedule,
+  createSchedule,
+  getEvent,
+  getEvent,
+  getDue,
+  createSchedule,
 	searchUserEventInvites,
 	acceptEventInvite,
 	declineEventInvite,
