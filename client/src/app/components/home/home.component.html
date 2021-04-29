@@ -27,13 +27,13 @@
 <mat-card class="main-ws">
   <mat-card-header>
 
-    <mat-card-title>Your Due data</mat-card-title>
+    <mat-card-title>Upcomming Due</mat-card-title>
     <mat-card-subtitle><a class="button" routerLink="/schedule" title="" routerLinkActive="activebutton">View Schedule</a></mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngFor="let dues of realdue">
+    <mat-list *ngFor="let title of dueTitle; let i=index">
       <mat-divider></mat-divider>
-      <mat-list-item>{{dues}}</mat-list-item>
+      <mat-list-item>{{title}} due at {{dueDate[i]}}</mat-list-item>
     </mat-list>
   </mat-card-content>
 
