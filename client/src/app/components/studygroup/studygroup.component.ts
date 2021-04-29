@@ -17,6 +17,8 @@ export class StudygroupComponent implements OnInit {
     this.initPage(this.user);
   }
   clickMessage = 'asfsf';
+  classes = ['CS 381', 'CS407'];
+  activeLink = this.classes[0];
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
   curStudyGroup = 'CS 381';
@@ -56,7 +58,6 @@ export class StudygroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.name = this.curUser.study_group;
-    console.log(this.name);
   }
 
   initPage(val: string) {
@@ -66,7 +67,6 @@ export class StudygroupComponent implements OnInit {
           this.tablemember = ["no member"];
           this.tablechatroom = ["no chat room"];
           this.tablestudyroom = ["no study room"];
-          console.log(this.tablemember);
         } else {
           this.tablemember = res.data[0].Member;
           this.tablechatroom = res.data[0].Chat_room;
@@ -74,10 +74,7 @@ export class StudygroupComponent implements OnInit {
           this.tablemeetingtime = res.data[0].Meeting_time;
           this.tableannoucement = res.data[0].Announcement;
           this.tablecomments = res.data[0].Comments;
-          console.log(res.data[0]);
-          console.log(this.tableannoucement);
-          console.log(this.tablemember);
-          console.log(this.tablecomments);
+
         }
         if (this.tablemember.indexOf(this.user) === -1) {
           this.isMemeber = false;
@@ -91,9 +88,6 @@ export class StudygroupComponent implements OnInit {
         this.tableargs3 = {data: this.tablestudyroom, type: 'study_room'};
         this.tableargs4 = {data: this.tableannoucement, type: 'announcement'};
         this.tableargs6 = {data: this.tablecomments, type: 'Comments'};
-        console.log(this.tableargs3);
-        console.log(this.tableargs4);
-        console.log(this.tablemeetingtime);
       });
   }
 
