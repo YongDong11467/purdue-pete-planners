@@ -48,7 +48,7 @@
     "firebase": "^7.0 || ^8.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1102.1",
+    "@angular-devkit/build-angular": "^0.1102.11",
     "@angular/cli": "^11.2.3",
     "@angular/compiler-cli": "~11.2.1",
     "@types/jasmine": "~3.6.0",

@@ -1,10 +1,6 @@
-import { Component, OnInit, Input, ɵCompiler_compileModuleSync__POST_R3__, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import axios from 'axios';
-import {DataService} from "../../data.service";
-import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-event-page',
@@ -14,9 +10,11 @@ import {Subscription} from 'rxjs';
 export class EventPageComponent implements OnInit /*, OnDestroy */{
   //Data service vars
   currentMessage:string;
-  constructor(private data: DataService) { 
-    //this.data.currentMessage.subscribe(msg => console.log("constructor msg", msg));
-    
+  @Input() idToSend:string;
+  @Output() toEventEdit = new EventEmitter();
+
+  constructor(private router: Router) { 
+
   }
 
     //Current user
@@ -26,36 +24,63 @@ export class EventPageComponent implements OnInit /*, OnDestroy */{
     //Storage for events to be displayed
     tabs;
     tabsAll;
+    invites;
+    invitedEvent;
     
-    
-    //subscription: Subscription;
 
     ngOnInit(): void {
-        this.data.currentMessage.subscribe(result => { this.currentMessage = result;});
         this.curUser = JSON.parse(sessionStorage.curUser || '{}');
         this.getAllUserEvents(this.curUser.user_name);
         this.getAllEvents();
+        this.searchInvitedEvent(this.curUser.user_name);
+        this.getAllInvites();
+        //this.reloadComponent();
     }
-/*
-    ngOnDestroy(){
-        this.subscription.unsubscribe();
-    }
-*/
-/*
-    updateID(){
-      this.data.currentMessage.subscribe(msg => {
-        this.message = msg;
+
+    getAllInvites(){
+      console.log("Searching for user's event invitations");
+      axios.get('/api/events/searchUserEventInvites', {params: { prefix: this.user}})
+      .then((res) => {
+        //console.log("response in page", res.data);
+        if(typeof res.data.event_invite[0] == 'undefined'){
+          console.log("No invitations");
+        }
+        else{
+          this.invites = res.data.event_invite;
+          //console.log(this.invites);
+          //console.log(this.invites[0][0]);
+        }
       });
-      console.log("message:", this.message);
     }
-    */
-    newMessage(id){
-      console.log("sendID proc");
-      //console.log(id);
-      this.currentMessage = id;
-      this.data.changeMessage(this.currentMessage);
-      //this.updateID();
-      //console.log("newmessage()", this.message);
+
+    acceptEventInvite(inviteUser, inviteName, inviteID){
+        console.log("Accepting invite...", inviteUser, inviteName, inviteID, this.user);
+        axios.post('/api/events/acceptEventInvite', {params: {sentUser: inviteUser, sentName: inviteName, event_id: inviteID, user: this.user}})
+        .then((res) => {
+          console.log(res);
+        });
+        //refresh page
+        this.reloadComponent();
+    }
+
+    declineEventInvite(inviteUser, inviteName, inviteID){
+        console.log("Declining invite...");
+        axios.post('/api/events/declineEventInvite', {params: {sentUser: inviteUser, sentName: inviteName, event_id: inviteID, user: this.user}})
+        .then((res) => {
+          console.log(res);
+        });
+        //refresh page
+        this.reloadComponent();
+    }
+
+    sendID(sendId){
+      //console.log(sendId);
+      const navigationExtras: NavigationExtras = {state: {id: sendId}};
+      this.router.navigate(['eventEdit'], navigationExtras);
+    }
+
+    gotoCreateEvent(){
+      this.router.navigate(['event']);
     }
 
     getAllUserEvents(val:string){
@@ -75,6 +100,23 @@ export class EventPageComponent implements OnInit /*, OnDestroy */{
           });
       }
 
+      searchInvitedEvent(val:string){
+        console.log("Searching for all user created events")
+          axios.get(`/api/events/searchInvitedEvent`, { params: { prefix: val } })
+          .then((res) => {
+            //console.log(res.data[0])
+            if (typeof res.data[0] == 'undefined'){
+              //this.searchResponse = ["No user events"];
+              console.log("No invited events");
+            } else {
+              this.invitedEvent = new Array(res.data.length);
+              for(let i = 0; i < res.data.length; i++){
+                this.invitedEvent[i] = res.data[i];
+              }
+            }
+          });
+      }
+
       getAllEvents(){
         axios.get("/api/events/getAllEvents")
           .then((res) => {
@@ -85,10 +127,37 @@ export class EventPageComponent implements OnInit /*, OnDestroy */{
               this.tabsAll = new Array(res.data.length);
               for(let i = 0; i < res.data.length; i++){
                 this.tabsAll[i] = res.data[i];
-                console.log(this.tabsAll[i].name);
+                //console.log(this.tabsAll[i].name);
               }
               
             }
           });
+      }
+
+      //delete event entirely
+      deleteEvent( eventName, eventID){
+          axios.post("/api/events/deleteEvent", {params: {user_delete: this.user, event_name: eventName, event_id: eventID}})
+          .then((res) => {
+            console.log(res);
+          });
+          //refresh page
+          this.reloadComponent();
+      }
+
+      //remove from interest tabs
+      removeEvent(idRemove){
+          axios.post("/api/events/removeEvent", {params: {user_remove: this.user, event_id: idRemove}})
+          .then((res) => {
+            console.log(res);
+          });
+          //refresh page
+          this.reloadComponent();
+      }
+
+      reloadComponent(){
+        let currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([currentUrl]);
       }
 }
