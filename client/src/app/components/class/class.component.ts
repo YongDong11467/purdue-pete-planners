@@ -22,7 +22,7 @@ export class ClassComponent implements OnInit {
 
   tableargs1 = {data: [], type: 'List of Classes'};
   tabs: string[] = [];
-  
+  tabsClassName: string[] = [];
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
@@ -84,8 +84,9 @@ export class ClassComponent implements OnInit {
 
   onTabClick(event: any) {
     console.log(event.tab.textLabel);
-
+    this.reloadClass;
   }
+  
 
   addClass(val: string){
     this.getUserClasses(val);
@@ -111,9 +112,9 @@ export class ClassComponent implements OnInit {
       });
   
     }
+  }
 
   
-  }
 
   removeClass(index: number) {
     var toRemove = this.tabs[index];
@@ -158,6 +159,13 @@ export class ClassComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  private reloadClass() {
+    let currenturl = this.router.url;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([currenturl]);
   }
 
 }
