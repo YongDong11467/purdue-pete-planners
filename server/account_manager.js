@@ -52,9 +52,14 @@ const closeDatabaseConnection = async function() {
  * @param {String} pass
  * @param {String} phone
  * @param {String} address
+ * @param {String} first
+ * @param {String} last
+ * @param {String} website
+ * @param {String} github
+ * @param {String} bio
  * @return {Int} returns success value. (-1 = account creation failed, 0 = account creation success)
  */
-const createAccount = async function(username, email, major, pass, phone, address) {
+const createAccount = async function(username, email, major, pass, phone, address, first, last, website, github, bio) {
 	// create a JSON user object
 	const user = {
 		"user_name":username,
@@ -62,6 +67,11 @@ const createAccount = async function(username, email, major, pass, phone, addres
 		"email":email,
 		"phone":phone,
 		"address":address,
+		"first":first,
+		"last":last,
+		"website":website,
+		"github":github,
+		"bio":bio,
 		"schedule":[],
 		"major":major,
 		"study_group":[],
@@ -90,13 +100,27 @@ const createAccount = async function(username, email, major, pass, phone, addres
 	return 0;
 }
 
-const editProfileInfo = async function(username, email, phone, major, address, pass) {
-	// curUser = data.curUser
-	// let myquery;
+const editProfileInfo = async function(username, email, phone, major, address, pass, uid) {
 	console.log("editProfInfo: ", username, email, phone,major, address, pass);
-
-	var myquery = { user_name: username };
+	var ObjectId = require('mongodb').ObjectId; 
+    // var id = req.params.gonderi_id;       
+    // var o_id = new ObjectId(id);
+    // db.test.find({_id:o_id})
+	
+	var myquery = { _id: ObjectId(uid)};
 	var newvalue = { $set: {user_name:username, email:email, phone:phone, major:major, address:address, password:pass} };
+	//console.log("newvalue: ", user_name, email, phone, major, address, password);
+	db.collection('User').updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
+	return 0;
+}
+
+const editProfileSide = async function(username, first, last, website, github, bio) {
+	console.log("editProfSide: ", username, first, last, website, github, bio);
+	var myquery = { user_name: username };
+	var newvalue = { $set: {first:first, last:last, website:website, github:github, bio:bio } };
 	//console.log("newvalue: ", user_name, email, phone, major, address, password);
 	db.collection('User').updateOne(myquery, newvalue, function(err, res) {
 	if (err) throw err;
@@ -106,8 +130,18 @@ const editProfileInfo = async function(username, email, phone, major, address, p
 	return 0;
 }
 
+const editProfilePFP = async function(username, pfpURL) {
+	console.log("editProfSide: ", username, pfpURL);
+	var myquery = { user_name: username };
+	var newvalue = { $set: {pfpURL:pfpURL } };
+	//console.log("newvalue: ", user_name, email, phone, major, address, password);
+	db.collection('User').updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
 
-
+	return 0;
+}
 
 const createEvent = async function(name, description, time, link, location, repeat) {
 	//alert('hey');
@@ -243,7 +277,8 @@ const getAccountPassword = async function(usrname) {
  */
 const findUserCT = async function(prefix){
 	return new Promise(function(resolve, reject) {
-		var query = { class_list: prefix };
+		var query = { classes: prefix };
+		console.log("query: ", query);
 		db.collection("User").find(query).toArray(function(err, result) {
 			if (err) throw err;
 			console.log(result);
@@ -262,6 +297,8 @@ module.exports = {
 	createEvent:createEvent,
 	editProfileInfo:editProfileInfo,
 	searchUserID:searchUserID,
+	editProfileSide:editProfileSide,
+	editProfilePFP:editProfilePFP
 }
 
 /**
@@ -553,4 +590,6 @@ module.exports = {
 	createEvent,
 	editProfileInfo,
 	searchUserID,
+	editProfileSide,
+	editProfilePFP,
 }

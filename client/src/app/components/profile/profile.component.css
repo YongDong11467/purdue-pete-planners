@@ -93,3 +93,19 @@ mat-form-field.mat-form-field {
     display:inline-block;
 }
   
+#Dashboard
+{
+ display: flex;
+ } 
+
+ .overflowing {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+ }
+
+ /* #locologo {
+    height: 100px; 
+    width: 150px; 
+    overflow: hidden; 
+} */

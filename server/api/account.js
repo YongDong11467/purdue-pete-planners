@@ -2,7 +2,7 @@ const router = require("express").Router();
 const manager = require('../account_manager')
 
 router.route("/").get((req, res) => {
-    const account = ["login", "register", "profile"]
+    const account = ["login", "register", "profile", "profileSideBar", "profilePFP"]
     res.json(account);
 });
 
@@ -38,10 +38,33 @@ router.route("/register").post((req,res) => {
 router.route("/profile").post((req,res) => {
   console.log(req.body);
   //console.log("req-body-user-id: ", req.body._id);
-  return manager.editProfileInfo(req.body.user_name, req.body.email, req.body.phone, req.body.major, req.body.address, req.body.password)
+  return manager.editProfileInfo(req.body.user_name, req.body.email, req.body.phone, req.body.major, req.body.address, req.body.password, req.body._id,)
   .then(success => res.status(200).json(success))
   .catch(err => res.status(400).json(err));
 });
+
+/**
+ * API endpoint to edit user sidebar info
+ */
+router.route("/profileSideBar").post((req,res) => {
+  console.log(req.body);
+  console.log("req-body-bio: ", req.body.bio);
+  return manager.editProfileSide(req.body.user_name, req.body.first, req.body.last, req.body.website, req.body.github, req.body.bio)
+  .then(success => res.status(200).json(success))
+  .catch(err => res.status(400).json(err));
+});
+
+/**
+ * API endpoint to edit pfp
+ */
+router.route("/profilePFP").post((req,res) => {
+  console.log(req.body);
+  console.log("req-body-pfp: ", req.body.pfpURL);
+  return manager.editProfilePFP(req.body.user_name, req.body.pfpURL)
+  .then(success => res.status(200).json(success))
+  .catch(err => res.status(400).json(err));
+});
+
 
 /**
  * 
@@ -78,6 +101,7 @@ router.route("/searchClassTag").get((req, res) => {
 });
 
 router.route("/findUserCT").get((req, res) => {
+  console.log("req query prefix: ", req.query.prefix);
   manager.findUserCT(req.query.prefix).then(users => {
     console.log(users)
     res.json(users);
