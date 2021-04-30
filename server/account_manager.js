@@ -81,8 +81,7 @@ const createAccount = async function(username, email, major, pass, phone, addres
 		"friend":[],
 		"friend_request":[],
 		"book_room":[],
-		"classes":[]
-
+		"classes":[],
 		"event_invite":[],
     "class_list":[]
 	}
