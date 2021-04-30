@@ -130,7 +130,7 @@ export class ProfileComponent implements OnInit {
     //   console.log('invalid user')
     //   return;
     // }
-    if (this.form.invalid || testUsernameAvailable(this.f.username.value, this.olduser) === 0 ) {
+    if (this.form.invalid || (testUsernameAvailable(this.f.username.value, this.olduser) === 0 )) {
       console.log('invalid user')
       return;
     }
