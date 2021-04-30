@@ -16,17 +16,27 @@ export class ClassComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   tableargs1 = {data: [], type: 'List of Classes'};
-  tabs = ['cs407', 'cs408', 'cs422'];
+  tabs: string[] = [];
   
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
+  classes = this.curUser.classes;
+  
 
   ngOnInit(): void {
       this.curUser = JSON.parse(sessionStorage.curUser || '{}');
-      //console.log(this.curUser.user_name)
+      this.classes =this.curUser.classes;
+      console.log(this.classes)
+      console.log(this.classes.length);
+      for(let i = 0; i <this.classes.length; i++){
+          this.tabs.push(this.classes[i]);
+      }
+
       console.log(this.curUser)
-      this.getAllUserClasses(this.curUser.user_name)
+      console.log(this.curUser.user_name)
+      // console.log(this.getAllUserClasses(this.curUser.user_name))
+    
   }
 
   searchResponse : string[] = [];
@@ -39,24 +49,8 @@ export class ClassComponent implements OnInit {
 
   displaySearchResult = false
   table_args_class_list = {data: this.searchResponse, type: this.type}
-  getAllUserClasses(val:string){
-    console.log("Searching for all class tags of user")
-      axios.get(`/api/account/findUserCT`, { params: { prefix: val } })
-      .then((res) => {
-        //console.log(res.data[0])
-        if (typeof res.data[0] === 'undefined'){
-          this.searchResponse = ["No matching user"]
-        } else {
-          this.searchResponse = [res.data[0].class_list]
-          //console.log(this.searchResponse)
-        }
-        this.type = 'search'
-        this.displaySearchResult = true
-        this.table_args_class_list = {data: this.searchResponse, type: this.type}
-        //console.log(this.table_args_class_list)
-      });
-  }
 
+  // func for searching to add classes, returns if match
   getUserClasses(val: string) {
     console.log("searching class tags...")
     axios.get(`/api/account/searchClassTag`, { params: { prefix: val } })
@@ -66,12 +60,12 @@ export class ClassComponent implements OnInit {
         this.searchResponse = ["No matching class tag"]
         this.name = ["No matching class name"]
         this.tagExists = false
-        //console.log("no class");
+        console.log("no class");
       } else {
         this.searchResponse = [res.data[0].class_tag]
         this.name = [res.data[0].name]
         this.tagExists = true
-        //console.log(this.name)
+        console.log(this.name)
       }
       this.type = 'searchTagResult'
       this.displayTagResult = true
@@ -93,7 +87,7 @@ export class ClassComponent implements OnInit {
     if(this.tagExists != false){
       this.tabs.push(val);
     }
-    this.getAllUserClasses(val);
+  
   }
 
   removeClass(index: number) {
