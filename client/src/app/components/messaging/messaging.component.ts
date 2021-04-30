@@ -6,7 +6,7 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import {MatDialog} from "@angular/material/dialog";
 
-const SOCKET_ENDPOINT = 'http://purdue-petes-planner.herokuapp.com';
+const SOCKET_ENDPOINT = 'https://purdue-petes-planner.herokuapp.com';
 
 @Component({
   selector: 'app-messaging',
