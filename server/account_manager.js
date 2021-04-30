@@ -144,6 +144,30 @@ const editProfilePFP = async function(username, pfpURL) {
 	return 0;
 }
 
+const addClassToUser = async function(username, class_data) {
+	console.log("class username, class data: ", username, class_data);
+	var myquery = { user_name: username };
+	var newvalue = { $push: {classes: class_data} };
+	//console.log("newvalue: ", user_name, email, phone, major, address, password);
+	db.collection('User').updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
+	return 0;
+}
+
+const RemoveClassToUser = async function(username, class_data) {
+	console.log("class username, class data: ", username, class_data);
+	var myquery = { user_name: username };
+	var newvalue = { $pull: {classes: class_data} };
+	//console.log("newvalue: ", user_name, email, phone, major, address, password);
+	db.collection('User').updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
+	return 0;
+}
+
 const createEvent = async function(name, description, time, link, location, repeat) {
 	//alert('hey');
 	const event = {
@@ -299,7 +323,10 @@ module.exports = {
 	editProfileInfo:editProfileInfo,
 	searchUserID:searchUserID,
 	editProfileSide:editProfileSide,
-	editProfilePFP:editProfilePFP
+	editProfilePFP:editProfilePFP,
+	addClassToUser:addClassToUser,
+	RemoveClassToUser:RemoveClassToUser,
+
 }
 
 /**
@@ -593,4 +620,6 @@ module.exports = {
 	searchUserID,
 	editProfileSide,
 	editProfilePFP,
+	addClassToUser,
+	RemoveClassToUser,
 }

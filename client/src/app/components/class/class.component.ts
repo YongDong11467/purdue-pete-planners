@@ -3,6 +3,7 @@ import axios from 'axios';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl} from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-class',
@@ -13,7 +14,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 export class ClassComponent implements OnInit {
   closeResult = '';
 
-  constructor(private modalService: NgbModal) { }
+  constructor(
+    private modalService: NgbModal,     
+    private route: ActivatedRoute,
+    private router: Router,
+    ) { }
 
   tableargs1 = {data: [], type: 'List of Classes'};
   tabs: string[] = [];
@@ -86,12 +91,53 @@ export class ClassComponent implements OnInit {
     this.getUserClasses(val);
     if(this.tagExists != false){
       this.tabs.push(val);
+      axios.post('/api/classes/classAdd', {
+        "user_name": this.user,
+        data : val,
+      }).then((response) => {
+        // this.userInfo();
+        axios.get(`/api/account/searchUsers`, { params: { prefix: this.user } })
+        .then((res) => {
+          console.log(res.data[0])
+          if (typeof res.data[0] === 'undefined'){
+            console.log('No matching users')
+          } else {
+            sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
+          }
+        });
+        this.router.navigate(['/class']);
+      }).catch((error) => {
+        console.log(error);
+      });
+  
     }
+
   
   }
 
   removeClass(index: number) {
+    var toRemove = this.tabs[index];
+    //console.log(toRemove);
     this.tabs.splice(index, 1);
+
+    axios.post('/api/classes/classRemove', {
+      "user_name": this.user,
+      data : toRemove,
+    }).then((response) => {
+      axios.get(`/api/account/searchUsers`, { params: { prefix: this.user } })
+      .then((res) => {
+        console.log(res.data[0])
+        if (typeof res.data[0] === 'undefined'){
+          console.log('No matching users')
+        } else {
+          sessionStorage.setItem('curUser', JSON.stringify(res.data[0]));
+        }
+      });
+      this.router.navigate(['/class']);
+    }).catch((error) => {
+      console.log(error);
+    });
+
   }
 
   open(content: any) {
