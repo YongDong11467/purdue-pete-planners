@@ -2,10 +2,11 @@ import { Component, OnInit, Directive, Input, Output, EventEmitter } from '@angu
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import axios from 'axios';
-import { messagingService } from '../../messaging.service';
+//import { messagingService } from '../../messaging.service';
 import { io } from 'socket.io-client';
+import {MatDialog} from "@angular/material/dialog";
 
-const SOCKET_ENDPOINT = 'localhost:3080';
+const SOCKET_ENDPOINT = 'https://purdue-petes-planner.herokuapp.com';
 
 @Component({
   selector: 'app-messaging',
@@ -17,7 +18,7 @@ export class MessagingComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    messageService: messagingService
+    //messageService: messagingService
   ) { }
 
   chats: any;
@@ -90,7 +91,7 @@ export class MessagingComponent implements OnInit {
   }
 
   NewChat(){
-    
+
   }
 
 }
