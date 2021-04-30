@@ -7,7 +7,8 @@ import { HttpModule }    from '@angular/http';
 
 @Injectable()
 export class ImageService {
-    server_url: string = "http://localhost:3080";
+    server_url: string = "https://us-central1-tutorial-e6ea7.cloudfunctions.net/fileUpload";
+    //server_url: string = "https://www.file.io/";
     constructor(private httpClient: HttpClient) {}
     public uploadImage(image: File): Observable<Response> {
       const formData = new FormData();
