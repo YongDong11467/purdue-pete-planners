@@ -15,6 +15,7 @@ class ImageFile {
   constructor(public src: string, public file: File) {}
 }
 
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -29,11 +30,11 @@ export class ProfileComponent implements OnInit {
   selectedFile: ImageFile;
   closeResult = '';
 
-  username = ''
-  email = ''
-  phone = ''
-  major = ''
-  address = ''
+  username = '';
+  email = '';
+  phone = '';
+  major = '';
+  address = '';
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
@@ -57,9 +58,9 @@ export class ProfileComponent implements OnInit {
       phone: [this.user.phone, Validators.required],
       major: [this.user.major],
       address: [this.user.address],
-
       password: [this.user.password, [Validators.minLength(4), Validators.required, Validators.nullValidator]],
       confirmPassword: ['', [Validators.minLength(4), Validators.required, Validators.nullValidator]]
+
     }, {
       //validator: testUsernameAvailable(this.user),
       validator: ConfirmedValidator('password', 'confirmPassword'),
@@ -124,6 +125,8 @@ export class ProfileComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
+
+    // reset alerts on submit
     // stop here if form is invalid
     //console.log("testusernames if equal: ", testUsernameAvailable(this.f.username.value, this.olduser));
     // if (this.form.invalid) {
@@ -201,7 +204,6 @@ export class ProfileComponent implements OnInit {
     }).catch((error) => {
       console.log(error);
     });
-
   }
 
   get userInfo(){

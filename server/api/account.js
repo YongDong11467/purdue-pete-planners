@@ -86,6 +86,14 @@ router.route("/searchUsers").get((req, res) => {
   });
 });
 
+router.route("/findClass").get((req, res) => {
+  manager.findClass(req.query.prefix).then(users => {
+    console.log(users)
+    res.json(users);
+  });
+});
+
+
 router.route("/searchUsersCT").get((req, res) => {
   manager.searchUsersCT(req.query.classtag).then(users => {
     console.log(users)
@@ -100,6 +108,18 @@ router.route("/searchClassTag").get((req, res) => {
   });
 });
 
+router.route("/joinClass").post((req, res) => {
+  return manager.joinClass(req.body.user_name,req.body.data)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
+});
+
+router.route("/classRemove").post((req, res) => {
+  return manager.classRemove(req.body.classes, req.body.userName)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
+});
+
 router.route("/findUserCT").get((req, res) => {
   console.log("req query prefix: ", req.query.prefix);
   manager.findUserCT(req.query.prefix).then(users => {
@@ -109,7 +129,7 @@ router.route("/findUserCT").get((req, res) => {
 });
 
 /**
- * 
+ *
  */
 router.route("/sendfr").post((req, res) => {
   return manager.updateFriendRequest(req.body.curUser, req.body.data)
@@ -119,12 +139,25 @@ router.route("/sendfr").post((req, res) => {
 
 router.route("/updateUserInfo").post((req, res) => {
   console.log(req.body.data)
-  console.log(req.body)
+  console.log(req.body.type)
   if (req.body.type == "acceptfr" || req.body.type == "declinefr") {
     return manager.handleAcceptReject(req.body)
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
+  } else if (req.body.type == "ban") {
+    console.log("ban cond")
+    return manager.handleBanUpdate(req.body)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
   }
+});
+
+router.route("/deleteStudyGroup").get((req, res) => {
+  manager.deleteStudyGroup(req.query.prefix).then(ret => {
+    console.log("ret here")
+    console.log(ret)
+    res.json(ret);
+  });
 });
 
 router.route("/searchStudyGroup").get((req, res) => {
@@ -147,6 +180,41 @@ router.route("/updateStudyGroupRequest").post((req, res) => {
   return manager.updateStudyGroupRequest(req.body.curUser, req.body.data)
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
+});
+
+router.route("/studyDelete").post((req, res) => {
+  console.log(req.body.data)
+  console.log(req.body)
+  return manager.studyDelete(req.body.curUser, req.body.data)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
+});
+
+
+
+router.route("/updateStudyGroupAnnounce").post((req, res) => {
+  console.log(req.body.data)
+  console.log(req.body.entered)
+  console.log(req.body)
+  console.log('reached here 2')
+  return manager.updateStudyGroupAnnounce(req.body.data, req.body.entered)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
+});
+
+router.route("/updateStudyGroupComment").post((req, res) => {
+  console.log(req.body.data)
+  console.log(req.body.entered)
+  return manager.updateStudyGroupComment(req.body.data, req.body.entered)
+    .then(success => res.status(200).json(success))
+    .catch(err => res.status(400).json(err));
+});
+
+router.route("/getBuildings").get((req, res) => {
+  manager.getAllBuildings().then(buildings => {
+    console.log(buildings)
+    res.json(buildings);
+  });
 });
 
 // router.route("/DONOTGOHERE").get((req, res) => {

@@ -14,6 +14,7 @@ export class FriendsComponent implements OnInit {
   friendRequestResponse : string[] = [];
   curUser = JSON.parse(sessionStorage.getItem('curUser') || '{}');
   user = this.curUser.user_name
+  info = {email: [""]};
 
   constructor() {
     this.initPage(this.user);
@@ -25,6 +26,7 @@ export class FriendsComponent implements OnInit {
   initPage(val: string) {
     axios.get(`/api/account/searchUsers`, { params: { prefix: val } })
     .then((res: any) => {
+      console.log("abc");
       console.log(res.data[0])
       if (typeof res.data[0] === 'undefined') {
         this.friendResponse = ["No Friends"]

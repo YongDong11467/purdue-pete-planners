@@ -21,8 +21,10 @@ export class ClassComponent implements OnInit {
     ) { }
 
   tableargs1 = {data: [], type: 'List of Classes'};
+
   tabs: string[] = [];
   tabsClassName: string[] = [];
+
 
   curUser = JSON.parse(sessionStorage.curUser || '{}');
   user = this.curUser.user_name;
@@ -41,7 +43,6 @@ export class ClassComponent implements OnInit {
       console.log(this.curUser)
       console.log(this.curUser.user_name)
       // console.log(this.getAllUserClasses(this.curUser.user_name))
-    
   }
 
   searchResponse : string[] = [];
@@ -54,6 +55,27 @@ export class ClassComponent implements OnInit {
 
   displaySearchResult = false
   table_args_class_list = {data: this.searchResponse, type: this.type}
+
+
+  getAllUserClasses(val:string){
+    console.log("Searching for all class tags of user")
+    axios.get(`/api/account/findUserCT`, { params: { prefix: val } })
+      .then((res) => {
+        //console.log(res.data[0])
+        if (typeof res.data[0] === 'undefined'){
+          this.searchResponse = ["No matching user"]
+        } else {
+          this.tabs = res.data[0].class_list;
+          this.searchResponse = [res.data[0].class_list];
+          //console.log(this.searchResponse)
+        }
+        this.type = 'search'
+        this.displaySearchResult = true
+        this.table_args_class_list = {data: this.searchResponse, type: this.type};
+        //console.log(this.table_args_class_list)
+      });
+    console.log('tabs is'+ this.tabs);
+  }
 
   // func for searching to add classes, returns if match
   getUserClasses(val: string) {
@@ -89,6 +111,7 @@ export class ClassComponent implements OnInit {
   
 
   addClass(val: string){
+    console.log(this.tabs);
     this.getUserClasses(val);
     if(this.tagExists != false){
       this.tabs.push(val);
@@ -143,14 +166,14 @@ export class ClassComponent implements OnInit {
 
   open(content: any) {
     this.modalService.open(content,
-   {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
-      this.closeResult = 
-         `Dismissed ${this.getDismissReason(reason)}`;
+      this.closeResult =
+        `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -159,6 +182,15 @@ export class ClassComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+  findClass(val: string) {
+    console.log(val);
+    axios.get(`/api/account/findClass`, { params: { prefix: val } })
+      .then((res) => {
+        console.log("class!")
+        console.log(res.data[0]);
+        alert('Class Name is '+res.data[0].name+'\n');
+      });
   }
 
   private reloadClass() {

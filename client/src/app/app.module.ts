@@ -19,14 +19,17 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDialogModule } from '@angular/material/dialog'
 
 import { SearchComponent } from './components/search/search.component';
 import { TableComponent } from './components/table/table.component';
+
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { HomeComponent } from './components/home/home.component';
 import { DiningComponent } from './components/dining/dining.component';
 import { EventComponent } from './components/event/event.component';
+
 
 import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
@@ -45,8 +48,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { messagingService } from './messaging.service';
+// import { messagingService } from './messaging.service';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { EventPageComponent } from './components/eventPage/event-page.component';
+import {EventEditComponent} from './components/eventEdit/event-edit.component';
 import { ImageService } from './components/profile/imageService';
+
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -65,13 +72,15 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     EventComponent,
     ScheduleComponent,
     EventCreateComponent,
+    EventPageComponent,
     LoginComponent,
     RegisterComponent,
     ClassComponent,
     FriendsComponent,
     MessagingComponent,
     GensearchComponent,
-    StudygroupComponent
+    StudygroupComponent,
+    EventEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,15 +105,17 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatButtonModule,
     MatPaginatorModule,
     NgbModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatDialogModule
   ],
   exports: [
     HttpClientModule,
   ],
   providers: [
-    messagingService,
     ImageService
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
