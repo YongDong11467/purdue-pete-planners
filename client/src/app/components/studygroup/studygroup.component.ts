@@ -12,15 +12,14 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./studygroup.component.css']
 })
 export class StudygroupComponent implements OnInit {
-
+  curUser = JSON.parse(sessionStorage.curUser || '{}');
+  user = this.curUser.user_name;
   constructor() {
-    this.initPage(this.user);
+    this.initPage(this.user,'CS 381');
   }
   clickMessage = 'asfsf';
   classes = ['CS 381', 'CS407'];
   activeLink = this.classes[0];
-  curUser = JSON.parse(sessionStorage.curUser || '{}');
-  user = this.curUser.user_name;
   curStudyGroup = 'CS 381';
   tableargs1 = {data: [""], type: 'member'};
   tableargs2 = {data: [""], type: 'chat_room'};
@@ -60,8 +59,8 @@ export class StudygroupComponent implements OnInit {
     this.name = this.curUser.study_group;
   }
 
-  initPage(val: string) {
-    axios.get(`/api/account/searchStudyGroup`, { params: { prefix: 'CS 381' } })
+  initPage(val: string, study: string) {
+    axios.get(`/api/account/searchStudyGroup`, { params: { prefix: study } })
       .then((res) => {
         if (typeof res.data[0] === 'undefined') {
           this.tablemember = ["no member"];
@@ -78,10 +77,10 @@ export class StudygroupComponent implements OnInit {
         }
         if (this.tablemember.indexOf(this.user) === -1) {
           this.isMemeber = false;
-          console.log('false');
+          //console.log('false');
         } else {
           this.isMemeber = true;
-          console.log('true');
+          //console.log('true');
         }
         this.tableargs1 = {data: this.tablemember, type: 'member'};
         this.tableargs2 = {data: this.tablechatroom, type: 'chat_room'};
@@ -96,11 +95,12 @@ export class StudygroupComponent implements OnInit {
     this.curStudyGroup = event.tab.textLabel;
     axios.get(`/api/account/searchStudyGroup`, { params: { prefix: event.tab.textLabel } })
       .then((res) => {
+        console.log(res.data[0]);
         if (typeof res.data[0] === 'undefined') {
           this.tablemember = ["no member"];
           this.tablechatroom = ["no chat room"];
           this.tablestudyroom = ["no study room"];
-          console.log(this.tablemember);
+          //console.log(this.tablemember);
         } else {
           this.tablemember = res.data[0].Member;
           this.tablechatroom = res.data[0].Chat_room;
@@ -108,36 +108,54 @@ export class StudygroupComponent implements OnInit {
           this.tablemeetingtime = res.data[0].Meeting_time;
           this.tableannoucement = res.data[0].Announcement;
           this.tablecomments = res.data[0].Comments;
-          console.log(res.data[0]);
-          console.log(this.tablemember);
+          //console.log(res.data[0]);
+          //console.log(this.tablemember);
         }
         this.tableargs1 = {data: this.tablemember, type: 'member'};
         this.tableargs2 = {data: this.tablechatroom, type: 'chat_room'};
         this.tableargs3 = {data: this.tablestudyroom, type: 'study_room'};
         this.tableargs4 = {data: this.tableannoucement, type: 'announcement'};
         this.tableargs6 = {data: this.tablecomments, type: 'Comments'};
-        console.log(this.tableargs3);
-        console.log(this.tablemeetingtime);
+        //console.log(this.tableargs3);
+        //console.log(this.tablemeetingtime);
+        if (this.tablemember.indexOf(this.user) === -1) {
+          this.isMemeber = false;
+          //console.log('false');
+        } else {
+          this.isMemeber = true;
+          //console.log('true');
+        }
       });
   }
 
   refresh() {
     console.log("refreshing");
-    this.initPage(this.user);
+    this.initPage(this.user, this.curStudyGroup);
   }
 
   clickedjoin(event: any) {
+    this.refresh();
     axios.post('/api/account/updateStudyGroupRequest', { curUser: this.curUser.user_name, data: this.curStudyGroup});
+    this.refresh();
+  }
+
+  clickedDelete(event: any) {
+    this.refresh();
+    axios.post('/api/account/studyDelete', { curUser: this.curUser.user_name, data: this.curStudyGroup});
+    this.refresh();
   }
 
   clickedCommentsubmit(value) {
+    this.refresh();
     this.newcomment = value;
     console.log(this.newcomment);
     axios.post('/api/account/updateStudyGroupComment', { data: this.curStudyGroup, entered: this.newcomment });
     this.commentexpand = false;
+    this.refresh();
   }
 
   clickedAnnouncesubmit(value) {
+    this.refresh();
     console.log(value);
     this.newannouncement = value;
     console.log(this.newannouncement);
@@ -146,6 +164,7 @@ export class StudygroupComponent implements OnInit {
       data: this.curStudyGroup, entered: this.newannouncement
     });
     this.announcementexpand = false;
+    this.refresh();
   }
 
   getSearchValue(val: string) {
@@ -168,12 +187,16 @@ export class StudygroupComponent implements OnInit {
 
   clickedStudyRequest(value) {
     //console.log(username)
+    this.refresh();
     axios.post('/api/account/updateStudyGroupRequest', { curUser: value, data: this.curStudyGroup });
     this.enteredname = false;
+    this.refresh();
   }
 
   clickedBacktoName() {
+    this.refresh();
     this.isFriend = false;
     this.enteredname = false;
+    this.refresh();
   }
 }

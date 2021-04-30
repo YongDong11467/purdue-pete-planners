@@ -13,7 +13,7 @@ router.post("/schedule", (req,res) => {
 router.route("/createSchedule").post((req, res) => {
   console.log('here is create schedule');
   console.log(req);
-  return manager.createSchedule(req.body.title, req.body.date, req.body.userName, req.body.link)
+  return manager.createSchedule(req.body.name, req.body.Time, req.body.userName, req.body.link)
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
 });

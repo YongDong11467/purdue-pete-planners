@@ -66,9 +66,10 @@ const createAccount = async function(username, email, major, pass) {
 		"friend":[],
 		"friend_request":[],
 		"book_room":[],
-		"event_invite":[]
+		"event_invite":[],
+    "class_list":[]
 	}
-
+  classes = [];
 	let emailExists;
 
 	try {
@@ -103,8 +104,8 @@ const createEvent = async function(name, description, time, link, location, repe
 
 const createSchedule =  async function(title,date,userName,link) {
   const schedule = {
-    "title":title,
-    "date":date,
+    "name":title,
+    "Time":date,
     "link":link
   }
   var myquery = { user_name: userName };
@@ -293,14 +294,63 @@ const getAccountPassword = async function(usrname) {
  */
 const findUserCT = async function(prefix){
 	return new Promise(function(resolve, reject) {
-		var query = { class_list: prefix };
-		db.collection("User").find(query).toArray(function(err, result) {
+    var myquery = { user_name: prefix };
+    db.collection("User").find(myquery, {projection: {class_list: true, _id: false}}).toArray(function(err, result){
 			if (err) throw err;
 			console.log(result);
 			resolve(result);
 		});
 	});
 }
+const findClass = async function(prefix){
+  return new Promise(function(resolve, reject) {
+    var myquery = { class_tag:prefix };
+    db.collection("Class_tag").find(myquery).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      resolve(result);
+    });;
+  });
+}
+const classRemove =  async function(classes,userName) {
+  var myquery = { user_name: userName };
+  var newvalue = { $pull: {class_list: classes} };
+  db.collection("User").findOneAndUpdate(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+  //await  db.collection('User').find({"user_name":userName}).insertOne;
+}
+
+const studyDelete =  async function(userName,study) {
+  var myquery = { user_name: userName };
+  var newvalue = { $pull: {study_group: study} };
+  db.collection("User").findOneAndUpdate(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+  var query = {Course_name:study};
+  var newone = {$pull: {Member: userName}}
+  db.collection("Study_group").findOneAndUpdate(query, newone, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+  //await  db.collection('User').find({"user_name":userName}).insertOne;
+}
+
+
+const joinClass =  async function(userName, data) {
+  console.log(userName+data);
+  var myquery = { user_name: userName };
+  var newvalue = { $push: {class_list: data} };
+  db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+  //await  db.collection('User').find({"user_name":userName}).insertOne;
+}
+
+
 
 module.exports = {
     startDatabaseConnection:startDatabaseConnection,
@@ -317,7 +367,11 @@ module.exports = {
 	updateEvent:updateEvent,
 	updateEventInvite:updateEventInvite,
   createSchedule:createSchedule,
-  getDue:getDue
+  getDue:getDue,
+  findClass:findClass,
+  classRemove:classRemove,
+  joinClass:joinClass,
+  studyDelete:studyDelete
 }
 
 /**
@@ -352,6 +406,8 @@ const searchStudyGroup = async function(prefix){
     });
   });
 }
+
+
 
 
 /**
@@ -766,5 +822,9 @@ module.exports = {
   createSchedule,
   getEvent,
   getEvent,
-  getDue
+  getDue,
+  findClass,
+  classRemove,
+  joinClass,
+  studyDelete
 }

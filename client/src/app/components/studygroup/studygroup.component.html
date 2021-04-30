@@ -12,8 +12,15 @@
   <mat-tab label="CS 407"></mat-tab>
   <mat-tab label="CS 373"></mat-tab>
   <mat-tab label="CS 471"></mat-tab>
-  <mat-tab label="prove of change"></mat-tab>
 </mat-tab-group>
+
+<div class="form-group" *ngIf="isMemeber">
+  <tr>
+    <button  type="button" (click)="clickedDelete(this.user)" class="btn btn-primary" *ngIf="isMemeber">
+      delete
+    </button></tr>
+</div>
+
 
 
 <app-table [data]='tableargs4' (toFriendPage)='refresh()' *ngIf="isMemeber">Forth Study Group</app-table>
@@ -65,6 +72,8 @@
     </div>
   </div>
 </div>
+
+
 
 <app-table [data]='tableargs2' (toFriendPage)='refresh()' *ngIf="isMemeber">Second Study Group</app-table>
 <app-table [data]='tableargs3' (toFriendPage)='refresh()' *ngIf="isMemeber"></app-table>

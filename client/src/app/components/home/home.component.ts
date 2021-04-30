@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   i = 0;
   j = 0;
   friendLen = 0;
-  eventTitle = [];
+  eventName = [];
   eventLink = [];
 
 
@@ -34,7 +34,12 @@ export class HomeComponent implements OnInit {
     this.curUser = JSON.parse(sessionStorage.curUser || '{}');
     this.friendLen = (this.curUser.friend).length
     this.email = this.curUser.email;
-    this.classlist = this.curUser.class_list;
+    //this.classlist = this.curUser.class_list;
+    axios.get(`/api/account/findUserCT`, {params: {prefix: this.curUser.user_name}})
+      .then((res) => {
+        console.log(res.data[0]);
+        this.classlist = res.data[0].class_list;
+      });
     axios.get(`/api/home/getDue`, {params: {prefix: this.curUser.user_name}})
       .then((res) => {
         console.log(res.data[0].schedule);
@@ -44,15 +49,15 @@ export class HomeComponent implements OnInit {
           // @ts-ignore
           if(res.data[0].schedule[this.i].link == "no link"){
             // @ts-ignore
-            this.dueTitle[this.i] = this.due[this.i].title;
+            this.dueTitle.push(this.due[this.i].name);
             // @ts-ignore
-            this.dueDate[this.i] = this.due[this.i].date;
+            this.dueDate.push(this.due[this.i].Time);
           }
           else {
             // @ts-ignore
-            this.eventTitle[this.i] = this.due[this.i].title;
+            this.eventName.push(this.due[this.i].name);
             // @ts-ignore
-            this.eventLink[this.i] = this.due[this.i].link;
+            this.eventLink.push(this.due[this.i].link);
           }
         }
         console.log(this.dueDate);

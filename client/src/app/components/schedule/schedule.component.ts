@@ -33,7 +33,8 @@ export class ScheduleComponent implements OnInit{
   event2 = {title: '123', date: '2021-03-03'};
   event = {};
   option = '';
-  newEvent;
+  newEvent = {title: '', date: ''};
+  shortTime = ''
 
 
   i = 0;
@@ -43,9 +44,28 @@ export class ScheduleComponent implements OnInit{
     axios.get(`/api/schedule/getEvent`, {params: {prefix: this.curUser.user_name}})
       .then((res) => {
         console.log(res.data[0].schedule[0]);
-        this.events = res.data[0].schedule;
+        //this.events = res.data[0].schedule;
+        if (res.data[0].schedule.length == 0) {
+          this.calendarOptions.events = this.events;
+          return;
+        }
+        for (this.i = 0; this.i < res.data[0].schedule.length; this.i++) {
+          if (res.data[0].schedule[this.i].Time.length < 11) {
+            this.newEvent = {title: res.data[0].schedule[this.i].name, date: res.data[0].schedule[this.i].Time};
+            // @ts-ignore
+            this.events.push(this.newEvent);
+          }
+          else {
+            this.shortTime = res.data[0].schedule[this.i].Time.substr(0, 10);
+            console.log(this.shortTime);
+            this.newEvent = {title: res.data[0].schedule[this.i].name, date: this.shortTime};
+            // @ts-ignore
+            this.events.push(this.newEvent);
+          }
+        }
         console.log(this.events);
         this.calendarOptions.events = this.events;
+        this.events = [];
         /*for (this.i = 0; this.i < res.data[0].schedule[0].length(); this.i++) {
           // @ts-ignore
           this.events[this.i] = res.data[0].schedule[0][this.i];
@@ -81,8 +101,8 @@ export class ScheduleComponent implements OnInit{
     }
     this.loading = true;
     axios.post('/api/schedule/createSchedule', {
-      title: form.value.title,
-      date: form.value.content,
+      name: form.value.title,
+      Time: form.value.content,
       userName: this.curUser.user_name,
       link:"no link"
     })
@@ -90,6 +110,7 @@ export class ScheduleComponent implements OnInit{
         console.log(response);
         this.loading = true;
       });
+    this.refresh();
   }
   refresh() {
     console.log('refreshing');

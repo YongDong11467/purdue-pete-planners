@@ -22,11 +22,13 @@ import { MatGridListModule } from '@angular/material/grid-list';
 
 import { SearchComponent } from './components/search/search.component';
 import { TableComponent } from './components/table/table.component';
+
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { HomeComponent } from './components/home/home.component';
 import { DiningComponent } from './components/dining/dining.component';
 import { EventComponent } from './components/event/event.component';
+
 
 import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
