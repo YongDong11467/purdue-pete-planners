@@ -19,6 +19,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDialogModule } from '@angular/material/dialog'
 
 import { SearchComponent } from './components/search/search.component';
 import { TableComponent } from './components/table/table.component';
@@ -47,10 +48,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { StudygroupComponent } from './components/studygroup/studygroup.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { messagingService } from './messaging.service';
+// import { messagingService } from './messaging.service';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { EventPageComponent } from './components/eventPage/event-page.component';
 import {EventEditComponent} from './components/eventEdit/event-edit.component';
+import { messagingService } from './messaging.service';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -78,7 +80,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MessagingComponent,
     GensearchComponent,
     StudygroupComponent,
-    EventEditComponent
+    EventEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,9 +106,12 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatPaginatorModule,
     NgbModule,
     MatSnackBarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogModule
   ],
+
   providers: [messagingService],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

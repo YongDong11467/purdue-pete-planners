@@ -1,6 +1,7 @@
 {
     "/api": {
-        "target": "http://localhost:3080",
-        "secure": false
+        "target": "http://purdue-petes-planner.herokuapp.com",
+        "secure": false,
+        "changeOrigin": true
     }
 }

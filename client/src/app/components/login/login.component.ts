@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
     let user = this.f.username.value;
     let pass = this.f.password.value;
 
-    console.log(user + " " + pass);
+    //console.log(user + " " + pass);
 
     axios.post('/api/account/login', {
       "username" : user,

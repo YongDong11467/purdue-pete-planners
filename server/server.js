@@ -5,9 +5,11 @@ const scheduleRouter = require("./api/schedule");
 const messageRouter = require("./api/messaging");
 const homeRouter = require("./api/home");
 const account_manager = require("./account_manager");
+const path = require('path');
 const cors = require("cors");
+const express = require('express');
 
-const app = require('express')();
+const app = express();
 const http = require('http').createServer(app);
 const io = require("socket.io")(http, {cors: {
     origin: '*',
@@ -39,6 +41,12 @@ app.use("/api/messaging", messageRouter);
 app.use("/api/schedule", scheduleRouter);
 app.use("/api/home", homeRouter);
 
+
+if(process.env.NODE_ENV == "production") {
+    const publicPath = path.join(__dirname, "./dist/purdue-pete-planners");
+    app.use(express.static(publicPath));
+    app.use('*', express.static(publicPath));
+}
 
 app.get('/', (req,res) => {
   res.send('Default route');
