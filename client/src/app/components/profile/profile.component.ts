@@ -135,22 +135,14 @@ export class ProfileComponent implements OnInit {
       return;
     }
     if (this.f.password.value !== this.oldpass){
-      console.log(this.f.password.value)
-      console.log(this.oldpass)
+      // console.log(this.f.password.value)
+      // console.log(this.oldpass)
       console.log('invalid pass')
       return;
     }
     this.loading = true;
 
-    console.log(this.f.password.value)
-      console.log(this.oldpass)
-    console.log("curUser.pass: ", this.curUser.password);
-    console.log("curUser.major: ", this.curUser.major);
-    console.log("f.major.value: ", this.f.major.value);
-    console.log("user id: ", this.user_id);
-    console.log(this.olduser);
-    console.log(this.f.username.value);
-    console.log("testusernames if equal: ", testUsernameAvailable(this.f.username.value, this.olduser));
+    //console.log("testusernames if equal: ", testUsernameAvailable(this.f.username.value, this.olduser));
     // if((this.f.username.value !== null) && (testUsernameAvailable(this.f.username.value, this.olduser) == 1)){
     //   this.curUser.username = this.f.username.value;
     // }
@@ -173,13 +165,6 @@ export class ProfileComponent implements OnInit {
       this.curUser.address = this.f.address.value;
     }
 
-    // this.curUser.email = this.f.email.value;
-    // this.curUser.phone = this.f.phone.value;
-    // this.curUser.major = this.f.major.value;
-    console.log("curUser.major: ", this.curUser.major);
-    // this.curUser.address = this.f.address.value;
-    //this.curUser.password = this.f.password.value;
-
     let uname = this.curUser.username;
     let uemail = this.curUser.email;
     let uphone = this.curUser.phone;
@@ -188,12 +173,8 @@ export class ProfileComponent implements OnInit {
     let upass = this.curUser.password;
     let uid = this.user_id;
 
-    console.log("umajor: ", umajor);
-    
-    console.log(this.curUser)
-    console.log(uname, uemail, uphone, umajor, uaddress, upass, uid);
-    //profUpdate(uname, uemail, uphone, umajor, uaddress, upass);
-    // alert('New values: \n\n' + JSON.stringify(this.form.value, null, 4));
+    //console.log(this.curUser)
+    //console.log(uname, uemail, uphone, umajor, uaddress, upass, uid);
 
     axios.post('/api/account/profile', {
       "user_name": uname,
@@ -239,7 +220,7 @@ export class ProfileComponent implements OnInit {
     if(this.f3.username.value !== null && testUsernameAvailable(this.f3.username.value, this.olduser) !== 0){
       this.curUser.username = this.f3.username.value;
     }
-    console.log(this.f3.username.value, this.f3.pfpURL.value);
+    //console.log(this.f3.username.value, this.f3.pfpURL.value);
     let uname = this.curUser.username;
 
     axios.post('/api/account/profilePFP', {
@@ -277,18 +258,10 @@ export class ProfileComponent implements OnInit {
     this.form3.reset();
   }
 
-  // need first ability to add users
+  
   deleteUser() {
-    // admin.auth().deleteUser(uid)
-    // .then(function() {
-    //   console.log('Successfully deleted user');
-    // })
-    // .catch(function(error) {
-    //   console.log('Error deleting user:', error);
-    // });
+    // n/A
   }
-
-
 
   private onSuccess() {
     this.selectedFile.pending = false;
@@ -323,6 +296,13 @@ export class ProfileComponent implements OnInit {
           })
       });
       reader.readAsDataURL(file);
+  }
+
+  private reloadClass() {
+    let currenturl = this.router.url;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([currenturl]);
   }
 
   open(content: any) {
@@ -407,10 +387,5 @@ export class ProfileComponent implements OnInit {
     }).catch((error) => {
       console.log(error);
     });
-
-
-
-
-
   }
 }
