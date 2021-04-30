@@ -3,9 +3,11 @@ const accountRouter = require("./api/account");
 const eventRouter = require("./api/events");
 const messageRouter = require("./api/messaging");
 const account_manager = require("./account_manager");
+const path = require('path');
 const cors = require("cors");
+const express = require('express');
 
-const app = require('express')();
+const app = express();
 const http = require('http').createServer(app);
 const io = require("socket.io")(http, {cors: {
     origin: '*',
