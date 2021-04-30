@@ -65,7 +65,8 @@ const createAccount = async function(username, email, major, pass) {
 		"chats":[],
 		"friend":[],
 		"friend_request":[],
-		"book_room":[]
+		"book_room":[],
+		"event_invite":[]
 	}
 
 	let emailExists;
@@ -86,6 +87,7 @@ const createAccount = async function(username, email, major, pass) {
 	return 0;
 }
 
+//create a new event and add it to the db
 const createEvent = async function(name, description, time, link, location, repeat, owner) {
 	const event = {
 		"name":name,
@@ -94,51 +96,150 @@ const createEvent = async function(name, description, time, link, location, repe
 		"link":link,
 		"location":location,
 		"repeat":repeat,
-		"owner":owner
+		"owner":owner,
+		"invited":[]
 	}
 
 	await db.collection('Event').insertOne(event);
+	await db.collection('User').updateOne({user_name: owner[0]}, { $push: {schedule: event}}, function(err, res) {
+		if (err) throw err;
+		console.log(err);
+	});
+}
+
+const createSchedule =  async function(title,date,userName,link) {
+  const schedule = {
+    "title":title,
+    "date":date,
+    "link":link
+  }
+  var myquery = { user_name: userName };
+  var newvalue = { $push: {schedule: schedule} };
+  db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
 }
 
 /**
- * 
+ *
  * @param {String} owner
  */
-
+//returns all user created events
  const searchUserEvent = async function(user){
 	return new Promise(function(resolve, reject) {
-		//console.log(user);
 		db.collection("Event").find({owner: user}).toArray(function(err, result) {
 			if (err) throw err;
-			//console.log(result);
 			resolve(result);
 		});
 	});
 }
 
+const getEvent = async function(prefix){
+  console.log(prefix);
+  return new Promise(function(resolve, reject) {
+    var myquery = { user_name: prefix };
+    db.collection("User").find(myquery, {projection: {schedule: true, _id: false}}).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      resolve(result);
+    });
+  });
+}
+
+const getDue = async function(prefix){
+  console.log(prefix);
+  return new Promise(function(resolve, reject) {
+    var myquery = { user_name: prefix };
+    db.collection("User").find(myquery, {projection: {schedule: true, _id: false}}).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      resolve(result);
+    });
+  });
+}
+
+//checks all events for the user to see if theyve accepted an invite
+const searchInvitedEvent = async function(user){
+	return new Promise(function(resolve, reject) {
+		db.collection("Event").find({invited: user}).toArray(function(err, result) {
+			if(err) throw err;
+			resolve(result);
+		});
+	});
+}
+
+//returns all evnts in the db
 const getAllEvents = async function(){
 	return new Promise(function(resolve, reject) {
 		db.collection("Event").find().toArray(function(err, result) {
 			if(err) throw err;
-			//console.log(result);
 			resolve(result);
 		});
 	});
 }
 
-const getCurrentEvent = async function(id){
+//gets an event by its id
+const getCurrentEvent = async function(findid){
+	let event = db.collection("Event").findOne({_id: ObjectId(findid)});
+	return event;
+}
+
+//updates an events data after edits
+const updateEvent = async function(id, nameParam, desc, date, linkParam, loc, repeatParam){
+	await db.collection("Event").updateOne({_id: ObjectId(id)},
+	 {$set: { name: nameParam, description: desc, Time: date, link: linkParam, location: loc, repeat: repeatParam},},
+	  function(err, res) {
+		  if(err) throw err;
+		  console.log(err);
+	  });
+}
+
+//adds an event invitation to the users event invtie array
+const updateEventInvite = async function(reciever, sender, eventName, eventID){
+	var myquery = { user_name: reciever };
+	var newvalue = { $push: {event_invite:  [sender[0], eventName, eventID]  }};
+	await db.collection("User").updateOne(myquery, newvalue, function(err, res) {
+	if (err) throw err;
+		console.log(err);
+	});
+}
+
+//searches for all events user is invited to
+const searchUserEventInvites = async function(user){
+	invites = await db.collection("User").findOne({user_name: user}, {projection: {event_invite: true, _id: false}});
+	console.log(invites);
+	return invites;
+}
+
+//accepts an event invitation by adding the users name to the events invited array, removes invite from users invite list
+const acceptEventInvite = async function(sentUser, sentName, eventID, user){
+	db.collection("Event").updateOne({_id: ObjectId(eventID)}, { $push: {invited: user}});
+	db.collection("User").updateOne({user_name: user}, { $pull: {event_invite: [sentUser, sentName, eventID]}});
+}
+
+//declines an event invitation by removing it from the invite list
+const declineEventInvite = async function(sentUser, sentName, eventID, user){
+	await db.collection("User").updateOne({user_name: user}, { $pull: {event_invite: [sentUser, sentName, eventID]}});
+}
+
+//for use in deleting an event
+//removes any invites to event from all users
+const removeInvites = async function(sentUser, sentName, eventID){
 	return new Promise(function(resolve, reject) {
-		console.log(id);
-		db.collection("Event").find({_id: id}).toArray(function(err, result) {
-			if (err) throw err;
-
-			resolve(result);
-		});
+		db.collection("User").updateMany({}, { $pull: {event_invite: [sentUser, sentName, eventID]}});
 	});
 }
 
-const updateEvent = async function(id, description, time, link, location, repeat, owner){
+//delete event from db
+const deleteEvent = async function(sentUser, sentName, eventID){
+	let stuff= removeInvites(sentUser, sentName, eventID);
+	db.collection("Event").deleteOne({_id: ObjectId(eventID)});
+}
 
+//Remove event from interested tab
+const removeEvent = async function(user, eventID){
+	await db.collection("Event").updateOne({_id: ObjectId(eventID)}, {$pull: {invited: user}});
 }
 
 /**
@@ -195,7 +296,7 @@ const searchUsers = async function(prefix){
  *
  * @param {String} usrname 	The username of the account which the password is being extracted
  *
- * @return {int} 	Returns a value depending on invalid information (-1 = Cannot connect to database, 1 = Invalid Username) 
+ * @return {int} 	Returns a value depending on invalid information (-1 = Cannot connect to database, 1 = Invalid Username)
  * @return {String} Returns a string of the password
  */
 const getAccountPassword = async function(usrname) {
@@ -215,7 +316,7 @@ const getAccountPassword = async function(usrname) {
 	}
 
 	if (!userExists) {return 1;}
-	else {return pass}; 
+	else {return pass};
 
 }
 
@@ -261,7 +362,19 @@ module.exports = {
 	createEvent:createEvent,
 	searchUserEvent:searchUserEvent,
 	getAllEvents:getAllEvents,
-	getCurrentEvent:getCurrentEvent
+  getEvent:getEvent,
+	getCurrentEvent:getCurrentEvent,
+	updateEvent:updateEvent,
+	updateEventInvite:updateEventInvite,
+  createSchedule:createSchedule,
+  getDue:getDue,
+  createSchedule:createSchedule,
+	searchUserEventInvites:searchUserEventInvites,
+	acceptEventInvite:acceptEventInvite,
+	declineEventInvite:declineEventInvite,
+	searchInvitedEvent:searchInvitedEvent,
+	deleteEvent:deleteEvent,
+	removeEvent:removeEvent
 }
 
 /**
@@ -296,6 +409,7 @@ const searchStudyGroup = async function(prefix){
     });
   });
 }
+
 
 /**
  * Gets the class tag with the given prefix
@@ -367,6 +481,42 @@ const updateStudyGroupRequest = async function(curuser, study_group){
   });
 }
 
+/**
+ * Update's the Comment of the study group
+ *
+ * @param {String} study_group
+ */
+const updateStudyGroupComment = async function(study_group, info){
+  //TODO: error checking on duplicate
+  Info = info
+  console.log(study_group)
+  var myquery = { Course_name: study_group};
+  var newvalue = { $push: {Comments: Info} };
+  db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+}
+
+/**
+ * Update's the Announcement of the study group
+ *
+ * @param {String} study_group
+ */
+const updateStudyGroupAnnounce = async function(study_group, info){
+  //curUser = curuser
+  Info = info
+  console.log(study_group)
+  console.log(info)
+  console.log('reached here')
+  var myquery = { Course_name: study_group};
+  var newvalue = { $push: {Announcement: Info} };
+  db.collection("Study_group").updateOne(myquery, newvalue, function(err, res) {
+    if (err) throw err;
+    console.log(err);
+  });
+}
+
 const deleteStudyGroup = async function(data){
 	return new Promise(function(resolve, reject) {
 		var myquery = { Course_name: data };
@@ -420,8 +570,8 @@ const populateDatabase = async function(){
 	var buildinginfo = [
 		// Too lazy to create hours object so I'll just go with strings or html
 		// That also that it is in our database so I'm not at fault right? ┌( ಠ‿ಠ)┘
-		{ name: "Purdue University Beering Hall", location: "100 University St, West Lafayette, IN 47907", 
-		bussiness_hour: 
+		{ name: "Purdue University Beering Hall", location: "100 University St, West Lafayette, IN 47907",
+		bussiness_hour:
 			`Sunday	Closed
 			Monday	6:30AM–11PM
 			Tuesday	6:30AM–11PM
@@ -442,8 +592,8 @@ const populateDatabase = async function(){
 			Saturday	1–5PM`,
 		refimg: ""
 		},
-		{ name: "Purdue Physics Building", location: "525 Northwestern Ave, West Lafayette, IN 47907", 
-		bussiness_hour: 
+		{ name: "Purdue Physics Building", location: "525 Northwestern Ave, West Lafayette, IN 47907",
+		bussiness_hour:
 			`Missing Hours`,
 		refimg: "http://purdue7barz.s3.amazonaws.com/physics-ext.jpg"
 		},
@@ -459,7 +609,7 @@ const populateDatabase = async function(){
 			`,
 		refimg: ""
 		}
-		
+
 	];
 
 	db.collection("Building").insertMany(buildinginfo, function(err, res) {
@@ -475,7 +625,7 @@ const populateDatabase = async function(){
  *
  * @param {String} usrname The email of the account which the password is being extracted
  *
- * @return {int} Returns a value depending on if username exists (-1 = Cannot connect to database, 0 = Does not Exist, 1 = Exists) 
+ * @return {int} Returns a value depending on if username exists (-1 = Cannot connect to database, 0 = Does not Exist, 1 = Exists)
  */
 const userAccountExists = async function(usrname) {
 	let userExists;
@@ -492,9 +642,9 @@ const userAccountExists = async function(usrname) {
 
 /**
  * Summary. Function that retrives chat rooms for a user
- * 
+ *
  * @param {String} username The username of the account in question
- * 
+ *
  * @return A list of conversations
  */
 const getUserChats = async function(usrname) {
@@ -516,9 +666,9 @@ const getUserChats = async function(usrname) {
 
 /**
  * Adds new message to chat history
- * @param {objectID} chat 
- * @param {string} sender 
- * @param {string} message 
+ * @param {objectID} chat
+ * @param {string} sender
+ * @param {string} message
  */
 
 const updateChatHistory = async function(chat, sender, message) {
@@ -539,9 +689,9 @@ const updateChatHistory = async function(chat, sender, message) {
 
 /**
  * Summary. Function that retrieve chat room message history for a given chat
- * 
+ *
  * @param {*} chat The id of the chat in question
- * 
+ *
  * @return An array of messages and their senders
  */
 const getChatHistory = async function(chat) {
@@ -564,15 +714,15 @@ const getChatHistory = async function(chat) {
 		console.log(err.stack);
 		return -1;
 	}
-	
+
 	return history;
 }
 
 /**
  * Summary. Function to create a new chat room
- * 
+ *
  * @param {Array} users The list of users to be added to the chat
- * 
+ *
  * @return The id of the new chat document. -1 for failure, 0 for already exists
  */
 const createChatRoom = async function(users) {
@@ -586,7 +736,7 @@ const createChatRoom = async function(users) {
 		"Members": users,
 		"History":[]
 	};
-	
+
 	// check database for chat room with same participatnts.
 	let chats;
 	chats = await db.collection("chat_room").find({},{projection: {Members:true, _id:true}}).toArray();
@@ -616,11 +766,11 @@ const createChatRoom = async function(users) {
 
 /**
  * Sumarry. Function to add chat room to user document
- * 
+ *
  * @param {String} user The user to add the chat to
- * 
+ *
  * @param {ObjectId} id The id of the new chat
- * 
+ *
  * @return An integer value (1 = success, 0 = failure, -1 = error)
  */
 const addChatToUser = async function(user, id){
@@ -646,6 +796,12 @@ module.exports = {
 	updateChatHistory,
 	handleAcceptReject,
 	searchUsersCT,
+  searchStudyGroup,
+  searchAllStudyGroup,
+  updateStudyGroupRequest,
+	createEvent,
+  updateStudyGroupAnnounce,
+  updateStudyGroupComment,
 	searchClassTag,
 	findUserCT,
   	searchStudyGroup,
@@ -661,5 +817,18 @@ module.exports = {
 	getAllEvents,
 	getCurrentEvent,
 	handleBanUpdate,
-	deleteStudyGroup
+	deleteStudyGroup,
+	updateEvent,
+	updateEventInvite,
+  createSchedule,
+  getEvent,
+  getEvent,
+  getDue,
+  createSchedule,
+	searchUserEventInvites,
+	acceptEventInvite,
+	declineEventInvite,
+	searchInvitedEvent,
+	deleteEvent,
+	removeEvent
 }
