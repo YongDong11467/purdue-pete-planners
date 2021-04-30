@@ -59,7 +59,7 @@ const closeDatabaseConnection = async function() {
  * @param {String} bio
  * @return {Int} returns success value. (-1 = account creation failed, 0 = account creation success)
  */
-const createAccount = async function(username, email, major, pass, phone, address, first, last, website, github, bio) {
+const createAccount = async function(username, email, major, pass, phone, address, first, last, website, github, bio, pfpURL) {
 	// create a JSON user object
 	const user = {
 		"user_name":username,
@@ -72,6 +72,7 @@ const createAccount = async function(username, email, major, pass, phone, addres
 		"website":website,
 		"github":github,
 		"bio":bio,
+		"pfpURL":pfpURL,
 		"schedule":[],
 		"major":major,
 		"study_group":[],

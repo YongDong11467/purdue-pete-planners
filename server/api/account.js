@@ -27,7 +27,7 @@ router.route("/login").post(async (req,res) => {
  */
 router.route("/register").post((req,res) => {
     console.log(req.body.uname);
-    return manager.createAccount(req.body.uname,  req.body.email, 'cs', req.body.pass, '222-222-2222', 'address')
+    return manager.createAccount(req.body.uname,  req.body.email, 'Your major', req.body.pass, '(000)-000-0000', 'Your address', req.body.first, req.body.last, 'http://yourwebsite.com/', 'https://github.com/yourgit', 'An interesting bio', 'https://fmcisite.files.wordpress.com/2016/02/blank-profile-picture-973460_6404.png')
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
 });
