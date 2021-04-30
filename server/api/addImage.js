@@ -5,3 +5,5 @@ router.route("/").get((req, res) => {
     const img = ["image"]
     res.json(img);
 });
+
+  module.exports = router;
