@@ -2,7 +2,7 @@ const router = require("express").Router();
 const manager = require('../account_manager')
 
 router.route("/").get((req, res) => {
-    const account = ["login", "register", "profile"]
+    const account = ["login", "register", "profile", "profileSideBar", "profilePFP"]
     res.json(account);
 });
 
@@ -27,13 +27,57 @@ router.route("/login").post(async (req,res) => {
  */
 router.route("/register").post((req,res) => {
     console.log(req.body.uname);
-    return manager.createAccount(req.body.uname,  req.body.email, 'cs', req.body.pass)
+    return manager.createAccount(req.body.uname,  req.body.email, 'Your major', req.body.pass, '(000)-000-0000', 'Your address', req.body.first, req.body.last, 'http://yourwebsite.com/', 'https://github.com/yourgit', 'An interesting bio', 'https://fmcisite.files.wordpress.com/2016/02/blank-profile-picture-973460_6404.png')
     .then(success => res.status(200).json(success))
     .catch(err => res.status(400).json(err));
 });
 
 /**
- *
+ * API endpoint to edit user info
+ */
+router.route("/profile").post((req,res) => {
+  console.log(req.body);
+  //console.log("req-body-user-id: ", req.body._id);
+  return manager.editProfileInfo(req.body.user_name, req.body.email, req.body.phone, req.body.major, req.body.address, req.body.password, req.body._id,)
+  .then(success => res.status(200).json(success))
+  .catch(err => res.status(400).json(err));
+});
+
+/**
+ * API endpoint to edit user sidebar info
+ */
+router.route("/profileSideBar").post((req,res) => {
+  console.log(req.body);
+  console.log("req-body-bio: ", req.body.bio);
+  return manager.editProfileSide(req.body.user_name, req.body.first, req.body.last, req.body.website, req.body.github, req.body.bio)
+  .then(success => res.status(200).json(success))
+  .catch(err => res.status(400).json(err));
+});
+
+/**
+ * API endpoint to edit pfp
+ */
+router.route("/profilePFP").post((req,res) => {
+  console.log(req.body);
+  console.log("req-body-pfp: ", req.body.pfpURL);
+  return manager.editProfilePFP(req.body.user_name, req.body.pfpURL)
+  .then(success => res.status(200).json(success))
+  .catch(err => res.status(400).json(err));
+});
+
+
+/**
+ * 
+ */
+router.route("/searchUserID").get((req, res) => {
+  manager.searchUserID(req.query.prefix).then(users => {
+    console.log(users)
+    res.json(users);
+  });
+});
+
+/**
+ * 
  */
 router.route("/searchUsers").get((req, res) => {
   manager.searchUsers(req.query.prefix).then(users => {
@@ -77,6 +121,7 @@ router.route("/classRemove").post((req, res) => {
 });
 
 router.route("/findUserCT").get((req, res) => {
+  console.log("req query prefix: ", req.query.prefix);
   manager.findUserCT(req.query.prefix).then(users => {
     console.log(users)
     res.json(users);

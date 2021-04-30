@@ -7,6 +7,41 @@
   
 }
 
+/* /deep/ .mat-tab-group .mat-primary .mat-tab-group-dynamic-height{
+  min-height: 500px !important;
+} */
+
+/* /deep/ .mat-tab-body-wrapper {
+  min-height: 700px !important;
+} */
+
+/* .fc-media-screen {
+  min-height: 500px !important;
+}
+
+.fc-scrollgrid .fc-scrollgrid-liquid .fc-daygrid {
+  min-height: 500px !important;
+}
+
+/deep/ .fc-view-harness {
+  min-height: 500px !important;
+} */
+
+
+.mattab-container {
+  min-height: 500px !important;
+}
+
+/* :host ::ng-deep .mat-tab-body-wrapper {
+  height: 600px;
+
+}
+
+:host ::ng-deep .mat-tab-body.mat-tab-body-active {
+  height: 600px;
+
+} */
+
 /* .deleteClassBtn {
   position: absolute;
   right:    300;
@@ -14,7 +49,7 @@
   z-index: 99999;
 } */
 
-.container {
+/* .container {
   justify-content: space-between;
   flex-direction: column;
   height: 100vh;
@@ -23,7 +58,7 @@
 .container .btn-holder {
   justify-content: flex-end;
   display: flex;
-}
+} */
 
 .button {
   border: none;
@@ -32,6 +67,11 @@
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+}
+
+.flex-box {
+  flex-shrink: 0;
+  width: max-content;
 }
 
 .tooltipclass{
@@ -60,7 +100,7 @@
   color: white;
   font-size: 17px;
   border: 1px solid grey;
-  border-left: none; /* Prevent double borders */
+  border-left: none;
   cursor: pointer;
 }
 

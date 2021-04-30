@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <!-- <mat-tab-group (selectedTabChange)="onTabClick($event)">
   <mat-tab label="CS 354"></mat-tab>
   <mat-tab label="CS 407"></mat-tab>
@@ -14,43 +15,34 @@
   </mat-tab>
 </mat-tab-group> -->
 
-<!-- <app-table [data]='tableargs1' ></app-table> -->
 <div class="container">
-  <mat-tab-group >
+
+<div class="mattab-container">
+  <mat-tab-group>
     <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
-      Class information and contents for {{tab}}.
-      <button mat-raised-button (click)="findClass(tab)">info</button>
+      <h3>Class schedule for {{tab}}.</h3>
       <div class="btn-holder">
         <button mat-raised-button mat-button color="warn"
-                class = "deleteClassBtn"
-                [disabled]="tabs.length === 1"
-                (click)="removeClass(index,tab)">
+          class = "deleteClassBtn"
+          [disabled]="tabs.length === 0"
+          (click)="removeClass(index)">
           Delete Class
         </button>
       </div>
+      
     </mat-tab>
-
     <mat-tab disabled>
-    <ng-template mat-tab-label>
-      <button mat-icon-button (click)="open(content)" placement="right" ngbTooltip="New" tooltipClass = "toolfront">
-        <mat-icon>add_circle</mat-icon>
-      </button>
-    </ng-template>
-  </mat-tab>
-
+      <ng-template mat-tab-label>
+        <button mat-icon-button (click)="open(content)" placement="right" ngbTooltip="New" tooltipClass = "toolfront">
+            <mat-icon>add_circle</mat-icon>
+        </button>
+      </ng-template>
+    </mat-tab>
   </mat-tab-group>
+  <app-schedule></app-schedule>
+</div>
+</div>
 
-
-
-
-  <!-- <form class="example-form">
-    <mat-form-field class="example-full-width">
-      <mat-label>Search For Class Tags</mat-label>
-      <input matInput placeholder="cs444" #search>
-    </mat-form-field>
-    <button (click)="getUserClasses(search.value)">Search!</button>
-    <app-table *ngIf="displayTagResult" [data]='tableargs'></app-table>
-  </form> -->
 
   <ng-template #content let-modal>
     <div class="modal-header">
@@ -89,4 +81,4 @@
       </button>
     </div>
   </ng-template>
-</div>
+

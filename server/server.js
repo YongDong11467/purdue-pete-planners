@@ -5,6 +5,8 @@ const scheduleRouter = require("./api/schedule");
 const messageRouter = require("./api/messaging");
 const homeRouter = require("./api/home");
 const account_manager = require("./account_manager");
+const addImageRouter = require("./api/addImage");
+const classesRouter = require("./api/classes");
 const path = require('path');
 const cors = require("cors");
 const express = require('express');
@@ -38,6 +40,8 @@ app.use("/api/dining", diningRouter);
 app.use("/api/account", accountRouter);
 app.use("/api/events", eventRouter);
 app.use("/api/messaging", messageRouter);
+app.use("/api/addImage", addImageRouter);
+app.use("/api/classes", classesRouter);
 app.use("/api/schedule", scheduleRouter);
 app.use("/api/home", homeRouter);
 

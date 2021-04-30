@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <div class="container">
     <div class="main-body">
         <app-search></app-search>
@@ -7,14 +8,46 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="../../../assets/images/resources/blank_pfp.jpg" alt="Admin" class="rounded-circle" width="150">
+                    <div id="locologo">
+                        <img src="{{this.curUser.pfpURL}}" alt="Admin" class="rounded-circle" width="150" height="150">
+                    </div>
                     <div class="mt-3">
-                      <h4>{{this.user}}</h4>
-                      <p class="text-secondary mb-1">Bio </p>
-                      <p class="text-muted font-size-sm">West Lafayette, IN</p>
-                      <!-- <button class="btn btn-primary">Add Friend</button> -->
-                      <div class="divider"></div>
-                      <!-- <button class="btn btn-outline-primary">Message</button> -->
+                      <h4>{{this.curUser.first}} {{this.curUser.last}}</h4>
+                      <p class="text-secondary mb-1 overflowing">Bio </p>
+                      <div class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+
+                        <span class="text-secondary">{{this.curUser.bio}}</span>
+                      </div>
+                    
+                      <!-- <label class="image-upload-container btn btn-bwm">
+                        <span>Add photo</span>
+                        <input #imageInput
+                               type="file"
+                               accept="image/*"
+                               (change)="processImageInput(imageInput)">
+                        </label> -->
+
+                        <!-- <mat-icon>
+                            <input #imageInput
+                               type="file"
+                               accept="image/*"
+                               (change)="processImageInput(imageInput)">
+                            photo_library</mat-icon> -->
+                          
+                          <div *ngIf="selectedFile" class="img-preview-container">
+                          
+                            <div class="img-preview{{selectedFile.status === 'no work' ? '-error' : ''}}"
+                                 [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}">
+                            </div>
+                          
+                            <div *ngIf="selectedFile.pending" class="img-loading-overlay">
+                              <div class="img-spinning-circle"></div>
+                            </div>
+                          
+                            <div *ngIf="selectedFile.status === 'works'" class="alert alert-success"> Image Uploaded Successfully!</div>
+                            <div *ngIf="selectedFile.status === 'no work'" class="alert alert-danger"> Image Upload Failed!</div>
+                          </div>
+
                     </div>
                   </div>
                 </div>
@@ -23,13 +56,31 @@
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>Website</h6>
-                    <span class="text-secondary">https://www.{{this.user}}.com <a class="button" href="https://github.com/login" title="#">: link</a></span>
+                    <span class="text-secondary">
+                        <a href={{this.curUser.website}}>{{this.curUser.website}}</a>
+                    </span>
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>Github</h6>
-                    <span class="text-secondary">https://github.com/{{this.user}}<a class="button" href="https://github.com/login" title="#">: link</a></span>
+                    <span class="text-secondary">
+                        <a href={{this.curUser.github}}>{{this.curUser.github}}</a>
+                    </span>
                   </li>
                 </ul>
+                    <hr>
+                    <span id="Dashboard">
+                        <button mat-icon-button (click)="open(content)" placement="left" ngbTooltip="Edit" tooltipClass = "toolfront">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="open2(content2)" placement="right" ngbTooltip="Change photo" tooltipClass = "toolfront">
+                            <mat-icon>photo_library</mat-icon>
+                          </button>
+
+                        <!-- <button mat-icon-button (click)="open(content)" placement="right" ng-click="deleteUser(uid)" ngbTooltip="Delete Account" tooltipClass = "toolfront">
+                            <mat-icon>delete</mat-icon>
+                        </button> -->
+                    </span>
+                  <!-- </ng-template> -->
               </div>
             </div>
             <div class="col-md-8">
@@ -39,10 +90,20 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <h6 class="mb-0">Username</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                            {{this.user}}
-                        </div>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <div class="form-group"></div>
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>{{this.curUser.user_name}}</mat-label>
+                                            <input id="username" type="text" matInput formControlName="username"
+                                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+                                            />
+                                            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                                                <div *ngIf="f.username.errors.required">Username is required</div>
+                                            </div>
+                                    </mat-form-field>
+                                </div>     
+
                     </div>
                     <hr>
                     <div class="row">
@@ -52,7 +113,7 @@
                         <div class="col-sm-9 text-secondary">
                             <mat-form-field class="example-full-width">
                                 <mat-label>{{this.curUser.email}}</mat-label>
-                                <input id="email" matInput placeholder={{this.curUser.email}} formControlName="email">
+                                <input id="email" matInput formControlName="email">
                             </mat-form-field>
                         </div>
                     </div>
@@ -63,8 +124,8 @@
                         </div>
                         <div class="col-sm-9 text-secondary">
                             <mat-form-field class="example-full-width">
-                                <mat-label>{{this.curUser.phone}}</mat-label>
-                                <input id="phone" matInput placeholder={{this.curUser.phone}} formControlName="phone">
+                                <mat-label class="placehold">{{this.curUser.phone}}</mat-label>
+                                <input id="phone" matInput formControlName="phone">
                             </mat-form-field>
                         </div>
                     </div>
@@ -76,7 +137,7 @@
                         <div class="col-sm-9 text-secondary">
                             <mat-form-field class="example-full-width">
                                 <mat-label>{{this.curUser.major}}</mat-label>
-                                <input id="major" matInput placeholder={{this.curUser.major}} formControlName="major">
+                                <input id="major" matInput formControlName="major">
                             </mat-form-field>
                         </div>
                     </div>
@@ -88,7 +149,7 @@
                         <div class="col-sm-9 text-secondary">
                             <mat-form-field class="example-full-width">
                                 <mat-label>{{this.curUser.address}}</mat-label>
-                                <input id="address" matInput placeholder={{this.curUser.address}} formControlName="address">
+                                <input id="address" matInput formControlName="address">
                             </mat-form-field>
                         </div>
                     </div>
@@ -134,10 +195,10 @@
                     </div>
                     <hr>
 
-                    <div class="form-group">
-                        <button class="btn btn-primary" (click)="onSubmit()">Save Changes</button>
-                        <button type="button" class="btn" (click)="resetform()">Cancel</button>
-                        <button type="button" class="btn btn-danger" ng-click="deleteUser(uid)"><i class="icon-trash"></i> Delete User</button>
+                    <div class="form-group" >
+                        <button type="button" class="btn btn-outline-dark" (click)="resetform()">Cancel</button>
+                        <div class="divider"></div>
+                        <button type="button" class="btn btn-success" (click)="onSubmit()">Save</button>
                     </div>
 
 
@@ -147,3 +208,151 @@
           </div>
         </div>
     </div>
+
+
+
+
+
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" 
+                id="modal-basic-title">
+                Edit Info
+            </h4>
+            <button type="button" class="close"
+                    aria-label="Close" (click)=
+                    "modal.dismiss('Cross click')">
+                <span aria-hidden="true">
+                    ×
+                </span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="form2" (ngSubmit)="sidePanel()">
+                <div class="row">
+                    <div class="col-sm-3">
+                    <h6 class="mb-0">First Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>{{this.curUser.first}}</mat-label>
+                            <input id="first" matInput formControlName="first">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                    <h6 class="mb-0">Last Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>{{this.curUser.last}}</mat-label>
+                            <input id="last" matInput formControlName="last">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                    <h6 class="mb-0">Bio</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <div class="form-group"></div>
+                        <mat-form-field class="example-full-width">
+                            <mat-label>{{this.curUser.bio}}</mat-label>
+                            <input id="bio" matInput formControlName="bio">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                    <h6 class="mb-0">Website</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>{{this.curUser.website}}</mat-label>
+                            <input id="website" matInput formControlName="website">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                    <h6 class="mb-0">Github</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>{{this.curUser.github}}</mat-label>
+                            <input id="github" matInput formControlName="github">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <hr>       
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" 
+                class="btn btn-outline-dark" 
+                (click)="resetform2()">
+                Clear
+            </button>
+            <button type="button" 
+                class="btn btn-success" 
+                (click)="sidePanel(); modal.close('Save click')">
+                Save
+            </button>
+        </div>
+      </ng-template>
+
+
+
+
+
+
+
+
+      <ng-template #content2 let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" 
+                id="modal-basic-title">
+                Change photo
+            </h4>
+            <button type="button" class="close"
+                    aria-label="Close" (click)=
+                    "modal.dismiss('Cross click')">
+                <span aria-hidden="true">
+                    ×
+                </span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="form3" (ngSubmit)="webImage()">
+                <div class="row">
+                    <div class="col-sm-3">
+                    <h6 class="mb-0">Photo URL</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>{{this.curUser.pfpURL}}</mat-label>
+                            <input id="pfpURL" matInput formControlName="pfpURL">
+                        </mat-form-field>
+                    </div>
+                </div>    
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" 
+                class="btn btn-outline-dark" 
+                (click)="resetform3()">
+                Clear
+            </button>
+            <button type="button" 
+                class="btn btn-success" 
+                (click)="webImage(); modal.close('Save click')">
+                Save
+            </button>
+        </div>
+      </ng-template>
