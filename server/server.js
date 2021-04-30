@@ -35,6 +35,12 @@ app.use("/api/account", accountRouter);
 app.use("/api/events", eventRouter);
 app.use("/api/messaging", messageRouter);
 
+if(process.env.NODE_ENV == "production") {
+    const publicPath = path.join(__dirname, "./dist/purdue-pete-planners");
+    app.use(express.static(publicPath));
+    app.use('*', express.static(publicPath));
+}
+
 app.get('/', (req,res) => {
     res.send('Default route');
 });
