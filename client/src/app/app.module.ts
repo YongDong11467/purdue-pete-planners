@@ -50,6 +50,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { EventPageComponent } from './components/eventPage/event-page.component';
 import {EventEditComponent} from './components/eventEdit/event-edit.component';
+import { messagingService } from './messaging.service';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -107,7 +108,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatDialogModule
   ],
 
-  providers: [DataService],
+  providers: [messagingService],
 
   bootstrap: [AppComponent]
 })
